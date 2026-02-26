@@ -1,15 +1,910 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CBC Oncology Report</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CBC Oncology Report — Michael Patrick Hanson</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+  :root {
+    --bg: #0f1623;
+    --panel: #161f30;
+    --border: #1e2d45;
+    --accent: #3b8aff;
+    --accent-glow: rgba(59,138,255,0.12);
+    --low: #ff6b6b;
+    --high: #ffaa00;
+    --normal: #34d399;
+    --text: #e2eaf5;
+    --muted: #7a90a8;
+    --grid: #1a2640;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    min-height: 100vh;
+    padding: 16px;
+  }
+
+  body.lang-zh { font-family: 'Noto Sans SC', 'DM Mono', monospace; }
+
+  /* ── LANG SWITCH ── */
+  .lang-bar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+    gap: 4px;
+  }
+  .lang-btn {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 5px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: inherit;
+    transition: all 0.2s;
+  }
+  .lang-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .header-label {
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 2px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+  .header-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .header-sub {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .header-right { text-align: right; }
+  .header-right div { font-size: 12px; color: var(--text); }
+  .header-right .label { font-size: 11px; color: var(--muted); margin-bottom: 2px; }
+  .header-right .highlight { color: var(--accent); font-weight: 600; }
+
+  /* ── TABS ── */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    padding: 7px 16px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    background: var(--panel);
+    color: var(--muted);
+    transition: all 0.2s;
+  }
+  .tab-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── PANELS ── */
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .card-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  /* ── CYCLE TIMELINE ── */
+  .timeline {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+  .timeline-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+    min-width: 90px;
+  }
+  .timeline-dot {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    border: 2px solid;
+  }
+  .timeline-label { font-size: 10px; font-weight: 600; white-space: nowrap; }
+  .timeline-date { font-size: 10px; color: var(--muted); }
+  .timeline-line { flex: 1; height: 1px; background: var(--border); margin: 0 2px; margin-bottom: 20px; }
+  .timeline-note {
+    margin-top: 10px;
+    padding: 8px 12px;
+    background: var(--accent-glow);
+    border-radius: 6px;
+    font-size: 11px;
+    color: var(--accent);
+    line-height: 1.6;
+  }
+
+  /* ── ALERT CARDS ── */
+  .alert-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    margin-bottom: 6px;
+    border-radius: 6px;
+    border: 1px solid;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .alert-name { font-size: 13px; font-weight: 600; }
+  .alert-ref { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .alert-value { font-size: 15px; font-weight: 700; }
+  .alert-badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    border: 1px solid;
+  }
+
+  /* ── KEY METRICS GRID ── */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 10px;
+  }
+  .metric-card {
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 12px;
+    border: 1px solid;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .metric-label { font-size: 10px; color: var(--muted); font-weight: 600; }
+  .metric-value { font-size: 22px; font-weight: 700; line-height: 1; }
+  .metric-unit { font-size: 10px; color: var(--muted); }
+  .metric-ref { font-size: 9px; color: var(--muted); }
+
+  /* ── GAUGE ── */
+  .gauge-track {
+    position: relative;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin: 4px 0 2px;
+  }
+  .gauge-normal-zone {
+    position: absolute;
+    left: 10%; right: 10%;
+    top: 0; bottom: 0;
+    border-radius: 2px;
+  }
+  .gauge-dot {
+    position: absolute;
+    top: -4px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 0 6px;
+  }
+  .gauge-labels {
+    display: flex;
+    justify-content: space-between;
+  }
+  .gauge-labels span { font-size: 9px; color: var(--muted); }
+
+  /* ── CLINICAL NOTES ── */
+  .clinical-note {
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    border-radius: 0 6px 6px 0;
+    border-left: 3px solid;
+    font-size: 12px;
+    line-height: 1.7;
+  }
+  .clinical-note strong { display: block; margin-bottom: 4px; font-size: 13px; }
+
+  /* ── CHARTS ── */
+  .chart-note {
+    font-size: 11px;
+    color: var(--muted);
+    padding: 6px 12px;
+    background: var(--panel);
+    border-radius: 6px;
+    margin-bottom: 12px;
+    border: 1px solid var(--border);
+  }
+  .chart-card { margin-bottom: 12px; }
+  .chart-card canvas { max-height: 200px; }
+
+  /* ── FULL CBC TABLE ── */
+  .cbc-group-title {
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin: 14px 0 8px;
+  }
+  .cbc-row {
+    display: grid;
+    grid-template-columns: 1fr 90px 50px 130px;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+  }
+  .cbc-row-name { color: var(--muted); }
+  .cbc-row-val { text-align: right; font-weight: 500; }
+  .cbc-row-badge { text-align: center; }
+  .cbc-row-gauge {}
+
+  /* ── PRINT ── */
+  @media print {
+    body { background: #fff; color: #000; padding: 8px; }
+    .lang-bar, .tabs { display: none; }
+    .tab-panel { display: block !important; }
+    .card { break-inside: avoid; border: 1px solid #ccc; background: #f9f9f9; }
+    .header { background: #f0f4ff; }
+    :root { --text: #111; --muted: #555; --panel: #f5f8ff; --bg: #fff; --border: #dde; }
+  }
+
+  @media (max-width: 480px) {
+    .header { flex-direction: column; }
+    .header-right { text-align: left; }
+    .cbc-row { grid-template-columns: 1fr 70px 40px 100px; font-size: 11px; }
+  }
+</style>
 </head>
 <body>
-    <h1>CBC Oncology Report</h1>
-    <p>Current Date and Time: 2026-02-25 08:45:43 (UTC)</p>
-    <h2>Report Details</h2>
-    <p>This is the content of the CBC oncology report.</p>
-    <!-- Add more details about the report here -->
+
+<!-- ═══════════════════════════════════════════════════════════
+     TRANSLATIONS
+════════════════════════════════════════════════════════════ -->
+<script>
+const T = {
+  en: {
+    pageTitle: "CBC Oncology Tracking Report",
+    reportLabel: "ONCOLOGY · CBC TRACKING",
+    patientName: "Michael Patrick Hanson",
+    reportSubtitle: "CapeOX Chemotherapy · Weekly Monitoring Report",
+    oncologists: "Oncologists",
+    drLiu: "Dr. Rico Liu · Hong Kong",
+    drWen: "Dr. Wen · Guangzhou",
+    latestDraw: "Latest draw",
+    draws: "draws recorded",
+    tabSummary: "Summary",
+    tabCharts: "Trend Charts",
+    tabFull: "Full CBC",
+    timelineTitle: "CapeOX Treatment Timeline",
+    cycleLabel: ["Cycle 1", "Cycle 2", "Cycle 3 (Next)"],
+    cycleDates: ["Jan 19, 2026", "Feb 11, 2026", "Mar 4, 2026"],
+    timelineNote: "📅 Feb 24 draw = <strong>Cycle 2, Day 14</strong> · Typical nadir: Days 10–14 post-infusion · Next infusion: <strong>March 4</strong> · Current draw count: 4 draws spanning both cycles",
+    flagsTitle: "⚠ Flags & Alerts — Latest Draw (Feb 24)",
+    allNormal: "All values within reference range ✓",
+    keyMetricsTitle: "Key Oncology Markers — Latest Draw",
+    clinicalTitle: "Clinical Interpretation & Trends",
+    chartNote: "📊 4 draws: Jan 26 (C1D7) → Feb 2 (C1D14) → Feb 18 (C2D7) → Feb 24 (C2D14). Dashed lines = reference range boundaries.",
+    fullCBCTitle: "Complete Blood Count — All Values",
+    refRange: "ref",
+    statusLow: "▼ LOW",
+    statusHigh: "▲ HIGH",
+    statusNormal: "✓",
+    disclaimer: "This report is for clinical reference only. Always consult your oncologist for treatment decisions.",
+    groups: [
+      "🔴 Priority: Infection / Immune Risk",
+      "🩸 Red Cell / Anemia Markers",
+      "🟡 Platelet / Bleeding Risk",
+      "Other WBC Differentials"
+    ],
+    clinicalNotes: [
+      {
+        color: "low",
+        title: "⚠ KEY FINDING — ANC Cliff Between Cycles",
+        body: "C1D7: <strong>2.84</strong> ✓ → C1D14: <strong>2.85</strong> ✓ → C2D7: <strong>1.66</strong> ↓ → C2D14: <strong>1.71</strong> ↓<br>Cycle 1 ANC was stable and fully normal (Days 7 & 14 both ~2.85). Cycle 2 opened at 1.66 — already below threshold by Day 7 — with almost no recovery by Day 14. This is a sharp step-change drop suggesting cumulative oxaliplatin myelosuppression is intensifying. <strong>Pre-Cycle 3 ANC check strongly recommended before March 4 infusion.</strong>"
+      },
+      {
+        color: "high",
+        title: "Mono% Pattern — Worsening Cycle-to-Cycle",
+        body: "C1D7: <strong>6.1%</strong> (normal) → C1D14: <strong>8.6%</strong> (↑) → C2D7: <strong>11.4%</strong> (↑↑) → C2D14: <strong>10.3%</strong> (↑, slight improvement).<br>Mono% was normal in early Cycle 1 but consistently above range since C1D14. Absolute Mono# remains in range throughout. Pattern may reflect treatment-associated immune modulation or persistent low-grade inflammation."
+      },
+      {
+        color: "normal",
+        title: "HGB & WBC — Gradual Mild Decline, Currently Stable",
+        body: "HGB: 153 → 152 → 150 → 147 g/L — slow progressive decline, still comfortably within range (130–175). WBC: 4.72 → 5.15 → 4.16 → 4.21 — slight dip in Cycle 2. PLT: elevated in C1 (350–353), normalised in C2 (247–258). Trajectory bears watching over subsequent cycles."
+      },
+      {
+        color: "accent",
+        title: "PDW 22.9 & PCT 0.337 — Elevated C1D7 Only",
+        body: "Both platelet distribution markers were elevated on Jan 26 (C1D7) and normalised in all subsequent draws. Likely transient, near treatment initiation. No ongoing concern based on current data."
+      }
+    ],
+    chartTitles: ["WBC & ANC (Neutrophils)", "Platelets (PLT)", "Hemoglobin (HGB)", "Lymphocytes % & Monocytes %", "Red Cell Volume (MCV)"],
+    chartLabels: {
+      WBC: "WBC", Neut_abs: "ANC (Neut#)", PLT: "PLT", HGB: "HGB",
+      Lymph_pct: "Lymph%", Mono_pct: "Mono%", MCV: "MCV"
+    }
+  },
+  zh: {
+    pageTitle: "血常规肿瘤监测报告",
+    reportLabel: "肿瘤科 · 血常规追踪",
+    patientName: "Michael Patrick Hanson（韩迈克）",
+    reportSubtitle: "卡培他滨+奥沙利铂（CapeOX）化疗 · 每周监测报告",
+    oncologists: "主治医生",
+    drLiu: "刘医生 · 香港",
+    drWen: "温医生 · 广州",
+    latestDraw: "最近抽血日期",
+    draws: "份记录",
+    tabSummary: "摘要",
+    tabCharts: "趋势图表",
+    tabFull: "完整血常规",
+    timelineTitle: "CapeOX 治疗时间线",
+    cycleLabel: ["第1周期", "第2周期", "第3周期（待定）"],
+    cycleDates: ["2026年1月19日", "2026年2月11日", "2026年3月4日"],
+    timelineNote: "📅 2月24日抽血 = <strong>第2周期第14天</strong> · 典型血细胞最低点：输液后第10–14天 · 下次输液：<strong>3月4日</strong> · 当前共记录4份血常规，覆盖两个完整周期",
+    flagsTitle: "⚠ 异常项目提示 — 最近一次抽血（2月24日）",
+    allNormal: "所有指标均在参考范围内 ✓",
+    keyMetricsTitle: "关键肿瘤科指标 — 最近一次抽血",
+    clinicalTitle: "临床解读与趋势分析",
+    chartNote: "📊 共4次抽血：1月26日（C1D7）→ 2月2日（C1D14）→ 2月18日（C2D7）→ 2月24日（C2D14）。虚线为参考范围上下限。",
+    fullCBCTitle: "完整血常规数值 — 所有指标",
+    refRange: "参考范围",
+    statusLow: "▼ 偏低",
+    statusHigh: "▲ 偏高",
+    statusNormal: "✓",
+    disclaimer: "本报告仅供临床参考，所有治疗决策请咨询主治医生。",
+    groups: [
+      "🔴 重点关注：感染风险 / 免疫功能",
+      "🩸 红细胞 / 贫血相关指标",
+      "🟡 血小板 / 出血风险",
+      "其他白细胞分类"
+    ],
+    clinicalNotes: [
+      {
+        color: "low",
+        title: "⚠ 关键发现 — 两个周期之间中性粒细胞骤降",
+        body: "C1D7：<strong>2.84</strong> ✓ → C1D14：<strong>2.85</strong> ✓ → C2D7：<strong>1.66</strong> ↓ → C2D14：<strong>1.71</strong> ↓<br>第1周期中性粒细胞绝对值（ANC）在第7天和第14天均保持正常（约2.85）。第2周期第7天即已低于参考下限（1.66），至第14天几乎无恢复（1.71）。此为典型的奥沙利铂累积性骨髓抑制加重表现，而非缓慢下降趋势。<strong>强烈建议在3月4日第3周期输液前进行ANC复查，确认是否达到输液标准。</strong>"
+      },
+      {
+        color: "high",
+        title: "单核细胞百分比 — 逐周期升高趋势",
+        body: "C1D7：<strong>6.1%</strong>（正常）→ C1D14：<strong>8.6%</strong>（↑）→ C2D7：<strong>11.4%</strong>（↑↑）→ C2D14：<strong>10.3%</strong>（↑，略有改善）。<br>单核细胞百分比在第1周期初期正常，自C1D14起持续超出参考上限（3.0–8.0%）。单核细胞绝对值（Mono#）始终在正常范围内。此模式可能与化疗相关的免疫调节或持续轻度炎症反应有关，建议持续监测。"
+      },
+      {
+        color: "normal",
+        title: "血红蛋白（HGB）与白细胞总数（WBC）— 缓慢下降，目前仍在正常范围",
+        body: "HGB：153 → 152 → 150 → 147 g/L — 缓慢下降，仍在正常范围内（130–175 g/L）。WBC：4.72 → 5.15 → 4.16 → 4.21 — 第2周期略低。血小板（PLT）：第1周期偏高（350–353），第2周期恢复正常（247–258）。随后周期需继续观察趋势。"
+      },
+      {
+        color: "accent",
+        title: "PDW 22.9 & PCT 0.337 — 仅见于C1D7，后续正常",
+        body: "血小板分布宽度（PDW）和血小板比容（PCT）在1月26日（C1D7）偏高，后续三次抽血均已正常。可能为治疗初始阶段的一过性变化，根据现有数据无需特别关注。"
+      }
+    ],
+    chartTitles: ["白细胞总数 & 中性粒细胞绝对值（ANC）", "血小板（PLT）", "血红蛋白（HGB）", "淋巴细胞% & 单核细胞%", "平均红细胞体积（MCV）"],
+    chartLabels: {
+      WBC: "白细胞", Neut_abs: "ANC（中性粒细胞）", PLT: "血小板", HGB: "血红蛋白",
+      Lymph_pct: "淋巴细胞%", Mono_pct: "单核细胞%", MCV: "MCV"
+    }
+  }
+};
+
+// ─── REFERENCE RANGES ───────────────────────────────────────
+const REFS = {
+  WBC:       { lo:3.5,   hi:9.5,   unit:"10⁹/L",  en:"WBC (White Blood Cells)",          zh:"白细胞总数（WBC）" },
+  Neut_abs:  { lo:1.8,   hi:6.3,   unit:"10⁹/L",  en:"ANC (Absolute Neutrophils)",       zh:"中性粒细胞绝对值（ANC）" },
+  Neut_pct:  { lo:40,    hi:75,    unit:"%",       en:"Neutrophils %",                    zh:"中性粒细胞百分比" },
+  PLT:       { lo:125,   hi:350,   unit:"10⁹/L",  en:"Platelets",                        zh:"血小板计数（PLT）" },
+  HGB:       { lo:130,   hi:175,   unit:"g/L",    en:"Hemoglobin",                       zh:"血红蛋白（HGB）" },
+  RBC:       { lo:4.3,   hi:5.8,   unit:"10¹²/L", en:"Red Blood Cells",                  zh:"红细胞总数（RBC）" },
+  Lymph_abs: { lo:1.1,   hi:3.2,   unit:"10⁹/L",  en:"Lymphocytes (Abs)",                zh:"淋巴细胞绝对值" },
+  Lymph_pct: { lo:20,    hi:50,    unit:"%",       en:"Lymphocytes %",                    zh:"淋巴细胞百分比" },
+  Mono_abs:  { lo:0.1,   hi:0.6,   unit:"10⁹/L",  en:"Monocytes (Abs)",                  zh:"单核细胞绝对值" },
+  Mono_pct:  { lo:3.0,   hi:8.0,   unit:"%",       en:"Monocytes %",                      zh:"单核细胞百分比" },
+  Hct:       { lo:40,    hi:50,    unit:"%",       en:"Hematocrit",                       zh:"红细胞比容（Hct）" },
+  MCV:       { lo:82,    hi:100,   unit:"fL",      en:"MCV (Mean Cell Volume)",           zh:"平均红细胞体积（MCV）" },
+  MCH:       { lo:27,    hi:34,    unit:"pg",      en:"MCH",                              zh:"平均红细胞血红蛋白量（MCH）" },
+  MCHC:      { lo:320,   hi:360,   unit:"g/L",    en:"MCHC",                             zh:"平均红细胞血红蛋白浓度（MCHC）" },
+  RDW_CV:    { lo:11.5,  hi:14.5,  unit:"%",       en:"RDW-CV",                           zh:"红细胞分布宽度CV" },
+  RDW_SD:    { lo:37,    hi:54,    unit:"fL",      en:"RDW-SD",                           zh:"红细胞分布宽度SD" },
+  MPV:       { lo:9.4,   hi:12.5,  unit:"fL",      en:"MPV (Mean Platelet Volume)",       zh:"平均血小板容积（MPV）" },
+  PDW:       { lo:15.5,  hi:18.1,  unit:"fL",      en:"PDW (Platelet Dist. Width)",       zh:"血小板分布宽度（PDW）" },
+  PCT:       { lo:0.108, hi:0.272, unit:"%",       en:"PCT (Plateletcrit)",               zh:"血小板比容（PCT）" },
+  P_LCR:     { lo:13.0,  hi:43.0,  unit:"%",       en:"P-LCR (Large Platelet Ratio)",     zh:"大血小板比例（P-LCR）" },
+  Eos_pct:   { lo:0.5,   hi:5.0,   unit:"%",       en:"Eosinophils %",                    zh:"嗜酸性粒细胞百分比" },
+  Eos_abs:   { lo:0.02,  hi:0.52,  unit:"10⁹/L",  en:"Eosinophils (Abs)",                zh:"嗜酸性粒细胞绝对值" },
+  Baso_pct:  { lo:0,     hi:2.5,   unit:"%",       en:"Basophils %",                      zh:"嗜碱性粒细胞百分比" },
+  Baso_abs:  { lo:0,     hi:0.06,  unit:"10⁹/L",  en:"Basophils (Abs)",                  zh:"嗜碱性粒细胞绝对值" },
+};
+
+// ─── DATA ───────────────────────────────────────────────────
+const DATA = [
+  { date:"Jan 26\nC1D7",  fullDate:"Jan 26, 2026", cycleZH:"第1周期第7天",
+    WBC:4.72,  Neut_abs:2.84, Neut_pct:60.1, PLT:350,  HGB:153, RBC:4.91,
+    Lymph_abs:1.48, Lymph_pct:31.2, Mono_abs:0.30, Mono_pct:6.1,
+    Hct:46.7, MCV:95.1, MCH:31.2, MCHC:328, RDW_CV:12.7, RDW_SD:44.1,
+    MPV:9.6, PDW:22.9, PCT:0.337, P_LCR:16.0, Eos_pct:2.2, Eos_abs:0.10, Baso_pct:0.1, Baso_abs:0.00 },
+  { date:"Feb 2\nC1D14", fullDate:"Feb 2, 2026", cycleZH:"第1周期第14天",
+    WBC:5.15,  Neut_abs:2.85, Neut_pct:55.3, PLT:353,  HGB:152, RBC:4.90,
+    Lymph_abs:1.72, Lymph_pct:33.4, Mono_abs:0.41, Mono_pct:8.6,
+    Hct:48.0, MCV:98.0, MCH:30.9, MCHC:317, RDW_CV:13.1, RDW_SD:46.1,
+    MPV:8.9, PDW:16.2, PCT:0.316, P_LCR:18.8, Eos_pct:2.6, Eos_abs:0.13, Baso_pct:0.1, Baso_abs:0.01 },
+  { date:"Feb 18\nC2D7",  fullDate:"Feb 18, 2026", cycleZH:"第2周期第7天",
+    WBC:4.16,  Neut_abs:1.66, Neut_pct:39.9, PLT:247,  HGB:150, RBC:4.72,
+    Lymph_abs:1.93, Lymph_pct:46.4, Mono_abs:0.47, Mono_pct:11.4,
+    Hct:46.0, MCV:97.4, MCH:31.8, MCHC:326, RDW_CV:14.1, RDW_SD:49.2,
+    MPV:9.5, PDW:16.4, PCT:0.235, P_LCR:22.6, Eos_pct:2.3, Eos_abs:0.10, Baso_pct:0.0, Baso_abs:0.00 },
+  { date:"Feb 24\nC2D14", fullDate:"Feb 24, 2026", cycleZH:"第2周期第14天",
+    WBC:4.21,  Neut_abs:1.71, Neut_pct:40.6, PLT:258,  HGB:147, RBC:4.60,
+    Lymph_abs:2.00, Lymph_pct:47.4, Mono_abs:0.43, Mono_pct:10.3,
+    Hct:45.1, MCV:98.1, MCH:31.9, MCHC:326, RDW_CV:14.5, RDW_SD:51.1,
+    MPV:9.3, PDW:16.5, PCT:0.239, P_LCR:21.9, Eos_pct:1.7, Eos_abs:0.07, Baso_pct:0.0, Baso_abs:0.00 },
+];
+
+const LATEST = DATA[DATA.length - 1];
+const CHART_LABELS = DATA.map(d => d.date.replace('\n',' '));
+
+// ─── HELPERS ────────────────────────────────────────────────
+function getStatus(key, val) {
+  const r = REFS[key];
+  if (!r || val === null || val === undefined) return "normal";
+  if (val < r.lo) return "low";
+  if (val > r.hi) return "high";
+  return "normal";
+}
+function pctPos(key, val) {
+  const r = REFS[key];
+  const range = r.hi - r.lo;
+  const p = ((val - r.lo) / range) * 100;
+  return Math.max(0, Math.min(100, 10 + p * 0.8));
+}
+const COLORS = { low:"#ff6b6b", high:"#ffaa00", normal:"#34d399", accent:"#3b8aff" };
+
+let currentLang = "en";
+let charts = {};
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════
+     HTML STRUCTURE
+════════════════════════════════════════════════════════════ -->
+
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('en')" id="btn-en">EN</button>
+  <button class="lang-btn" onclick="setLang('zh')" id="btn-zh">中文</button>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <div class="header-label" id="h-label"></div>
+    <div class="header-name" id="h-name"></div>
+    <div class="header-sub" id="h-sub"></div>
+  </div>
+  <div class="header-right">
+    <div class="label" id="h-onc-label"></div>
+    <div id="h-dr1"></div>
+    <div id="h-dr2"></div>
+    <div style="margin-top:6px">
+      <span class="label" id="h-draw-label"></span>
+      <span class="highlight"> Feb 24, 2026</span>
+      &nbsp;·&nbsp;
+      <span id="h-draw-count" style="color:var(--muted);font-size:11px"></span>
+    </div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('summary')" id="tab-summary"></button>
+  <button class="tab-btn" onclick="showTab('charts')" id="tab-charts"></button>
+  <button class="tab-btn" onclick="showTab('full')" id="tab-full"></button>
+</div>
+
+<!-- ── TAB: SUMMARY ── -->
+<div class="tab-panel active" id="panel-summary">
+
+  <!-- Cycle Timeline -->
+  <div class="card">
+    <div class="card-title" id="s-timeline-title"></div>
+    <div class="timeline" id="s-timeline"></div>
+    <div class="timeline-note" id="s-timeline-note"></div>
+  </div>
+
+  <!-- Alerts -->
+  <div class="card">
+    <div class="card-title" id="s-flags-title"></div>
+    <div id="s-alerts"></div>
+  </div>
+
+  <!-- Key Metrics -->
+  <div class="card">
+    <div class="card-title" id="s-metrics-title"></div>
+    <div class="metrics-grid" id="s-metrics"></div>
+  </div>
+
+  <!-- Clinical Notes -->
+  <div class="card">
+    <div class="card-title" id="s-clinical-title"></div>
+    <div id="s-clinical"></div>
+  </div>
+
+</div>
+
+<!-- ── TAB: CHARTS ── -->
+<div class="tab-panel" id="panel-charts">
+  <div class="chart-note" id="c-note"></div>
+  <div class="card chart-card"><div class="card-title" id="ct-0"></div><canvas id="chart-0"></canvas></div>
+  <div class="card chart-card"><div class="card-title" id="ct-1"></div><canvas id="chart-1"></canvas></div>
+  <div class="card chart-card"><div class="card-title" id="ct-2"></div><canvas id="chart-2"></canvas></div>
+  <div class="card chart-card"><div class="card-title" id="ct-3"></div><canvas id="chart-3"></canvas></div>
+  <div class="card chart-card"><div class="card-title" id="ct-4"></div><canvas id="chart-4"></canvas></div>
+</div>
+
+<!-- ── TAB: FULL CBC ── -->
+<div class="tab-panel" id="panel-full">
+  <div class="card">
+    <div class="card-title" id="f-title"></div>
+    <div id="f-table"></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div style="text-align:center;padding:16px 0 8px;font-size:10px;color:var(--muted)" id="footer"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     RENDER LOGIC
+════════════════════════════════════════════════════════════ -->
+<script>
+function setLang(lang) {
+  currentLang = lang;
+  document.body.className = lang === 'zh' ? 'lang-zh' : '';
+  document.getElementById('btn-en').className = 'lang-btn' + (lang==='en'?' active':'');
+  document.getElementById('btn-zh').className = 'lang-btn' + (lang==='zh'?' active':'');
+  renderAll();
+}
+
+function showTab(name) {
+  ['summary','charts','full'].forEach(t => {
+    document.getElementById('panel-'+t).className = 'tab-panel' + (t===name?' active':'');
+    document.getElementById('tab-'+t).className = 'tab-btn' + (t===name?' active':'');
+  });
+  if (name === 'charts') renderCharts();
+}
+
+function renderAll() {
+  const t = T[currentLang];
+  document.title = t.pageTitle;
+
+  // Header
+  document.getElementById('h-label').textContent = t.reportLabel;
+  document.getElementById('h-name').textContent = t.patientName;
+  document.getElementById('h-sub').textContent = t.reportSubtitle;
+  document.getElementById('h-onc-label').textContent = t.oncologists;
+  document.getElementById('h-dr1').textContent = t.drLiu;
+  document.getElementById('h-dr2').textContent = t.drWen;
+  document.getElementById('h-draw-label').textContent = t.latestDraw + ':';
+  document.getElementById('h-draw-count').textContent = '4 ' + t.draws;
+
+  // Tabs
+  document.getElementById('tab-summary').textContent = t.tabSummary;
+  document.getElementById('tab-charts').textContent = t.tabCharts;
+  document.getElementById('tab-full').textContent = t.tabFull;
+
+  renderSummary();
+  renderFull();
+  renderCharts();
+}
+
+function renderSummary() {
+  const t = T[currentLang];
+  document.getElementById('s-timeline-title').textContent = t.timelineTitle;
+  document.getElementById('s-flags-title').textContent = t.flagsTitle;
+  document.getElementById('s-metrics-title').textContent = t.keyMetricsTitle;
+  document.getElementById('s-clinical-title').textContent = t.clinicalTitle;
+
+  // Timeline
+  const tlColors = ['#3b8aff','#3b8aff','#ffaa00'];
+  let tlHTML = '';
+  t.cycleLabel.forEach((label, i) => {
+    tlHTML += `
+      <div class="timeline-item">
+        <div class="timeline-dot" style="color:${tlColors[i]};border-color:${tlColors[i]};background:${tlColors[i]}22">
+          ${i+1}
+        </div>
+        <div class="timeline-label" style="color:${tlColors[i]}">${label}</div>
+        <div class="timeline-date">${t.cycleDates[i]}</div>
+      </div>`;
+    if (i < t.cycleLabel.length - 1) tlHTML += '<div class="timeline-line"></div>';
+  });
+  document.getElementById('s-timeline').innerHTML = tlHTML;
+  document.getElementById('s-timeline-note').innerHTML = t.timelineNote;
+
+  // Alerts
+  const keyMetrics = ['WBC','Neut_abs','Neut_pct','PLT','HGB','Mono_pct','MPV','PDW','PCT'];
+  const flags = keyMetrics
+    .map(k => ({ key:k, val:LATEST[k], status:getStatus(k, LATEST[k]) }))
+    .filter(f => f.status !== 'normal');
+
+  let alertHTML = '';
+  if (flags.length === 0) {
+    alertHTML = `<div style="color:var(--normal);font-size:13px">${t.allNormal}</div>`;
+  } else {
+    flags.forEach(f => {
+      const r = REFS[f.key];
+      const color = COLORS[f.status];
+      const label = currentLang === 'zh' ? r.zh : r.en;
+      const badge = f.status === 'low' ? t.statusLow : t.statusHigh;
+      alertHTML += `
+        <div class="alert-item" style="background:${color}18;border-color:${color}44">
+          <div>
+            <div class="alert-name" style="color:var(--text)">${label}</div>
+            <div class="alert-ref">${t.refRange}: ${r.lo}–${r.hi} ${r.unit}</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="alert-value" style="color:${color}">${f.val} ${r.unit}</span>
+            <span class="alert-badge" style="color:${color};border-color:${color}66;background:${color}22">${badge}</span>
+          </div>
+        </div>`;
+    });
+  }
+  document.getElementById('s-alerts').innerHTML = alertHTML;
+
+  // Key Metrics
+  const keyDisplay = ['WBC','Neut_abs','PLT','HGB','Lymph_abs','Mono_pct'];
+  let metricsHTML = '';
+  keyDisplay.forEach(k => {
+    const r = REFS[k];
+    const val = LATEST[k];
+    const st = getStatus(k, val);
+    const color = COLORS[st];
+    const label = currentLang === 'zh' ? r.zh : r.en;
+    const pos = pctPos(k, val);
+    const badge = st === 'normal' ? t.statusNormal : (st === 'low' ? t.statusLow : t.statusHigh);
+    metricsHTML += `
+      <div class="metric-card" style="border-color:${color}44">
+        <div class="metric-label">${label}</div>
+        <div class="metric-value" style="color:${color}">${val}</div>
+        <div class="metric-unit">${r.unit}</div>
+        <div class="gauge-track">
+          <div class="gauge-normal-zone" style="background:${COLORS.normal}22"></div>
+          <div class="gauge-dot" style="left:${pos}%;background:${color};box-shadow:0 0 6px ${color}"></div>
+        </div>
+        <div class="gauge-labels"><span>${r.lo}</span><span>${r.hi}</span></div>
+        <div class="metric-ref">${t.refRange}: ${r.lo}–${r.hi}</div>
+        <div style="margin-top:4px">
+          <span style="font-size:10px;font-weight:700;color:${color};padding:2px 6px;background:${color}22;border:1px solid ${color}44;border-radius:4px">${badge}</span>
+        </div>
+      </div>`;
+  });
+  document.getElementById('s-metrics').innerHTML = metricsHTML;
+
+  // Clinical Notes
+  const noteColors = { low: COLORS.low, high: COLORS.high, normal: COLORS.normal, accent: COLORS.accent };
+  let clinHTML = '';
+  t.clinicalNotes.forEach(note => {
+    const color = noteColors[note.color];
+    clinHTML += `
+      <div class="clinical-note" style="background:${color}15;border-left-color:${color}">
+        <strong style="color:${color}">${note.title}</strong>
+        ${note.body}
+      </div>`;
+  });
+  document.getElementById('s-clinical').innerHTML = clinHTML;
+}
+
+function renderFull() {
+  const t = T[currentLang];
+  document.getElementById('f-title').textContent = t.fullCBCTitle;
+
+  const groups = [
+    { title: t.groups[0], keys: ['WBC','Neut_abs','Neut_pct','Lymph_abs','Lymph_pct','Mono_abs','Mono_pct'] },
+    { title: t.groups[1], keys: ['HGB','RBC','Hct','MCV','MCH','MCHC','RDW_CV','RDW_SD'] },
+    { title: t.groups[2], keys: ['PLT','MPV','PDW','PCT','P_LCR'] },
+    { title: t.groups[3], keys: ['Eos_pct','Eos_abs','Baso_pct','Baso_abs'] },
+  ];
+
+  let html = '';
+  groups.forEach(g => {
+    html += `<div class="cbc-group-title">${g.title}</div>`;
+    g.keys.forEach(k => {
+      const r = REFS[k];
+      const val = LATEST[k];
+      const st = getStatus(k, val);
+      const color = COLORS[st];
+      const label = currentLang === 'zh' ? r.zh : r.en;
+      const pos = pctPos(k, val);
+      const badge = st !== 'normal' ? `<span style="font-size:10px;font-weight:700;color:${color};padding:2px 6px;background:${color}22;border:1px solid ${color}44;border-radius:4px">${st==='low'?t.statusLow:t.statusHigh}</span>` : '';
+      html += `
+        <div class="cbc-row">
+          <div class="cbc-row-name">${label}</div>
+          <div class="cbc-row-val" style="color:${st!=='normal'?color:'var(--text)'}">
+            ${val} <span style="font-size:10px;color:var(--muted)">${r.unit}</span>
+          </div>
+          <div class="cbc-row-badge">${badge}</div>
+          <div class="cbc-row-gauge">
+            <div class="gauge-track">
+              <div class="gauge-normal-zone" style="background:${COLORS.normal}22"></div>
+              <div class="gauge-dot" style="left:${pos}%;background:${color};box-shadow:0 0 5px ${color}"></div>
+            </div>
+            <div class="gauge-labels"><span>${r.lo}</span><span>${r.hi}</span></div>
+          </div>
+        </div>`;
+    });
+  });
+  document.getElementById('f-table').innerHTML = html;
+
+  document.getElementById('footer').textContent = t.disclaimer + ' · Generated ' + new Date().toLocaleDateString();
+}
+
+function renderCharts() {
+  const t = T[currentLang];
+  document.getElementById('c-note').textContent = t.chartNote;
+  t.chartTitles.forEach((title, i) => {
+    document.getElementById('ct-'+i).textContent = title;
+  });
+
+  const chartConfigs = [
+    {
+      keys: ['WBC', 'Neut_abs'],
+      colors: ['#3b8aff', '#ff6b6b'],
+      refLines: [
+        { value: REFS.WBC.lo, color: '#3b8aff55', label: '' },
+        { value: REFS.WBC.hi, color: '#3b8aff55', label: '' },
+        { value: REFS.Neut_abs.lo, color: '#ff6b6b88', label: '' },
+        { value: REFS.Neut_abs.hi, color: '#ff6b6b33', label: '' },
+      ]
+    },
+    { keys: ['PLT'], colors: ['#a78bfa'], refLines: [
+      { value: REFS.PLT.lo, color: '#a78bfa55' }, { value: REFS.PLT.hi, color: '#a78bfa55' }
+    ]},
+    { keys: ['HGB'], colors: ['#34d399'], refLines: [
+      { value: REFS.HGB.lo, color: '#34d39955' }, { value: REFS.HGB.hi, color: '#34d39955' }
+    ]},
+    { keys: ['Lymph_pct','Mono_pct'], colors: ['#3b8aff','#ffaa00'], refLines: [
+      { value: REFS.Lymph_pct.lo, color: '#3b8aff44' }, { value: REFS.Lymph_pct.hi, color: '#3b8aff44' },
+      { value: REFS.Mono_pct.hi, color: '#ffaa0088' },
+    ]},
+    { keys: ['MCV'], colors: ['#60a5fa'], refLines: [
+      { value: REFS.MCV.lo, color: '#60a5fa55' }, { value: REFS.MCV.hi, color: '#60a5fa55' }
+    ]},
+  ];
+
+  chartConfigs.forEach((cfg, i) => {
+    const canvasId = 'chart-' + i;
+    if (charts[canvasId]) { charts[canvasId].destroy(); }
+    const ctx = document.getElementById(canvasId).getContext('2d');
+
+    const datasets = cfg.keys.map((k, ki) => ({
+      label: t.chartLabels[k] || k,
+      data: DATA.map(d => d[k]),
+      borderColor: cfg.colors[ki],
+      backgroundColor: cfg.colors[ki] + '22',
+      borderWidth: 2.5,
+      pointRadius: 5,
+      pointBackgroundColor: cfg.colors[ki],
+      pointBorderColor: '#0f1623',
+      pointBorderWidth: 2,
+      tension: 0.3,
+      fill: false,
+    }));
+
+    // Add reference line datasets
+    cfg.refLines.forEach(rl => {
+      datasets.push({
+        label: '',
+        data: DATA.map(() => rl.value),
+        borderColor: rl.color,
+        borderWidth: 1,
+        borderDash: [5, 5],
+        pointRadius: 0,
+        fill: false,
+        tension: 0,
+      });
+    });
+
+    charts[canvasId] = new Chart(ctx, {
+      type: 'line',
+      data: { labels: CHART_LABELS, datasets },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: {
+            display: cfg.keys.length > 1,
+            labels: { color: '#7a90a8', font: { size: 11 }, filter: item => item.text !== '' }
+          },
+          tooltip: {
+            backgroundColor: '#161f30',
+            borderColor: '#1e2d45',
+            borderWidth: 1,
+            titleColor: '#3b8aff',
+            bodyColor: '#e2eaf5',
+            titleFont: { size: 12 },
+            bodyFont: { size: 12 },
+            callbacks: {
+              title: (items) => {
+                const idx = items[0].dataIndex;
+                return currentLang === 'zh' ? DATA[idx].cycleZH : DATA[idx].fullDate;
+              }
+            },
+            filter: item => item.dataset.label !== ''
+          }
+        },
+        scales: {
+          x: {
+            ticks: { color: '#7a90a8', font: { size: 10 } },
+            grid: { color: '#1a2640' }
+          },
+          y: {
+            ticks: { color: '#7a90a8', font: { size: 10 } },
+            grid: { color: '#1a2640' }
+          }
+        }
+      }
+    });
+  });
+}
+
+// ─── INIT ───────────────────────────────────────────────────
+renderAll();
+</script>
 </body>
 </html>
