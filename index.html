@@ -520,6 +520,7 @@ const COLORS = { low:"#ff6b6b", high:"#ffaa00", normal:"#34d399", accent:"#3b8af
 
 let currentLang = "en";
 let charts = {};
+let selectedDrawIndex = DATA.length - 1; // default to latest
 </script>
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -600,6 +601,7 @@ let charts = {};
 
 <!-- ── TAB: FULL CBC ── -->
 <div class="tab-panel" id="panel-full">
+  <div id="f-draw-selector" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px"></div>
   <div class="card">
     <div class="card-title" id="f-title"></div>
     <div id="f-table"></div>
@@ -754,6 +756,28 @@ function renderFull() {
   const t = T[currentLang];
   document.getElementById('f-title').textContent = t.fullCBCTitle;
 
+  // Draw selector buttons
+  const drawLabels_en = ["Jan 26 · C1 Day 7", "Feb 2 · C1 Day 14", "Feb 18 · C2 Day 7", "Feb 24 · C2 Day 14"];
+  const drawLabels_zh = ["1月26日 · C1第7天", "2月2日 · C1第14天", "2月18日 · C2第7天", "2月24日 · C2第14天"];
+  const drawLabels = currentLang === 'zh' ? drawLabels_zh : drawLabels_en;
+
+  let selectorHTML = '';
+  DATA.forEach((d, i) => {
+    const isActive = i === selectedDrawIndex;
+    const isLatest = i === DATA.length - 1;
+    selectorHTML += `
+      <button onclick="selectDraw(${i})" style="
+        padding:7px 14px;border-radius:6px;border:1px solid;cursor:pointer;
+        font-size:11px;font-weight:600;font-family:inherit;transition:all 0.2s;
+        background:${isActive ? 'var(--accent)' : 'var(--panel)'};
+        border-color:${isActive ? 'var(--accent)' : 'var(--border)'};
+        color:${isActive ? '#fff' : 'var(--muted)'};
+      ">${drawLabels[i]}${isLatest ? (currentLang==='zh'?' ★最新':' ★ Latest') : ''}</button>`;
+  });
+  document.getElementById('f-draw-selector').innerHTML = selectorHTML;
+
+  const ROW = DATA[selectedDrawIndex];
+
   const groups = [
     { title: t.groups[0], keys: ['WBC','Neut_abs','Neut_pct','Lymph_abs','Lymph_pct','Mono_abs','Mono_pct'] },
     { title: t.groups[1], keys: ['HGB','RBC','Hct','MCV','MCH','MCHC','RDW_CV','RDW_SD'] },
@@ -766,15 +790,38 @@ function renderFull() {
     html += `<div class="cbc-group-title">${g.title}</div>`;
     g.keys.forEach(k => {
       const r = REFS[k];
-      const val = LATEST[k];
+      const val = ROW[k];
       const st = getStatus(k, val);
       const color = COLORS[st];
       const label = currentLang === 'zh' ? r.zh : r.en;
       const pos = pctPos(k, val);
       const badge = st !== 'normal' ? `<span style="font-size:10px;font-weight:700;color:${color};padding:2px 6px;background:${color}22;border:1px solid ${color}44;border-radius:4px">${st==='low'?t.statusLow:t.statusHigh}</span>` : '';
+
+      // Mini trend sparkline: show all 4 values as small dots
+      let sparkHTML = '<div style="display:flex;align-items:center;gap:3px;margin-top:4px">';
+      DATA.forEach((d, di) => {
+        const sv = d[k];
+        const sst = getStatus(k, sv);
+        const sc = COLORS[sst];
+        const isSelected = di === selectedDrawIndex;
+        sparkHTML += `<div title="${CHART_LABELS[di]}: ${sv}" style="
+          width:${isSelected?10:7}px;height:${isSelected?10:7}px;border-radius:50%;
+          background:${sc};opacity:${isSelected?1:0.45};
+          border:${isSelected?'2px solid #fff':'none'};
+          cursor:default;flex-shrink:0;
+        "></div>`;
+        if (di < DATA.length - 1) {
+          sparkHTML += `<div style="width:8px;height:1px;background:var(--border);flex-shrink:0"></div>`;
+        }
+      });
+      sparkHTML += '</div>';
+
       html += `
         <div class="cbc-row">
-          <div class="cbc-row-name">${label}</div>
+          <div class="cbc-row-name">
+            ${label}
+            ${sparkHTML}
+          </div>
           <div class="cbc-row-val" style="color:${st!=='normal'?color:'var(--text)'}">
             ${val} <span style="font-size:10px;color:var(--muted)">${r.unit}</span>
           </div>
@@ -790,8 +837,12 @@ function renderFull() {
     });
   });
   document.getElementById('f-table').innerHTML = html;
-
   document.getElementById('footer').textContent = t.disclaimer + ' · Generated ' + new Date().toLocaleDateString();
+}
+
+function selectDraw(index) {
+  selectedDrawIndex = index;
+  renderFull();
 }
 
 function renderCharts() {
