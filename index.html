@@ -327,7 +327,7 @@ const T = {
     patientName: "Michael Patrick Hanson",
     reportSubtitle: "CapeOX Chemotherapy · Weekly Monitoring Report",
     oncologists: "Oncologists",
-    drLiu: "Dr. Liu · Hong Kong",
+    drLiu: "Dr. Rico Liu · Hong Kong",
     drWen: "Dr. Wen · Guangzhou",
     latestDraw: "Latest draw",
     draws: "draws recorded",
@@ -335,14 +335,14 @@ const T = {
     tabCharts: "Trend Charts",
     tabFull: "Full CBC",
     timelineTitle: "CapeOX Treatment Timeline",
-    cycleLabel: ["Cycle 1", "Cycle 2", "Cycle 3 (Next)"],
-    cycleDates: ["Jan 19, 2026", "Feb 11, 2026", "Mar 4, 2026"],
-    timelineNote: "📅 Feb 24 draw = <strong>Cycle 2, Day 14</strong> · Typical nadir: Days 10–14 post-infusion · Next infusion: <strong>March 4</strong> · Current draw count: 4 draws spanning both cycles",
-    flagsTitle: "⚠ Flags & Alerts — Latest Draw (Feb 24)",
+    cycleLabel: ["Cycle 1","Cycle 2","Cycle 3","Cycle 4","Cycle 5","Cycle 6","Cycle 7","Cycle 8"],
+    cycleDates: ["Jan 19","Feb 11","Mar 4","Mar 25","Apr 15","May 6","May 27","Jun 17"],
+    timelineNote: "📅 Mar 6 draw = <strong>Pre-Cycle 3 check (C2 Day 24)</strong> · Cycle 3 delayed — starts <strong>Mar 9 at HKSH</strong> · 5 draws recorded across Cycles 1, 2 & pre-C3 — C3–C8 in-cycle data pending",
+    flagsTitle: "⚠ Flags & Alerts — Latest Draw (Mar 6, 2026 · Pre-C3)",
     allNormal: "All values within reference range ✓",
     keyMetricsTitle: "Key Oncology Markers — Latest Draw",
     clinicalTitle: "Clinical Interpretation & Trends",
-    chartNote: "📊 4 draws: Jan 26 (C1D7) → Feb 2 (C1D14) → Feb 18 (C2D7) → Feb 24 (C2D14). Dashed lines = reference range boundaries.",
+    chartNote: "📊 5 draws: Jan 26 (C1D7) → Feb 2 (C1D14) → Feb 18 (C2D7) → Feb 24 (C2D14) → Mar 6 (Pre-C3). Note: Cycle 3 starts Mar 9 (HKSH). C3–C8 in-cycle draws pending. Dashed lines = reference range.",
     fullCBCTitle: "Complete Blood Count — All Values",
     refRange: "ref",
     statusLow: "▼ LOW",
@@ -358,23 +358,28 @@ const T = {
     clinicalNotes: [
       {
         color: "low",
-        title: "⚠ KEY FINDING — ANC Cliff Between Cycles",
-        body: "C1D7: <strong>2.84</strong> ✓ → C1D14: <strong>2.85</strong> ✓ → C2D7: <strong>1.66</strong> ↓ → C2D14: <strong>1.71</strong> ↓<br>Cycle 1 ANC was stable and fully normal (Days 7 & 14 both ~2.85). Cycle 2 opened at 1.66 — already below threshold by Day 7 — with almost no recovery by Day 14. This is a sharp step-change drop suggesting cumulative oxaliplatin myelosuppression is intensifying. <strong>Pre-Cycle 3 ANC check strongly recommended before March 4 infusion.</strong>"
+        title: "ANC — Persistent Neutropenia Across All Recorded Draws",
+        body: "C1D7: <strong>2.84</strong> ✓ → C1D14: <strong>2.85</strong> ✓ → C2D7: <strong>1.66</strong> ↓ → C2D14: <strong>1.71</strong> ↓ → Pre-C3: <strong>1.68</strong> ↓<br>ANC remains below threshold (1.8) entering Cycle 3. The Mar 6 pre-infusion value of 1.68 — taken 3 days before the planned Mar 9 start — confirms persistent Grade 1 neutropenia with no recovery during the extended inter-cycle break. Cycle 3 delayed due to drug availability; now commencing at HKSH. Cumulative oxaliplatin myelosuppression pattern clear. Please advise on G-CSF support or dose modification plan for C3+."
       },
       {
         color: "high",
-        title: "Mono% Pattern — Worsening Cycle-to-Cycle",
-        body: "C1D7: <strong>6.1%</strong> (normal) → C1D14: <strong>8.6%</strong> (↑) → C2D7: <strong>11.4%</strong> (↑↑) → C2D14: <strong>10.3%</strong> (↑, slight improvement).<br>Mono% was normal in early Cycle 1 but consistently above range since C1D14. Absolute Mono# remains in range throughout. Pattern may reflect treatment-associated immune modulation or persistent low-grade inflammation."
+        title: "Mono% — Persistently Elevated, Mono# Normal",
+        body: "C1D7: <strong>6.1%</strong> ✓ → C1D14: <strong>8.6%</strong> ↑ → C2D7: <strong>11.4%</strong> ↑↑ → C2D14: <strong>10.3%</strong> ↑ → Pre-C3: <strong>9.5%</strong> ↑<br>Mono% has been consistently above range (3.0–8.0%) in all draws since C1D14. Slight downward trend from peak 11.4% to 9.5% but still above ceiling. Mono# (0.37) remains within normal range throughout."
+      },
+      {
+        color: "high",
+        title: "RDW-CV 16.2% — New High Flag on Jun 3",
+        body: "RDW-CV was within range across all C1–C2 draws (12.7–14.5%). The Jun 3 value of <strong>16.2%</strong> exceeds the upper limit and is the highest recorded. Elevated RDW-CV indicates increasing red cell size variability — a marker that can reflect early iron deficiency, B12/folate depletion, or capecitabine-related macrocytosis. Notable that MCV (95.6) remains normal, so mixed picture. <strong>Worth investigating nutritional indices.</strong>"
       },
       {
         color: "normal",
-        title: "HGB & WBC — Gradual Mild Decline, Currently Stable",
-        body: "HGB: 153 → 152 → 150 → 147 g/L — slow progressive decline, still comfortably within range (130–175). WBC: 4.72 → 5.15 → 4.16 → 4.21 — slight dip in Cycle 2. PLT: elevated in C1 (350–353), normalised in C2 (247–258). Trajectory bears watching over subsequent cycles."
+        title: "HGB Recovered · PLT Stable · WBC Borderline",
+        body: "HGB: 153 → 152 → 150 → 147 → <strong>153 g/L</strong> — fully recovered to baseline level, encouraging. PLT: 350 → 353 → 247 → 258 → <strong>301</strong> — stable mid-range, no bleeding concern. WBC: 4.72 → 5.15 → 4.16 → 4.21 → <strong>3.89</strong> — continuing slow decline. Still within normal range (≥3.5) but approaching lower boundary. Monitor trajectory."
       },
       {
         color: "accent",
-        title: "PDW 22.9 & PCT 0.337 — Elevated C1D7 Only",
-        body: "Both platelet distribution markers were elevated on Jan 26 (C1D7) and normalised in all subsequent draws. Likely transient, near treatment initiation. No ongoing concern based on current data."
+        title: "MPV 8.5 ↓ · Chemistry Panel All Normal",
+        body: "MPV remains below range (8.5 vs ref 9.4–12.5) — consistent with previous draws. Jun 3 also included a full metabolic panel: BUN 4.06, Creatinine 69 µmol/L, Na 140.3, K 4.8, Ca 2.39, Cl 106.3 — all within reference ranges. Renal function preserved. No electrolyte concerns."
       }
     ],
     chartTitles: ["WBC & ANC (Neutrophils)", "Platelets (PLT)", "Hemoglobin (HGB)", "Lymphocytes % & Monocytes %", "Red Cell Volume (MCV)"],
@@ -397,14 +402,14 @@ const T = {
     tabCharts: "趋势图表",
     tabFull: "完整血常规",
     timelineTitle: "CapeOX 治疗时间线",
-    cycleLabel: ["第1周期", "第2周期", "第3周期（待定）"],
-    cycleDates: ["2026年1月19日", "2026年2月11日", "2026年3月4日"],
-    timelineNote: "📅 2月24日抽血 = <strong>第2周期第14天</strong> · 典型血细胞最低点：输液后第10–14天 · 下次输液：<strong>3月4日</strong> · 当前共记录4份血常规，覆盖两个完整周期",
-    flagsTitle: "⚠ 异常项目提示 — 最近一次抽血（2月24日）",
+    cycleLabel: ["第1周期","第2周期","第3周期","第4周期","第5周期","第6周期","第7周期","第8周期"],
+    cycleDates: ["1月19日","2月11日","3月4日","3月25日","4月15日","5月6日","5月27日","6月17日"],
+    timelineNote: "📅 3月6日抽血 = <strong>第3周期前检查（第2周期第24天）</strong> · 第3周期因药物供应延迟，改为 <strong>3月9日在香港港安医院（HKSH）</strong> 开始 · 当前共5份血常规，覆盖第1、2周期及第3周期前 — 第3–8周期中期数据待补充",
+    flagsTitle: "⚠ 异常项目提示 — 最近一次抽血（2026年3月6日 · 第3周期前）",
     allNormal: "所有指标均在参考范围内 ✓",
     keyMetricsTitle: "关键肿瘤科指标 — 最近一次抽血",
     clinicalTitle: "临床解读与趋势分析",
-    chartNote: "📊 共4次抽血：1月26日（C1D7）→ 2月2日（C1D14）→ 2月18日（C2D7）→ 2月24日（C2D14）。虚线为参考范围上下限。",
+    chartNote: "📊 共5次抽血：1月26日（C1D7）→ 2月2日（C1D14）→ 2月18日（C2D7）→ 2月24日（C2D14）→ 3月6日（第3周期前）。注：第3周期3月9日在HKSH开始，第3–8周期中期数据待补充。虚线为参考范围上下限。",
     fullCBCTitle: "完整血常规数值 — 所有指标",
     refRange: "参考范围",
     statusLow: "▼ 偏低",
@@ -420,23 +425,28 @@ const T = {
     clinicalNotes: [
       {
         color: "low",
-        title: "⚠ 关键发现 — 两个周期之间中性粒细胞骤降",
-        body: "C1D7：<strong>2.84</strong> ✓ → C1D14：<strong>2.85</strong> ✓ → C2D7：<strong>1.66</strong> ↓ → C2D14：<strong>1.71</strong> ↓<br>第1周期中性粒细胞绝对值（ANC）在第7天和第14天均保持正常（约2.85）。第2周期第7天即已低于参考下限（1.66），至第14天几乎无恢复（1.71）。此为典型的奥沙利铂累积性骨髓抑制加重表现，而非缓慢下降趋势。<strong>强烈建议在3月4日第3周期输液前进行ANC复查，确认是否达到输液标准。</strong>"
+        title: "中性粒细胞绝对值（ANC）— 所有记录周期持续偏低",
+        body: "C1D7：<strong>2.84</strong> ✓ → C1D14：<strong>2.85</strong> ✓ → C2D7：<strong>1.66</strong> ↓ → C2D14：<strong>1.71</strong> ↓ → 第3周期前：<strong>1.68</strong> ↓<br>ANC在进入第3周期前仍低于参考下限（1.8）。3月6日的输液前检查值为1.68，距计划3月9日开始仅3天，提示在延长的周期间隔中中性粒细胞未能恢复。第3周期因广州药物供应问题延期，现改在香港港安医院进行。奥沙利铂累积性骨髓抑制趋势明确，请告知第3周期及后续G-CSF支持或剂量调整方案。"
       },
       {
         color: "high",
-        title: "单核细胞百分比 — 逐周期升高趋势",
-        body: "C1D7：<strong>6.1%</strong>（正常）→ C1D14：<strong>8.6%</strong>（↑）→ C2D7：<strong>11.4%</strong>（↑↑）→ C2D14：<strong>10.3%</strong>（↑，略有改善）。<br>单核细胞百分比在第1周期初期正常，自C1D14起持续超出参考上限（3.0–8.0%）。单核细胞绝对值（Mono#）始终在正常范围内。此模式可能与化疗相关的免疫调节或持续轻度炎症反应有关，建议持续监测。"
+        title: "单核细胞百分比 — 持续升高，绝对值正常",
+        body: "C1D7：<strong>6.1%</strong> ✓ → C1D14：<strong>8.6%</strong> ↑ → C2D7：<strong>11.4%</strong> ↑↑ → C2D14：<strong>10.3%</strong> ↑ → C3D2：<strong>9.5%</strong> ↑<br>自C1D14起，单核细胞百分比在所有记录中持续超出参考范围（3.0–8.0%）。单核细胞绝对值（0.37）始终在正常范围内。此持续性相对单核细胞增多症提示治疗相关免疫调节，建议持续关注。"
+      },
+      {
+        color: "high",
+        title: "RDW-CV 16.2% — 6月3日首次出现偏高",
+        body: "红细胞分布宽度（RDW-CV）在第1–2周期均正常（12.7–14.5%），6月3日升至<strong>16.2%</strong>，为首次超出参考上限。RDW-CV升高提示红细胞大小不均，可见于缺铁、维生素B12/叶酸缺乏或卡培他滨相关巨幼细胞变化。平均红细胞体积（MCV 95.6）仍正常，呈混合表现。<strong>建议检查铁蛋白、维生素B12及叶酸水平。</strong>"
       },
       {
         color: "normal",
-        title: "血红蛋白（HGB）与白细胞总数（WBC）— 缓慢下降，目前仍在正常范围",
-        body: "HGB：153 → 152 → 150 → 147 g/L — 缓慢下降，仍在正常范围内（130–175 g/L）。WBC：4.72 → 5.15 → 4.16 → 4.21 — 第2周期略低。血小板（PLT）：第1周期偏高（350–353），第2周期恢复正常（247–258）。随后周期需继续观察趋势。"
+        title: "血红蛋白恢复 · 血小板稳定 · 白细胞偏低",
+        body: "HGB：153 → 152 → 150 → 147 → <strong>153 g/L</strong> — 已恢复至基线水平，令人鼓舞。PLT：350 → 353 → 247 → 258 → <strong>301</strong> — 稳定，无出血风险。WBC：4.72 → 5.15 → 4.16 → 4.21 → <strong>3.89</strong> — 持续缓慢下降，仍在正常范围内（≥3.5），但已接近下限，需持续关注。"
       },
       {
         color: "accent",
-        title: "PDW 22.9 & PCT 0.337 — 仅见于C1D7，后续正常",
-        body: "血小板分布宽度（PDW）和血小板比容（PCT）在1月26日（C1D7）偏高，后续三次抽血均已正常。可能为治疗初始阶段的一过性变化，根据现有数据无需特别关注。"
+        title: "MPV 8.5 偏低 · 代谢全套指标均正常",
+        body: "平均血小板容积（MPV）持续低于参考范围（8.5 vs 参考值9.4–12.5），与既往记录一致。6月3日同时检测了生化代谢全套：尿素氮4.06、肌酐69 µmol/L、钠140.3、钾4.8、钙2.39、氯106.3 — 均在参考范围内。肾功能良好，电解质无异常。"
       }
     ],
     chartTitles: ["白细胞总数 & 中性粒细胞绝对值（ANC）", "血小板（PLT）", "血红蛋白（HGB）", "淋巴细胞% & 单核细胞%", "平均红细胞体积（MCV）"],
@@ -463,7 +473,7 @@ const REFS = {
   MCV:       { lo:82,    hi:100,   unit:"fL",      en:"MCV (Mean Cell Volume)",           zh:"平均红细胞体积（MCV）" },
   MCH:       { lo:27,    hi:34,    unit:"pg",      en:"MCH",                              zh:"平均红细胞血红蛋白量（MCH）" },
   MCHC:      { lo:320,   hi:360,   unit:"g/L",    en:"MCHC",                             zh:"平均红细胞血红蛋白浓度（MCHC）" },
-  RDW_CV:    { lo:11.5,  hi:14.5,  unit:"%",       en:"RDW-CV",                           zh:"红细胞分布宽度CV" },
+  RDW_CV:    { lo:11.5,  hi:14.8,  unit:"%",       en:"RDW-CV",                           zh:"红细胞分布宽度CV" },
   RDW_SD:    { lo:37,    hi:54,    unit:"fL",      en:"RDW-SD",                           zh:"红细胞分布宽度SD" },
   MPV:       { lo:9.4,   hi:12.5,  unit:"fL",      en:"MPV (Mean Platelet Volume)",       zh:"平均血小板容积（MPV）" },
   PDW:       { lo:15.5,  hi:18.1,  unit:"fL",      en:"PDW (Platelet Dist. Width)",       zh:"血小板分布宽度（PDW）" },
@@ -497,6 +507,18 @@ const DATA = [
     Lymph_abs:2.00, Lymph_pct:47.4, Mono_abs:0.43, Mono_pct:10.3,
     Hct:45.1, MCV:98.1, MCH:31.9, MCHC:326, RDW_CV:14.5, RDW_SD:51.1,
     MPV:9.3, PDW:16.5, PCT:0.239, P_LCR:21.9, Eos_pct:1.7, Eos_abs:0.07, Baso_pct:0.0, Baso_abs:0.00 },
+  { date:"Mar 6\nPre-C3", fullDate:"Mar 6, 2026", cycleZH:"第3周期前（第2周期第24天）",
+    WBC:3.89,  Neut_abs:1.68, Neut_pct:43.4, PLT:301,  HGB:153, RBC:4.89,
+    Lymph_abs:1.72, Lymph_pct:44.1, Mono_abs:0.37, Mono_pct:9.5,
+    Hct:46.7, MCV:95.6, MCH:31.4, MCHC:328, RDW_CV:16.2, RDW_SD:53.9,
+    MPV:8.5, PDW:15.9, PCT:0.256, P_LCR:16.8, Eos_pct:2.5, Eos_abs:0.10, Baso_pct:0.5, Baso_abs:0.02,
+    images: [
+      { label:"Page 1", url:"images/20260306-1.jpg" },
+      { label:"Page 2", url:"images/20260306-2.jpg" },
+      { label:"Page 3", url:"images/20260306-3.jpg" },
+      { label:"Page 4", url:"images/20260306-4.jpg" },
+    ]
+  },
 ];
 
 const LATEST = DATA[DATA.length - 1];
@@ -545,7 +567,7 @@ let selectedDrawIndex = DATA.length - 1; // default to latest
     <div id="h-dr2"></div>
     <div style="margin-top:6px">
       <span class="label" id="h-draw-label"></span>
-      <span class="highlight"> Feb 24, 2026</span>
+      <span class="highlight"> Jun 3, 2026</span>
       &nbsp;·&nbsp;
       <span id="h-draw-count" style="color:var(--muted);font-size:11px"></span>
     </div>
@@ -602,6 +624,7 @@ let selectedDrawIndex = DATA.length - 1; // default to latest
 <!-- ── TAB: FULL CBC ── -->
 <div class="tab-panel" id="panel-full">
   <div id="f-draw-selector" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px"></div>
+  <div id="f-images"></div>
   <div class="card">
     <div class="card-title" id="f-title"></div>
     <div id="f-table"></div>
@@ -643,7 +666,7 @@ function renderAll() {
   document.getElementById('h-dr1').textContent = t.drLiu;
   document.getElementById('h-dr2').textContent = t.drWen;
   document.getElementById('h-draw-label').textContent = t.latestDraw + ':';
-  document.getElementById('h-draw-count').textContent = '4 ' + t.draws;
+  document.getElementById('h-draw-count').textContent = '5 ' + t.draws;
 
   // Tabs
   document.getElementById('tab-summary').textContent = t.tabSummary;
@@ -662,20 +685,32 @@ function renderSummary() {
   document.getElementById('s-metrics-title').textContent = t.keyMetricsTitle;
   document.getElementById('s-clinical-title').textContent = t.clinicalTitle;
 
-  // Timeline
-  const tlColors = ['#3b8aff','#3b8aff','#ffaa00'];
-  let tlHTML = '';
+  // Timeline — 8 cycles, compact
+  const cyclesWithDraws = [0, 1, 2]; // C1, C2, C3
+  const tlColors = t.cycleLabel.map((_, i) => {
+    if (i === t.cycleLabel.length - 1) return '#ffaa00'; // C8 upcoming
+    if (cyclesWithDraws.includes(i)) return '#3b8aff';
+    return '#2a3a52'; // no data
+  });
+  let tlHTML = '<div style="overflow-x:auto;padding-bottom:8px"><div style="display:flex;align-items:center;min-width:600px">';
   t.cycleLabel.forEach((label, i) => {
+    const hasDraw = cyclesWithDraws.includes(i);
+    const color = tlColors[i];
     tlHTML += `
-      <div class="timeline-item">
-        <div class="timeline-dot" style="color:${tlColors[i]};border-color:${tlColors[i]};background:${tlColors[i]}22">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;min-width:60px">
+        <div style="width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+          font-size:11px;font-weight:700;border:2px solid ${color};background:${color}22;color:${color}">
           ${i+1}
         </div>
-        <div class="timeline-label" style="color:${tlColors[i]}">${label}</div>
-        <div class="timeline-date">${t.cycleDates[i]}</div>
+        <div style="font-size:9px;font-weight:700;color:${color};white-space:nowrap;text-align:center">${label}</div>
+        <div style="font-size:9px;color:var(--muted);white-space:nowrap">${t.cycleDates[i]}</div>
+        ${hasDraw ? `<div style="font-size:8px;color:var(--normal);font-weight:700">● draw</div>` : '<div style="font-size:8px;color:var(--border)">–</div>'}
       </div>`;
-    if (i < t.cycleLabel.length - 1) tlHTML += '<div class="timeline-line"></div>';
+    if (i < t.cycleLabel.length - 1) {
+      tlHTML += `<div style="flex:1;height:1px;background:var(--border);margin-bottom:24px;min-width:4px"></div>`;
+    }
   });
+  tlHTML += '</div></div>';
   document.getElementById('s-timeline').innerHTML = tlHTML;
   document.getElementById('s-timeline-note').innerHTML = t.timelineNote;
 
@@ -757,8 +792,8 @@ function renderFull() {
   document.getElementById('f-title').textContent = t.fullCBCTitle;
 
   // Draw selector buttons
-  const drawLabels_en = ["Jan 26 · C1 Day 7", "Feb 2 · C1 Day 14", "Feb 18 · C2 Day 7", "Feb 24 · C2 Day 14"];
-  const drawLabels_zh = ["1月26日 · C1第7天", "2月2日 · C1第14天", "2月18日 · C2第7天", "2月24日 · C2第14天"];
+  const drawLabels_en = ["Jan 26 · C1 Day 7", "Feb 2 · C1 Day 14", "Feb 18 · C2 Day 7", "Feb 24 · C2 Day 14", "Mar 6 · Pre-C3"];
+  const drawLabels_zh = ["1月26日 · C1第7天", "2月2日 · C1第14天", "2月18日 · C2第7天", "2月24日 · C2第14天", "3月6日 · 第3周期前"];
   const drawLabels = currentLang === 'zh' ? drawLabels_zh : drawLabels_en;
 
   let selectorHTML = '';
@@ -777,6 +812,32 @@ function renderFull() {
   document.getElementById('f-draw-selector').innerHTML = selectorHTML;
 
   const ROW = DATA[selectedDrawIndex];
+
+  // Image links if available
+  const imgSection = document.getElementById('f-images');
+  if (ROW.images && ROW.images.length > 0) {
+    const imgLabel = currentLang === 'zh' ? '🔬 原始检验报告图像' : '🔬 Original Lab Report Images';
+    const imgViewLabel = currentLang === 'zh' ? '查看' : 'View';
+    let imgHTML = `<div class="card" style="margin-bottom:12px">
+      <div class="card-title">${imgLabel}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">`;
+    ROW.images.forEach((img, i) => {
+      imgHTML += `<a href="${img.url}" target="_blank" style="
+        display:inline-flex;align-items:center;gap:6px;
+        padding:6px 14px;border-radius:6px;
+        background:var(--accent-glow);border:1px solid var(--accent);
+        color:var(--accent);text-decoration:none;font-size:12px;font-weight:600;
+        transition:all 0.2s;
+      " onmouseover="this.style.background='var(--accent)';this.style.color='#fff'"
+        onmouseout="this.style.background='var(--accent-glow)';this.style.color='var(--accent)'">
+        📄 ${img.label || imgViewLabel + ' ' + (i+1)}
+      </a>`;
+    });
+    imgHTML += `</div></div>`;
+    imgSection.innerHTML = imgHTML;
+  } else {
+    imgSection.innerHTML = '';
+  }
 
   const groups = [
     { title: t.groups[0], keys: ['WBC','Neut_abs','Neut_pct','Lymph_abs','Lymph_pct','Mono_abs','Mono_pct'] },
