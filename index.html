@@ -686,11 +686,15 @@ function renderSummary() {
   document.getElementById('s-clinical-title').textContent = t.clinicalTitle;
 
   // Timeline — 8 cycles, compact
-  const cyclesWithDraws = [0, 1, 2]; // C1, C2, C3
+  const cyclesWithDraws = [0, 1, 2]; // C1, C2, C3 (pre)
+  const infusionDates = ["2026-01-19","2026-02-11","2026-03-09","2026-03-30","2026-04-20","2026-05-11","2026-06-01","2026-06-22"];
+  const today = new Date();
+  const nextCycleIndex = infusionDates.findIndex(d => new Date(d) > today);
   const tlColors = t.cycleLabel.map((_, i) => {
-    if (i === t.cycleLabel.length - 1) return '#ffaa00'; // C8 upcoming
-    if (cyclesWithDraws.includes(i)) return '#3b8aff';
-    return '#2a3a52'; // no data
+    if (i === nextCycleIndex) return '#ffaa00';        // next upcoming infusion
+    if (cyclesWithDraws.includes(i)) return '#3b8aff'; // has draws
+    if (new Date(infusionDates[i]) < today) return '#3b8aff66'; // past, no draws recorded
+    return '#2a3a52'; // future, no draws yet
   });
   let tlHTML = '<div style="overflow-x:auto;padding-bottom:8px"><div style="display:flex;align-items:center;min-width:600px">';
   t.cycleLabel.forEach((label, i) => {
