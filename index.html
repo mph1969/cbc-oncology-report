@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -8,317 +9,319 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
 
-  :root {
-    --bg: #0f1623;
-    --panel: #161f30;
-    --border: #1e2d45;
-    --accent: #3b8aff;
-    --accent-glow: rgba(59,138,255,0.12);
-    --low: #ff6b6b;
-    --high: #ffaa00;
-    --normal: #34d399;
-    --text: #e2eaf5;
-    --muted: #7a90a8;
-    --grid: #1a2640;
-  }
+:root {
+–bg: #0f1623;
+–panel: #161f30;
+–border: #1e2d45;
+–accent: #3b8aff;
+–accent-glow: rgba(59,138,255,0.12);
+–low: #ff6b6b;
+–high: #ffaa00;
+–normal: #34d399;
+–text: #e2eaf5;
+–muted: #7a90a8;
+–grid: #1a2640;
+}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+- { box-sizing: border-box; margin: 0; padding: 0; }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Mono', monospace;
-    min-height: 100vh;
-    padding: 16px;
-  }
+body {
+background: var(–bg);
+color: var(–text);
+font-family: ‘DM Mono’, monospace;
+min-height: 100vh;
+padding: 16px;
+}
 
-  body.lang-zh { font-family: 'Noto Sans SC', 'DM Mono', monospace; }
+body.lang-zh { font-family: ‘Noto Sans SC’, ‘DM Mono’, monospace; }
 
-  /* ── LANG SWITCH ── */
-  .lang-bar {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 10px;
-    gap: 4px;
-  }
-  .lang-btn {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    color: var(--muted);
-    padding: 5px 14px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 12px;
-    font-family: inherit;
-    transition: all 0.2s;
-  }
-  .lang-btn.active {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #fff;
-  }
+/* ── LANG SWITCH ── */
+.lang-bar {
+display: flex;
+justify-content: flex-end;
+margin-bottom: 10px;
+gap: 4px;
+}
+.lang-btn {
+background: var(–panel);
+border: 1px solid var(–border);
+color: var(–muted);
+padding: 5px 14px;
+border-radius: 20px;
+cursor: pointer;
+font-size: 12px;
+font-family: inherit;
+transition: all 0.2s;
+}
+.lang-btn.active {
+background: var(–accent);
+border-color: var(–accent);
+color: #fff;
+}
 
-  /* ── HEADER ── */
-  .header {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 16px 20px;
-    margin-bottom: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-  .header-label {
-    font-size: 11px;
-    color: var(--accent);
-    letter-spacing: 2px;
-    font-weight: 600;
-    margin-bottom: 4px;
-    text-transform: uppercase;
-  }
-  .header-name {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--text);
-  }
-  .header-sub {
-    font-size: 12px;
-    color: var(--muted);
-    margin-top: 4px;
-  }
-  .header-right { text-align: right; }
-  .header-right div { font-size: 12px; color: var(--text); }
-  .header-right .label { font-size: 11px; color: var(--muted); margin-bottom: 2px; }
-  .header-right .highlight { color: var(--accent); font-weight: 600; }
+/* ── HEADER ── */
+.header {
+background: var(–panel);
+border: 1px solid var(–border);
+border-radius: 12px;
+padding: 16px 20px;
+margin-bottom: 12px;
+display: flex;
+justify-content: space-between;
+align-items: flex-start;
+flex-wrap: wrap;
+gap: 12px;
+}
+.header-label {
+font-size: 11px;
+color: var(–accent);
+letter-spacing: 2px;
+font-weight: 600;
+margin-bottom: 4px;
+text-transform: uppercase;
+}
+.header-name {
+font-size: 20px;
+font-weight: 700;
+color: var(–text);
+}
+.header-sub {
+font-size: 12px;
+color: var(–muted);
+margin-top: 4px;
+}
+.header-right { text-align: right; }
+.header-right div { font-size: 12px; color: var(–text); }
+.header-right .label { font-size: 11px; color: var(–muted); margin-bottom: 2px; }
+.header-right .highlight { color: var(–accent); font-weight: 600; }
 
-  /* ── TABS ── */
-  .tabs {
-    display: flex;
-    gap: 4px;
-    margin-bottom: 12px;
-    flex-wrap: wrap;
-  }
-  .tab-btn {
-    padding: 7px 16px;
-    border-radius: 6px;
-    border: 1px solid var(--border);
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: 600;
-    font-family: inherit;
-    background: var(--panel);
-    color: var(--muted);
-    transition: all 0.2s;
-  }
-  .tab-btn.active {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #fff;
-  }
-  .tab-panel { display: none; }
-  .tab-panel.active { display: block; }
+/* ── TABS ── */
+.tabs {
+display: flex;
+gap: 4px;
+margin-bottom: 12px;
+flex-wrap: wrap;
+}
+.tab-btn {
+padding: 7px 16px;
+border-radius: 6px;
+border: 1px solid var(–border);
+cursor: pointer;
+font-size: 12px;
+font-weight: 600;
+font-family: inherit;
+background: var(–panel);
+color: var(–muted);
+transition: all 0.2s;
+}
+.tab-btn.active {
+background: var(–accent);
+border-color: var(–accent);
+color: #fff;
+}
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
 
-  /* ── PANELS ── */
-  .card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px;
-    margin-bottom: 12px;
-  }
-  .card-title {
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--muted);
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    margin-bottom: 12px;
-  }
+/* ── PANELS ── */
+.card {
+background: var(–panel);
+border: 1px solid var(–border);
+border-radius: 10px;
+padding: 16px;
+margin-bottom: 12px;
+}
+.card-title {
+font-size: 11px;
+font-weight: 700;
+color: var(–muted);
+letter-spacing: 1.5px;
+text-transform: uppercase;
+margin-bottom: 12px;
+}
 
-  /* ── CYCLE TIMELINE ── */
-  .timeline {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    overflow-x: auto;
-    padding-bottom: 8px;
-  }
-  .timeline-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    flex: 1;
-    min-width: 90px;
-  }
-  .timeline-dot {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    font-weight: 700;
-    border: 2px solid;
-  }
-  .timeline-label { font-size: 10px; font-weight: 600; white-space: nowrap; }
-  .timeline-date { font-size: 10px; color: var(--muted); }
-  .timeline-line { flex: 1; height: 1px; background: var(--border); margin: 0 2px; margin-bottom: 20px; }
-  .timeline-note {
-    margin-top: 10px;
-    padding: 8px 12px;
-    background: var(--accent-glow);
-    border-radius: 6px;
-    font-size: 11px;
-    color: var(--accent);
-    line-height: 1.6;
-  }
+/* ── CYCLE TIMELINE ── */
+.timeline {
+display: flex;
+align-items: center;
+gap: 0;
+overflow-x: auto;
+padding-bottom: 8px;
+}
+.timeline-item {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 4px;
+flex: 1;
+min-width: 90px;
+}
+.timeline-dot {
+width: 36px;
+height: 36px;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 13px;
+font-weight: 700;
+border: 2px solid;
+}
+.timeline-label { font-size: 10px; font-weight: 600; white-space: nowrap; }
+.timeline-date { font-size: 10px; color: var(–muted); }
+.timeline-line { flex: 1; height: 1px; background: var(–border); margin: 0 2px; margin-bottom: 20px; }
+.timeline-note {
+margin-top: 10px;
+padding: 8px 12px;
+background: var(–accent-glow);
+border-radius: 6px;
+font-size: 11px;
+color: var(–accent);
+line-height: 1.6;
+}
 
-  /* ── ALERT CARDS ── */
-  .alert-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 12px;
-    margin-bottom: 6px;
-    border-radius: 6px;
-    border: 1px solid;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-  .alert-name { font-size: 13px; font-weight: 600; }
-  .alert-ref { font-size: 11px; color: var(--muted); margin-top: 2px; }
-  .alert-value { font-size: 15px; font-weight: 700; }
-  .alert-badge {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    padding: 2px 7px;
-    border-radius: 4px;
-    border: 1px solid;
-  }
+/* ── ALERT CARDS ── */
+.alert-item {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 8px 12px;
+margin-bottom: 6px;
+border-radius: 6px;
+border: 1px solid;
+flex-wrap: wrap;
+gap: 6px;
+}
+.alert-name { font-size: 13px; font-weight: 600; }
+.alert-ref { font-size: 11px; color: var(–muted); margin-top: 2px; }
+.alert-value { font-size: 15px; font-weight: 700; }
+.alert-badge {
+font-size: 10px;
+font-weight: 700;
+letter-spacing: 1px;
+padding: 2px 7px;
+border-radius: 4px;
+border: 1px solid;
+}
 
-  /* ── KEY METRICS GRID ── */
-  .metrics-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-    gap: 10px;
-  }
-  .metric-card {
-    background: var(--bg);
-    border-radius: 8px;
-    padding: 12px;
-    border: 1px solid;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-  .metric-label { font-size: 10px; color: var(--muted); font-weight: 600; }
-  .metric-value { font-size: 22px; font-weight: 700; line-height: 1; }
-  .metric-unit { font-size: 10px; color: var(--muted); }
-  .metric-ref { font-size: 9px; color: var(--muted); }
+/* ── KEY METRICS GRID ── */
+.metrics-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+gap: 10px;
+}
+.metric-card {
+background: var(–bg);
+border-radius: 8px;
+padding: 12px;
+border: 1px solid;
+display: flex;
+flex-direction: column;
+gap: 4px;
+}
+.metric-label { font-size: 10px; color: var(–muted); font-weight: 600; }
+.metric-value { font-size: 22px; font-weight: 700; line-height: 1; }
+.metric-unit { font-size: 10px; color: var(–muted); }
+.metric-ref { font-size: 9px; color: var(–muted); }
 
-  /* ── GAUGE ── */
-  .gauge-track {
-    position: relative;
-    height: 4px;
-    background: var(--border);
-    border-radius: 2px;
-    margin: 4px 0 2px;
-  }
-  .gauge-normal-zone {
-    position: absolute;
-    left: 10%; right: 10%;
-    top: 0; bottom: 0;
-    border-radius: 2px;
-  }
-  .gauge-dot {
-    position: absolute;
-    top: -4px;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    transform: translateX(-50%);
-    box-shadow: 0 0 6px;
-  }
-  .gauge-labels {
-    display: flex;
-    justify-content: space-between;
-  }
-  .gauge-labels span { font-size: 9px; color: var(--muted); }
+/* ── GAUGE ── */
+.gauge-track {
+position: relative;
+height: 4px;
+background: var(–border);
+border-radius: 2px;
+margin: 4px 0 2px;
+}
+.gauge-normal-zone {
+position: absolute;
+left: 10%; right: 10%;
+top: 0; bottom: 0;
+border-radius: 2px;
+}
+.gauge-dot {
+position: absolute;
+top: -4px;
+width: 12px;
+height: 12px;
+border-radius: 50%;
+transform: translateX(-50%);
+box-shadow: 0 0 6px;
+}
+.gauge-labels {
+display: flex;
+justify-content: space-between;
+}
+.gauge-labels span { font-size: 9px; color: var(–muted); }
 
-  /* ── CLINICAL NOTES ── */
-  .clinical-note {
-    padding: 10px 14px;
-    margin-bottom: 8px;
-    border-radius: 0 6px 6px 0;
-    border-left: 3px solid;
-    font-size: 12px;
-    line-height: 1.7;
-  }
-  .clinical-note strong { display: block; margin-bottom: 4px; font-size: 13px; }
+/* ── CLINICAL NOTES ── */
+.clinical-note {
+padding: 10px 14px;
+margin-bottom: 8px;
+border-radius: 0 6px 6px 0;
+border-left: 3px solid;
+font-size: 12px;
+line-height: 1.7;
+}
+.clinical-note strong { display: block; margin-bottom: 4px; font-size: 13px; }
 
-  /* ── CHARTS ── */
-  .chart-note {
-    font-size: 11px;
-    color: var(--muted);
-    padding: 6px 12px;
-    background: var(--panel);
-    border-radius: 6px;
-    margin-bottom: 12px;
-    border: 1px solid var(--border);
-  }
-  .chart-card { margin-bottom: 12px; }
-  .chart-card canvas { max-height: 200px; }
+/* ── CHARTS ── */
+.chart-note {
+font-size: 11px;
+color: var(–muted);
+padding: 6px 12px;
+background: var(–panel);
+border-radius: 6px;
+margin-bottom: 12px;
+border: 1px solid var(–border);
+}
+.chart-card { margin-bottom: 12px; }
+.chart-card canvas { max-height: 200px; }
 
-  /* ── FULL CBC TABLE ── */
-  .cbc-group-title {
-    font-size: 11px;
-    color: var(--accent);
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    margin: 14px 0 8px;
-  }
-  .cbc-row {
-    display: grid;
-    grid-template-columns: 1fr 90px 50px 130px;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 12px;
-  }
-  .cbc-row-name { color: var(--muted); }
-  .cbc-row-val { text-align: right; font-weight: 500; }
-  .cbc-row-badge { text-align: center; }
-  .cbc-row-gauge {}
+/* ── FULL CBC TABLE ── */
+.cbc-group-title {
+font-size: 11px;
+color: var(–accent);
+font-weight: 700;
+letter-spacing: 0.5px;
+margin: 14px 0 8px;
+}
+.cbc-row {
+display: grid;
+grid-template-columns: 1fr 90px 50px 130px;
+align-items: center;
+gap: 8px;
+padding: 6px 0;
+border-bottom: 1px solid var(–border);
+font-size: 12px;
+}
+.cbc-row-name { color: var(–muted); }
+.cbc-row-val { text-align: right; font-weight: 500; }
+.cbc-row-badge { text-align: center; }
+.cbc-row-gauge {}
 
-  /* ── PRINT ── */
-  @media print {
-    body { background: #fff; color: #000; padding: 8px; }
-    .lang-bar, .tabs { display: none; }
-    .tab-panel { display: block !important; }
-    .card { break-inside: avoid; border: 1px solid #ccc; background: #f9f9f9; }
-    .header { background: #f0f4ff; }
-    :root { --text: #111; --muted: #555; --panel: #f5f8ff; --bg: #fff; --border: #dde; }
-  }
+/* ── PRINT ── */
+@media print {
+body { background: #fff; color: #000; padding: 8px; }
+.lang-bar, .tabs { display: none; }
+.tab-panel { display: block !important; }
+.card { break-inside: avoid; border: 1px solid #ccc; background: #f9f9f9; }
+.header { background: #f0f4ff; }
+:root { –text: #111; –muted: #555; –panel: #f5f8ff; –bg: #fff; –border: #dde; }
+}
 
-  @media (max-width: 480px) {
-    .header { flex-direction: column; }
-    .header-right { text-align: left; }
-    .cbc-row { grid-template-columns: 1fr 70px 40px 100px; font-size: 11px; }
-  }
+@media (max-width: 480px) {
+.header { flex-direction: column; }
+.header-right { text-align: left; }
+.cbc-row { grid-template-columns: 1fr 70px 40px 100px; font-size: 11px; }
+}
 </style>
+
 </head>
 <body>
 
 <!-- ═══════════════════════════════════════════════════════════
      TRANSLATIONS
 ════════════════════════════════════════════════════════════ -->
+
 <script>
 const T = {
   en: {
@@ -386,7 +389,17 @@ const T = {
     chartLabels: {
       WBC: "WBC", Neut_abs: "ANC (Neut#)", PLT: "PLT", HGB: "HGB",
       Lymph_pct: "Lymph%", Mono_pct: "Mono%", MCV: "MCV"
-    }
+    },
+    tabLFT: "Liver Function",
+    lftTitle: "Liver Function Tests (LFTs) — All Recorded Draws",
+    lftNote: "📊 LFT data available from Mar 6, 2026 (Pre-C3) onwards. All values normal on first draw — excellent hepatic tolerance to CapeOX so far.",
+    lftGroups: [
+      { title: "🟢 Liver Enzymes", keys: ["ALT","AST","ALP","GGT"] },
+      { title: "🟡 Bilirubin", keys: ["TBIL","DBIL","IBIL"] },
+      { title: "🔵 Proteins & Synthetic Function", keys: ["ALB","GLB","TP","AG","CHE","PA"] },
+      { title: "Other", keys: ["TBA","ADA","AFU"] },
+    ],
+    lftDrawLabel: "Select draw:",
   },
   zh: {
     pageTitle: "血常规肿瘤监测报告",
@@ -453,7 +466,17 @@ const T = {
     chartLabels: {
       WBC: "白细胞", Neut_abs: "ANC（中性粒细胞）", PLT: "血小板", HGB: "血红蛋白",
       Lymph_pct: "淋巴细胞%", Mono_pct: "单核细胞%", MCV: "MCV"
-    }
+    },
+    tabLFT: "肝功能",
+    lftTitle: "肝功能检测（LFTs）— 所有记录",
+    lftNote: "📊 肝功能数据自2026年3月6日（第3周期前）起开始记录。首次检测所有指标均正常，提示CapeOX化疗对肝脏耐受性良好。",
+    lftGroups: [
+      { title: "🟢 肝酶", keys: ["ALT","AST","ALP","GGT"] },
+      { title: "🟡 胆红素", keys: ["TBIL","DBIL","IBIL"] },
+      { title: "🔵 蛋白质与合成功能", keys: ["ALB","GLB","TP","AG","CHE","PA"] },
+      { title: "其他", keys: ["TBA","ADA","AFU"] },
+    ],
+    lftDrawLabel: "选择抽血日期：",
   }
 };
 
@@ -485,6 +508,26 @@ const REFS = {
   Baso_abs:  { lo:0,     hi:0.06,  unit:"10⁹/L",  en:"Basophils (Abs)",                  zh:"嗜碱性粒细胞绝对值" },
 };
 
+// ─── LFT REFERENCE RANGES ───────────────────────────────────
+const LFT_REFS = {
+  ALT:  { lo:9,    hi:50,    unit:"U/L",    en:"ALT (Alanine Aminotransferase)",   zh:"谷丙转氨酶（ALT）" },
+  AST:  { lo:15,   hi:40,    unit:"U/L",    en:"AST (Aspartate Aminotransferase)", zh:"谷草转氨酶（AST）" },
+  ALP:  { lo:45,   hi:125,   unit:"U/L",    en:"ALP (Alkaline Phosphatase)",       zh:"碱性磷酸酶（ALP）" },
+  GGT:  { lo:10,   hi:60,    unit:"U/L",    en:"GGT (Gamma-Glutamyltransferase)",  zh:"转肽酶（GGT）" },
+  TBIL: { lo:0,    hi:26,    unit:"µmol/L", en:"TBIL (Total Bilirubin)",           zh:"总胆红素（TBIL）" },
+  DBIL: { lo:0,    hi:4,     unit:"µmol/L", en:"DBIL (Direct Bilirubin)",          zh:"直接胆红素（DBIL）" },
+  IBIL: { lo:0,    hi:22,    unit:"µmol/L", en:"IBIL (Indirect Bilirubin)",        zh:"间接胆红素（IBIL）" },
+  ALB:  { lo:40,   hi:55,    unit:"g/L",    en:"Albumin (ALB)",                    zh:"白蛋白（ALB）" },
+  GLB:  { lo:20,   hi:40,    unit:"g/L",    en:"Globulin (GLB)",                   zh:"球蛋白（GLB）" },
+  TP:   { lo:65,   hi:85,    unit:"g/L",    en:"Total Protein (TP)",               zh:"总蛋白（TP）" },
+  AG:   { lo:1.2,  hi:2.4,   unit:"",       en:"A/G Ratio",                        zh:"白蛋白/球蛋白比值（A/G）" },
+  CHE:  { lo:5300, hi:11300, unit:"U/L",    en:"Cholinesterase (CHE)",             zh:"胆碱酯酶（CHE）" },
+  TBA:  { lo:0,    hi:12,    unit:"µmol/L", en:"Total Bile Acids (TBA)",           zh:"总胆汁酸（TBA）" },
+  PA:   { lo:0.2,  hi:0.43,  unit:"g/L",    en:"Prealbumin (PA)",                  zh:"前白蛋白（PA）" },
+  ADA:  { lo:4,    hi:22,    unit:"U/L",    en:"Adenosine Deaminase (ADA)",        zh:"腺苷脱氨酶（ADA）" },
+  AFU:  { lo:0,    hi:40,    unit:"U/L",    en:"Alpha-L-Fucosidase (AFU)",         zh:"α-L-岩藻糖苷酶（AFU）" },
+};
+
 // ─── DATA ───────────────────────────────────────────────────
 const DATA = [
   { date:"Jan 26\nC1D7",  fullDate:"Jan 26, 2026", cycleZH:"第1周期第7天",
@@ -512,11 +555,12 @@ const DATA = [
     Lymph_abs:1.72, Lymph_pct:44.1, Mono_abs:0.37, Mono_pct:9.5,
     Hct:46.7, MCV:95.6, MCH:31.4, MCHC:328, RDW_CV:16.2, RDW_SD:53.9,
     MPV:8.5, PDW:15.9, PCT:0.256, P_LCR:16.8, Eos_pct:2.5, Eos_abs:0.10, Baso_pct:0.5, Baso_abs:0.02,
+    lft: { ALT:28, AST:33, ALP:67, GGT:33.0, TBIL:13.7, DBIL:2.20, IBIL:11.5, ALB:49.5, GLB:28.1, TP:77.6, AG:1.8, CHE:8345, TBA:0.8, PA:0.385, ADA:8.0, AFU:26.1 },
     images: [
-      { label:"Page 1", url:"images/20260306-1.jpg" },
-      { label:"Page 2", url:"images/20260306-2.jpg" },
-      { label:"Page 3", url:"images/20260306-3.jpg" },
-      { label:"Page 4", url:"images/20260306-4.jpg" },
+      { label:"Page 1", url:"images/20260306-1.jpeg" },
+      { label:"Page 2", url:"images/20260306-2.jpeg" },
+      { label:"Page 3", url:"images/20260306-3.jpeg" },
+      { label:"Page 4", url:"images/20260306-4.jpeg" },
     ]
   },
 ];
@@ -555,6 +599,7 @@ let selectedDrawIndex = DATA.length - 1; // default to latest
 </div>
 
 <!-- HEADER -->
+
 <div class="header">
   <div>
     <div class="header-label" id="h-label"></div>
@@ -575,16 +620,20 @@ let selectedDrawIndex = DATA.length - 1; // default to latest
 </div>
 
 <!-- TABS -->
+
 <div class="tabs">
   <button class="tab-btn active" onclick="showTab('summary')" id="tab-summary"></button>
   <button class="tab-btn" onclick="showTab('charts')" id="tab-charts"></button>
   <button class="tab-btn" onclick="showTab('full')" id="tab-full"></button>
+  <button class="tab-btn" onclick="showTab('lft')" id="tab-lft"></button>
 </div>
 
 <!-- ── TAB: SUMMARY ── -->
+
 <div class="tab-panel active" id="panel-summary">
 
   <!-- Cycle Timeline -->
+
   <div class="card">
     <div class="card-title" id="s-timeline-title"></div>
     <div class="timeline" id="s-timeline"></div>
@@ -592,18 +641,21 @@ let selectedDrawIndex = DATA.length - 1; // default to latest
   </div>
 
   <!-- Alerts -->
+
   <div class="card">
     <div class="card-title" id="s-flags-title"></div>
     <div id="s-alerts"></div>
   </div>
 
   <!-- Key Metrics -->
+
   <div class="card">
     <div class="card-title" id="s-metrics-title"></div>
     <div class="metrics-grid" id="s-metrics"></div>
   </div>
 
   <!-- Clinical Notes -->
+
   <div class="card">
     <div class="card-title" id="s-clinical-title"></div>
     <div id="s-clinical"></div>
@@ -612,6 +664,7 @@ let selectedDrawIndex = DATA.length - 1; // default to latest
 </div>
 
 <!-- ── TAB: CHARTS ── -->
+
 <div class="tab-panel" id="panel-charts">
   <div class="chart-note" id="c-note"></div>
   <div class="card chart-card"><div class="card-title" id="ct-0"></div><canvas id="chart-0"></canvas></div>
@@ -622,6 +675,7 @@ let selectedDrawIndex = DATA.length - 1; // default to latest
 </div>
 
 <!-- ── TAB: FULL CBC ── -->
+
 <div class="tab-panel" id="panel-full">
   <div id="f-draw-selector" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px"></div>
   <div id="f-images"></div>
@@ -631,12 +685,33 @@ let selectedDrawIndex = DATA.length - 1; // default to latest
   </div>
 </div>
 
+<!-- ── TAB: LFT ── -->
+
+<div class="tab-panel" id="panel-lft">
+  <div id="lft-draw-selector" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px"></div>
+  <div class="chart-note" id="lft-note"></div>
+  <div class="card chart-card" style="margin-bottom:12px">
+    <div class="card-title" id="lft-chart-title-enzymes"></div>
+    <canvas id="lft-chart-0"></canvas>
+  </div>
+  <div class="card chart-card" style="margin-bottom:12px">
+    <div class="card-title" id="lft-chart-title-proteins"></div>
+    <canvas id="lft-chart-1"></canvas>
+  </div>
+  <div class="card">
+    <div class="card-title" id="lft-table-title"></div>
+    <div id="lft-table"></div>
+  </div>
+</div>
+
 <!-- FOOTER -->
+
 <div style="text-align:center;padding:16px 0 8px;font-size:10px;color:var(--muted)" id="footer"></div>
 
 <!-- ═══════════════════════════════════════════════════════════
      RENDER LOGIC
 ════════════════════════════════════════════════════════════ -->
+
 <script>
 function setLang(lang) {
   currentLang = lang;
@@ -647,11 +722,12 @@ function setLang(lang) {
 }
 
 function showTab(name) {
-  ['summary','charts','full'].forEach(t => {
+  ['summary','charts','full','lft'].forEach(t => {
     document.getElementById('panel-'+t).className = 'tab-panel' + (t===name?' active':'');
     document.getElementById('tab-'+t).className = 'tab-btn' + (t===name?' active':'');
   });
   if (name === 'charts') renderCharts();
+  if (name === 'lft') renderLFT();
 }
 
 function renderAll() {
@@ -672,10 +748,12 @@ function renderAll() {
   document.getElementById('tab-summary').textContent = t.tabSummary;
   document.getElementById('tab-charts').textContent = t.tabCharts;
   document.getElementById('tab-full').textContent = t.tabFull;
+  document.getElementById('tab-lft').textContent = t.tabLFT;
 
   renderSummary();
   renderFull();
   renderCharts();
+  renderLFT();
 }
 
 function renderSummary() {
@@ -1019,8 +1097,158 @@ function renderCharts() {
   });
 }
 
+
+// ─── RENDER LFT ─────────────────────────────────────────────
+let selectedLFTIndex = null; // default to latest draw with LFT data
+let lftCharts = {};
+
+function renderLFT() {
+  const t = T[currentLang];
+
+  // Find draws that have LFT data
+  const lftDraws = DATA.map((d, i) => ({ ...d, idx: i })).filter(d => d.lft);
+  if (lftDraws.length === 0) {
+    document.getElementById('lft-table').innerHTML = `<div style="color:var(--muted);font-size:13px;padding:12px 0">No LFT data recorded yet.</div>`;
+    return;
+  }
+
+  // Default to latest LFT draw
+  if (selectedLFTIndex === null || !DATA[selectedLFTIndex]?.lft) {
+    selectedLFTIndex = lftDraws[lftDraws.length - 1].idx;
+  }
+
+  // Draw selector
+  const drawLabels_en = ["Jan 26 · C1D7","Feb 2 · C1D14","Feb 18 · C2D7","Feb 24 · C2D14","Mar 6 · Pre-C3"];
+  const drawLabels_zh = ["1月26日","2月2日","2月18日","2月24日","3月6日 · 第3周期前"];
+  const drawLabels = currentLang === 'zh' ? drawLabels_zh : drawLabels_en;
+
+  let selHTML = '';
+  lftDraws.forEach(d => {
+    const isActive = d.idx === selectedLFTIndex;
+    selHTML += `<button onclick="selectLFTDraw(${d.idx})" style="
+      padding:7px 14px;border-radius:6px;border:1px solid;cursor:pointer;
+      font-size:11px;font-weight:600;font-family:inherit;transition:all 0.2s;
+      background:${isActive?'var(--accent)':'var(--panel)'};
+      border-color:${isActive?'var(--accent)':'var(--border)'};
+      color:${isActive?'#fff':'var(--muted)'};
+    ">${drawLabels[d.idx]} ★</button>`;
+  });
+  document.getElementById('lft-draw-selector').innerHTML = selHTML;
+
+  // Note and titles
+  document.getElementById('lft-note').textContent = t.lftNote;
+  document.getElementById('lft-table-title').textContent = t.lftTitle;
+  document.getElementById('lft-chart-title-enzymes').textContent = currentLang === 'zh' ? '肝酶趋势（ALT · AST · ALP · GGT）' : 'Liver Enzyme Trends (ALT · AST · ALP · GGT)';
+  document.getElementById('lft-chart-title-proteins').textContent = currentLang === 'zh' ? '蛋白质趋势（白蛋白 · 总蛋白）' : 'Protein Trends (Albumin · Total Protein)';
+
+  // Charts — only draws with LFT data
+  const lftLabels = lftDraws.map(d => d.date.replace('\n',' '));
+  const chartColors = ['#ff6b6b','#ffaa00','#a78bfa','#34d399'];
+
+  const enzymeKeys = ['ALT','AST','ALP','GGT'];
+  const proteinKeys = ['ALB','TP'];
+
+  [
+    { id:'lft-chart-0', keys: enzymeKeys },
+    { id:'lft-chart-1', keys: proteinKeys },
+  ].forEach(cfg => {
+    if (lftCharts[cfg.id]) lftCharts[cfg.id].destroy();
+    const ctx = document.getElementById(cfg.id).getContext('2d');
+    const datasets = cfg.keys.map((k, ki) => ({
+      label: currentLang === 'zh' ? LFT_REFS[k].zh.split('（')[0] : k,
+      data: lftDraws.map(d => d.lft[k] ?? null),
+      borderColor: chartColors[ki],
+      backgroundColor: chartColors[ki] + '22',
+      borderWidth: 2.5,
+      pointRadius: 5,
+      pointBackgroundColor: chartColors[ki],
+      pointBorderColor: '#0f1623',
+      pointBorderWidth: 2,
+      tension: 0.3,
+      fill: false,
+    }));
+    // Add ref lines for first key only to avoid clutter
+    const r = LFT_REFS[cfg.keys[0]];
+    datasets.push({ label:'', data: lftDraws.map(() => r.lo), borderColor:'#ffffff22', borderWidth:1, borderDash:[4,4], pointRadius:0, fill:false });
+    datasets.push({ label:'', data: lftDraws.map(() => r.hi), borderColor:'#ffffff22', borderWidth:1, borderDash:[4,4], pointRadius:0, fill:false });
+
+    lftCharts[cfg.id] = new Chart(ctx, {
+      type: 'line',
+      data: { labels: lftLabels, datasets },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { labels: { color:'#7a90a8', font:{size:11}, filter: item => item.text !== '' } },
+          tooltip: {
+            backgroundColor:'#161f30', borderColor:'#1e2d45', borderWidth:1,
+            titleColor:'#3b8aff', bodyColor:'#e2eaf5',
+            filter: item => item.dataset.label !== ''
+          }
+        },
+        scales: {
+          x: { ticks:{ color:'#7a90a8', font:{size:10} }, grid:{ color:'#1a2640' } },
+          y: { ticks:{ color:'#7a90a8', font:{size:10} }, grid:{ color:'#1a2640' } }
+        }
+      }
+    });
+  });
+
+  // Table
+  const ROW = DATA[selectedLFTIndex].lft;
+  let tableHTML = '';
+  t.lftGroups.forEach(g => {
+    tableHTML += `<div class="cbc-group-title">${g.title}</div>`;
+    g.keys.forEach(k => {
+      const r = LFT_REFS[k];
+      const val = ROW[k];
+      if (val === undefined || val === null) return;
+      const st = (val < r.lo) ? 'low' : (val > r.hi) ? 'high' : 'normal';
+      const color = COLORS[st];
+      const label = currentLang === 'zh' ? r.zh : r.en;
+      const pos = Math.max(0, Math.min(100, 10 + ((val - r.lo) / (r.hi - r.lo)) * 80));
+      const badge = st !== 'normal' ? `<span style="font-size:10px;font-weight:700;color:${color};padding:2px 6px;background:${color}22;border:1px solid ${color}44;border-radius:4px">${st==='low'?(currentLang==='zh'?'▼ 偏低':'▼ LOW'):(currentLang==='zh'?'▲ 偏高':'▲ HIGH')}</span>` : '';
+
+      // Sparkline across LFT draws
+      let spark = '<div style="display:flex;align-items:center;gap:3px;margin-top:3px">';
+      lftDraws.forEach((d, di) => {
+        const sv = d.lft[k];
+        if (sv === undefined) return;
+        const sst = (sv < r.lo) ? 'low' : (sv > r.hi) ? 'high' : 'normal';
+        const sc = COLORS[sst];
+        const isSel = d.idx === selectedLFTIndex;
+        spark += `<div title="${lftLabels[di]}: ${sv} ${r.unit}" style="width:${isSel?10:7}px;height:${isSel?10:7}px;border-radius:50%;background:${sc};opacity:${isSel?1:0.45};border:${isSel?'2px solid #fff':'none'};flex-shrink:0"></div>`;
+        if (di < lftDraws.length - 1) spark += `<div style="width:8px;height:1px;background:var(--border);flex-shrink:0"></div>`;
+      });
+      spark += '</div>';
+
+      tableHTML += `
+        <div class="cbc-row">
+          <div class="cbc-row-name">${label}${spark}</div>
+          <div class="cbc-row-val" style="color:${st!=='normal'?color:'var(--text)'}">
+            ${val} <span style="font-size:10px;color:var(--muted)">${r.unit}</span>
+          </div>
+          <div class="cbc-row-badge">${badge}</div>
+          <div class="cbc-row-gauge">
+            <div class="gauge-track">
+              <div class="gauge-normal-zone" style="background:${COLORS.normal}22"></div>
+              <div class="gauge-dot" style="left:${pos}%;background:${color};box-shadow:0 0 5px ${color}"></div>
+            </div>
+            <div class="gauge-labels"><span>${r.lo}</span><span>${r.hi}</span></div>
+          </div>
+        </div>`;
+    });
+  });
+  document.getElementById('lft-table').innerHTML = tableHTML;
+}
+
+function selectLFTDraw(index) {
+  selectedLFTIndex = index;
+  renderLFT();
+}
+
 // ─── INIT ───────────────────────────────────────────────────
 renderAll();
 </script>
+
 </body>
 </html>
