@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -10,308 +9,308 @@
   @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
 
 :root {
-–bg: #0f1623;
-–panel: #161f30;
-–border: #1e2d45;
-–accent: #3b8aff;
-–accent-glow: rgba(59,138,255,0.12);
-–low: #ff6b6b;
-–high: #ffaa00;
-–normal: #34d399;
-–text: #e2eaf5;
-–muted: #7a90a8;
-–grid: #1a2640;
+  --bg: #0f1623;
+  --panel: #161f30;
+  --border: #1e2d45;
+  --accent: #3b8aff;
+  --accent-glow: rgba(59,138,255,0.12);
+  --low: #ff6b6b;
+  --high: #ffaa00;
+  --normal: #34d399;
+  --text: #e2eaf5;
+  --muted: #7a90a8;
+  --grid: #1a2640;
 }
 
-- { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-background: var(–bg);
-color: var(–text);
-font-family: ‘DM Mono’, monospace;
-min-height: 100vh;
-padding: 16px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  min-height: 100vh;
+  padding: 16px;
 }
 
-body.lang-zh { font-family: ‘Noto Sans SC’, ‘DM Mono’, monospace; }
+body.lang-zh { font-family: 'Noto Sans SC', 'DM Mono', monospace; }
 
 /* ── LANG SWITCH ── */
 .lang-bar {
-display: flex;
-justify-content: flex-end;
-margin-bottom: 10px;
-gap: 4px;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+  gap: 4px;
 }
 .lang-btn {
-background: var(–panel);
-border: 1px solid var(–border);
-color: var(–muted);
-padding: 5px 14px;
-border-radius: 20px;
-cursor: pointer;
-font-size: 12px;
-font-family: inherit;
-transition: all 0.2s;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 5px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: inherit;
+  transition: all 0.2s;
 }
 .lang-btn.active {
-background: var(–accent);
-border-color: var(–accent);
-color: #fff;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
 }
 
 /* ── HEADER ── */
 .header {
-background: var(–panel);
-border: 1px solid var(–border);
-border-radius: 12px;
-padding: 16px 20px;
-margin-bottom: 12px;
-display: flex;
-justify-content: space-between;
-align-items: flex-start;
-flex-wrap: wrap;
-gap: 12px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 .header-label {
-font-size: 11px;
-color: var(–accent);
-letter-spacing: 2px;
-font-weight: 600;
-margin-bottom: 4px;
-text-transform: uppercase;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  text-transform: uppercase;
 }
 .header-name {
-font-size: 20px;
-font-weight: 700;
-color: var(–text);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
 }
 .header-sub {
-font-size: 12px;
-color: var(–muted);
-margin-top: 4px;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 4px;
 }
 .header-right { text-align: right; }
-.header-right div { font-size: 12px; color: var(–text); }
-.header-right .label { font-size: 11px; color: var(–muted); margin-bottom: 2px; }
-.header-right .highlight { color: var(–accent); font-weight: 600; }
+.header-right div { font-size: 12px; color: var(--text); }
+.header-right .label { font-size: 11px; color: var(--muted); margin-bottom: 2px; }
+.header-right .highlight { color: var(--accent); font-weight: 600; }
 
 /* ── TABS ── */
 .tabs {
-display: flex;
-gap: 4px;
-margin-bottom: 12px;
-flex-wrap: wrap;
+  display: flex;
+  gap: 4px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
 }
 .tab-btn {
-padding: 7px 16px;
-border-radius: 6px;
-border: 1px solid var(–border);
-cursor: pointer;
-font-size: 12px;
-font-weight: 600;
-font-family: inherit;
-background: var(–panel);
-color: var(–muted);
-transition: all 0.2s;
+  padding: 7px 16px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  background: var(--panel);
+  color: var(--muted);
+  transition: all 0.2s;
 }
 .tab-btn.active {
-background: var(–accent);
-border-color: var(–accent);
-color: #fff;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
 }
 .tab-panel { display: none; }
 .tab-panel.active { display: block; }
 
 /* ── PANELS ── */
 .card {
-background: var(–panel);
-border: 1px solid var(–border);
-border-radius: 10px;
-padding: 16px;
-margin-bottom: 12px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 12px;
 }
 .card-title {
-font-size: 11px;
-font-weight: 700;
-color: var(–muted);
-letter-spacing: 1.5px;
-text-transform: uppercase;
-margin-bottom: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
 }
 
 /* ── CYCLE TIMELINE ── */
 .timeline {
-display: flex;
-align-items: center;
-gap: 0;
-overflow-x: auto;
-padding-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  overflow-x: auto;
+  padding-bottom: 8px;
 }
 .timeline-item {
-display: flex;
-flex-direction: column;
-align-items: center;
-gap: 4px;
-flex: 1;
-min-width: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  min-width: 90px;
 }
 .timeline-dot {
-width: 36px;
-height: 36px;
-border-radius: 50%;
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 13px;
-font-weight: 700;
-border: 2px solid;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  border: 2px solid;
 }
 .timeline-label { font-size: 10px; font-weight: 600; white-space: nowrap; }
-.timeline-date { font-size: 10px; color: var(–muted); }
-.timeline-line { flex: 1; height: 1px; background: var(–border); margin: 0 2px; margin-bottom: 20px; }
+.timeline-date { font-size: 10px; color: var(--muted); }
+.timeline-line { flex: 1; height: 1px; background: var(--border); margin: 0 2px; margin-bottom: 20px; }
 .timeline-note {
-margin-top: 10px;
-padding: 8px 12px;
-background: var(–accent-glow);
-border-radius: 6px;
-font-size: 11px;
-color: var(–accent);
-line-height: 1.6;
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: var(--accent-glow);
+  border-radius: 6px;
+  font-size: 11px;
+  color: var(--accent);
+  line-height: 1.6;
 }
 
 /* ── ALERT CARDS ── */
 .alert-item {
-display: flex;
-justify-content: space-between;
-align-items: center;
-padding: 8px 12px;
-margin-bottom: 6px;
-border-radius: 6px;
-border: 1px solid;
-flex-wrap: wrap;
-gap: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  margin-bottom: 6px;
+  border-radius: 6px;
+  border: 1px solid;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 .alert-name { font-size: 13px; font-weight: 600; }
-.alert-ref { font-size: 11px; color: var(–muted); margin-top: 2px; }
+.alert-ref { font-size: 11px; color: var(--muted); margin-top: 2px; }
 .alert-value { font-size: 15px; font-weight: 700; }
 .alert-badge {
-font-size: 10px;
-font-weight: 700;
-letter-spacing: 1px;
-padding: 2px 7px;
-border-radius: 4px;
-border: 1px solid;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  border: 1px solid;
 }
 
 /* ── KEY METRICS GRID ── */
 .metrics-grid {
-display: grid;
-grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 10px;
 }
 .metric-card {
-background: var(–bg);
-border-radius: 8px;
-padding: 12px;
-border: 1px solid;
-display: flex;
-flex-direction: column;
-gap: 4px;
+  background: var(--bg);
+  border-radius: 8px;
+  padding: 12px;
+  border: 1px solid;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
-.metric-label { font-size: 10px; color: var(–muted); font-weight: 600; }
+.metric-label { font-size: 10px; color: var(--muted); font-weight: 600; }
 .metric-value { font-size: 22px; font-weight: 700; line-height: 1; }
-.metric-unit { font-size: 10px; color: var(–muted); }
-.metric-ref { font-size: 9px; color: var(–muted); }
+.metric-unit { font-size: 10px; color: var(--muted); }
+.metric-ref { font-size: 9px; color: var(--muted); }
 
 /* ── GAUGE ── */
 .gauge-track {
-position: relative;
-height: 4px;
-background: var(–border);
-border-radius: 2px;
-margin: 4px 0 2px;
+  position: relative;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  margin: 4px 0 2px;
 }
 .gauge-normal-zone {
-position: absolute;
-left: 10%; right: 10%;
-top: 0; bottom: 0;
-border-radius: 2px;
+  position: absolute;
+  left: 10%; right: 10%;
+  top: 0; bottom: 0;
+  border-radius: 2px;
 }
 .gauge-dot {
-position: absolute;
-top: -4px;
-width: 12px;
-height: 12px;
-border-radius: 50%;
-transform: translateX(-50%);
-box-shadow: 0 0 6px;
+  position: absolute;
+  top: -4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 0 6px;
 }
 .gauge-labels {
-display: flex;
-justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
-.gauge-labels span { font-size: 9px; color: var(–muted); }
+.gauge-labels span { font-size: 9px; color: var(--muted); }
 
 /* ── CLINICAL NOTES ── */
 .clinical-note {
-padding: 10px 14px;
-margin-bottom: 8px;
-border-radius: 0 6px 6px 0;
-border-left: 3px solid;
-font-size: 12px;
-line-height: 1.7;
+  padding: 10px 14px;
+  margin-bottom: 8px;
+  border-radius: 0 6px 6px 0;
+  border-left: 3px solid;
+  font-size: 12px;
+  line-height: 1.7;
 }
 .clinical-note strong { display: block; margin-bottom: 4px; font-size: 13px; }
 
 /* ── CHARTS ── */
 .chart-note {
-font-size: 11px;
-color: var(–muted);
-padding: 6px 12px;
-background: var(–panel);
-border-radius: 6px;
-margin-bottom: 12px;
-border: 1px solid var(–border);
+  font-size: 11px;
+  color: var(--muted);
+  padding: 6px 12px;
+  background: var(--panel);
+  border-radius: 6px;
+  margin-bottom: 12px;
+  border: 1px solid var(--border);
 }
 .chart-card { margin-bottom: 12px; }
 .chart-card canvas { max-height: 200px; }
 
 /* ── FULL CBC TABLE ── */
 .cbc-group-title {
-font-size: 11px;
-color: var(–accent);
-font-weight: 700;
-letter-spacing: 0.5px;
-margin: 14px 0 8px;
+  font-size: 11px;
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin: 14px 0 8px;
 }
 .cbc-row {
-display: grid;
-grid-template-columns: 1fr 90px 50px 130px;
-align-items: center;
-gap: 8px;
-padding: 6px 0;
-border-bottom: 1px solid var(–border);
-font-size: 12px;
+  display: grid;
+  grid-template-columns: 1fr 90px 50px 130px;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
 }
-.cbc-row-name { color: var(–muted); }
+.cbc-row-name { color: var(--muted); }
 .cbc-row-val { text-align: right; font-weight: 500; }
 .cbc-row-badge { text-align: center; }
 .cbc-row-gauge {}
 
 /* ── PRINT ── */
 @media print {
-body { background: #fff; color: #000; padding: 8px; }
-.lang-bar, .tabs { display: none; }
-.tab-panel { display: block !important; }
-.card { break-inside: avoid; border: 1px solid #ccc; background: #f9f9f9; }
-.header { background: #f0f4ff; }
-:root { –text: #111; –muted: #555; –panel: #f5f8ff; –bg: #fff; –border: #dde; }
+  body { background: #fff; color: #000; padding: 8px; }
+  .lang-bar, .tabs { display: none; }
+  .tab-panel { display: block !important; }
+  .card { break-inside: avoid; border: 1px solid #ccc; background: #f9f9f9; }
+  .header { background: #f0f4ff; }
+  :root { --text: #111; --muted: #555; --panel: #f5f8ff; --bg: #fff; --border: #dde; }
 }
 
 @media (max-width: 480px) {
-.header { flex-direction: column; }
-.header-right { text-align: left; }
-.cbc-row { grid-template-columns: 1fr 70px 40px 100px; font-size: 11px; }
+  .header { flex-direction: column; }
+  .header-right { text-align: left; }
+  .cbc-row { grid-template-columns: 1fr 70px 40px 100px; font-size: 11px; }
 }
 </style>
 
@@ -769,10 +768,10 @@ function renderSummary() {
   const today = new Date();
   const nextCycleIndex = infusionDates.findIndex(d => new Date(d) > today);
   const tlColors = t.cycleLabel.map((_, i) => {
-    if (i === nextCycleIndex) return '#ffaa00';        // next upcoming infusion
-    if (cyclesWithDraws.includes(i)) return '#3b8aff'; // has draws
-    if (new Date(infusionDates[i]) < today) return '#3b8aff66'; // past, no draws recorded
-    return '#2a3a52'; // future, no draws yet
+    if (i === nextCycleIndex) return '#ffaa00';
+    if (cyclesWithDraws.includes(i)) return '#3b8aff';
+    if (new Date(infusionDates[i]) < today) return '#3b8aff66';
+    return '#2a3a52';
   });
   let tlHTML = '<div style="overflow-x:auto;padding-bottom:8px"><div style="display:flex;align-items:center;min-width:600px">';
   t.cycleLabel.forEach((label, i) => {
@@ -940,7 +939,6 @@ function renderFull() {
       const pos = pctPos(k, val);
       const badge = st !== 'normal' ? `<span style="font-size:10px;font-weight:700;color:${color};padding:2px 6px;background:${color}22;border:1px solid ${color}44;border-radius:4px">${st==='low'?t.statusLow:t.statusHigh}</span>` : '';
 
-      // Mini trend sparkline: show all 4 values as small dots
       let sparkHTML = '<div style="display:flex;align-items:center;gap:3px;margin-top:4px">';
       DATA.forEach((d, di) => {
         const sv = d[k];
@@ -1040,7 +1038,6 @@ function renderCharts() {
       fill: false,
     }));
 
-    // Add reference line datasets
     cfg.refLines.forEach(rl => {
       datasets.push({
         label: '',
