@@ -3,1249 +3,1210 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CBC Oncology Report — Michael Patrick Hanson</title>
+<title>Michael's Health Update</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500;700&family=Inter:wght@400;500;600;700&display=swap');
 
-:root {
-  --bg: #0f1623;
-  --panel: #161f30;
-  --border: #1e2d45;
-  --accent: #3b8aff;
-  --accent-glow: rgba(59,138,255,0.12);
-  --low: #ff6b6b;
-  --high: #ffaa00;
-  --normal: #34d399;
-  --text: #e2eaf5;
-  --muted: #7a90a8;
-  --grid: #1a2640;
-}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #f0f2f5;
+    min-height: 100vh;
+    padding-bottom: 40px;
+    transition: background 0.3s;
+  }
 
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'DM Mono', monospace;
-  min-height: 100vh;
-  padding: 16px;
-}
+  /* ── AUDIENCE SWITCHER ── */
+  #audience-bar {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    padding: 20px 16px 12px;
+    flex-wrap: wrap;
+  }
+  .aud-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 12px 22px;
+    border-radius: 14px;
+    border: 2px solid #e2e8f0;
+    background: #fff;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s;
+    min-width: 110px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .aud-icon { font-size: 24px; line-height: 1; }
+  .aud-label { font-size: 12px; font-weight: 600; color: #64748b; white-space: nowrap; }
+  .aud-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+  .aud-btn.active-family  { border-color: #16a34a; background: #f0fdf4; }
+  .aud-btn.active-family .aud-label  { color: #15803d; }
+  .aud-btn.active-doctor  { border-color: #2563eb; background: #eff6ff; }
+  .aud-btn.active-doctor .aud-label  { color: #1d4ed8; }
+  .aud-btn.active-michael { border-color: #3b8aff; background: #0d1526; }
+  .aud-btn.active-michael .aud-label { color: #3b8aff; }
 
-body.lang-zh { font-family: 'Noto Sans SC', 'DM Mono', monospace; }
+  /* ══════════════════════════════════════
+     FAMILY VIEW
+  ══════════════════════════════════════ */
+  #view-family {
+    display: none;
+    font-family: 'Inter', sans-serif;
+    max-width: 580px;
+    margin: 0 auto;
+    padding: 0 16px;
+    color: #1e293b;
+  }
+  .fam-topbar {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+    padding: 4px 0 10px;
+  }
+  .fam-lang-btn {
+    padding: 4px 12px; border-radius: 16px;
+    border: 1px solid #cbd5e1; background: #fff;
+    font-size: 11px; font-weight: 600; color: #64748b;
+    cursor: pointer; font-family: 'Inter', sans-serif;
+  }
+  .fam-lang-btn.active { background: #16a34a; border-color: #16a34a; color: #fff; }
 
-/* ── LANG SWITCH ── */
-.lang-bar {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 10px;
-  gap: 4px;
-}
-.lang-btn {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  color: var(--muted);
-  padding: 5px 14px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 12px;
-  font-family: inherit;
-  transition: all 0.2s;
-}
-.lang-btn.active {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
-}
+  .fam-header {
+    text-align: center;
+    padding: 20px 16px 16px;
+    background: #fff;
+    border-radius: 16px;
+    margin-bottom: 14px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .fam-header h1 { font-size: 21px; font-weight: 700; color: #0f172a; margin-bottom: 4px; }
+  .fam-header p { font-size: 13px; color: #64748b; }
 
-/* ── HEADER ── */
-.header {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 16px 20px;
-  margin-bottom: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-.header-label {
-  font-size: 11px;
-  color: var(--accent);
-  letter-spacing: 2px;
-  font-weight: 600;
-  margin-bottom: 4px;
-  text-transform: uppercase;
-}
-.header-name {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--text);
-}
-.header-sub {
-  font-size: 12px;
-  color: var(--muted);
-  margin-top: 4px;
-}
-.header-right { text-align: right; }
-.header-right div { font-size: 12px; color: var(--text); }
-.header-right .label { font-size: 11px; color: var(--muted); margin-bottom: 2px; }
-.header-right .highlight { color: var(--accent); font-weight: 600; }
+  .fam-overall {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 18px;
+    border-radius: 16px;
+    margin-bottom: 14px;
+    border: 2px solid;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .fam-overall-icon { font-size: 38px; line-height: 1; flex-shrink: 0; }
+  .fam-overall-title { font-size: 16px; font-weight: 700; margin-bottom: 5px; }
+  .fam-overall-body { font-size: 13px; line-height: 1.65; }
 
-/* ── TABS ── */
-.tabs {
-  display: flex;
-  gap: 4px;
-  margin-bottom: 12px;
-  flex-wrap: wrap;
-}
-.tab-btn {
-  padding: 7px 16px;
-  border-radius: 6px;
-  border: 1px solid var(--border);
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 600;
-  font-family: inherit;
-  background: var(--panel);
-  color: var(--muted);
-  transition: all 0.2s;
-}
-.tab-btn.active {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
-}
-.tab-panel { display: none; }
-.tab-panel.active { display: block; }
+  .fam-section-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase; color: #94a3b8;
+    padding: 4px 0 8px;
+  }
+  .fam-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .fam-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 14px;
+    border: 1px solid;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  .fam-card-top { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+  .fam-card-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .fam-card-name { font-size: 13px; font-weight: 700; color: #0f172a; }
+  .fam-card-text { font-size: 12px; line-height: 1.55; color: #475569; }
 
-/* ── PANELS ── */
-.card {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 16px;
-  margin-bottom: 12px;
-}
-.card-title {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--muted);
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  margin-bottom: 12px;
-}
+  .fam-prayer {
+    background: #faf5ff;
+    border: 1px solid #e9d5ff;
+    border-radius: 16px;
+    padding: 18px;
+    margin-bottom: 14px;
+  }
+  .fam-prayer-title { font-size: 15px; font-weight: 700; color: #7c3aed; margin-bottom: 12px; }
+  .fam-prayer-item { display: flex; gap: 10px; margin-bottom: 11px; font-size: 13px; line-height: 1.6; color: #374151; }
+  .fam-prayer-item:last-child { margin-bottom: 0; }
+  .fam-prayer-num {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: #7c3aed; color: #fff;
+    font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px;
+  }
 
-/* ── CYCLE TIMELINE ── */
-.timeline {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  overflow-x: auto;
-  padding-bottom: 8px;
-}
-.timeline-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  flex: 1;
-  min-width: 90px;
-}
-.timeline-dot {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  font-weight: 700;
-  border: 2px solid;
-}
-.timeline-label { font-size: 10px; font-weight: 600; white-space: nowrap; }
-.timeline-date { font-size: 10px; color: var(--muted); }
-.timeline-line { flex: 1; height: 1px; background: var(--border); margin: 0 2px; margin-bottom: 20px; }
-.timeline-note {
-  margin-top: 10px;
-  padding: 8px 12px;
-  background: var(--accent-glow);
-  border-radius: 6px;
-  font-size: 11px;
-  color: var(--accent);
-  line-height: 1.6;
-}
+  .fam-share {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 14px;
+  }
+  .fam-share-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #94a3b8; margin-bottom: 8px; }
+  .fam-share-text { font-size: 13px; line-height: 1.7; color: #374151; }
 
-/* ── ALERT CARDS ── */
-.alert-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 12px;
-  margin-bottom: 6px;
-  border-radius: 6px;
-  border: 1px solid;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-.alert-name { font-size: 13px; font-weight: 600; }
-.alert-ref { font-size: 11px; color: var(--muted); margin-top: 2px; }
-.alert-value { font-size: 15px; font-weight: 700; }
-.alert-badge {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  padding: 2px 7px;
-  border-radius: 4px;
-  border: 1px solid;
-}
+  .fam-footer { text-align: center; font-size: 11px; color: #94a3b8; padding: 6px 0 4px; }
 
-/* ── KEY METRICS GRID ── */
-.metrics-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-  gap: 10px;
-}
-.metric-card {
-  background: var(--bg);
-  border-radius: 8px;
-  padding: 12px;
-  border: 1px solid;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.metric-label { font-size: 10px; color: var(--muted); font-weight: 600; }
-.metric-value { font-size: 22px; font-weight: 700; line-height: 1; }
-.metric-unit { font-size: 10px; color: var(--muted); }
-.metric-ref { font-size: 9px; color: var(--muted); }
+  /* ══════════════════════════════════════
+     DOCTOR VIEW
+  ══════════════════════════════════════ */
+  #view-doctor {
+    display: none;
+    font-family: 'Inter', sans-serif;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 16px;
+    color: #111827;
+  }
+  .doc-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    padding: 8px 0 12px;
+  }
+  .doc-print-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 16px; border-radius: 8px;
+    background: #2563eb; color: #fff; border: none;
+    font-size: 12px; font-weight: 600; cursor: pointer;
+    font-family: 'Inter', sans-serif;
+  }
+  .doc-panel {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    padding: 20px 24px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .doc-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid #111827;
+    margin-bottom: 16px;
+  }
+  .doc-header-left h1 { font-size: 18px; font-weight: 700; margin-bottom: 3px; }
+  .doc-header-left p { font-size: 12px; color: #6b7280; }
+  .doc-header-right { font-size: 11px; color: #374151; text-align: right; line-height: 1.7; }
+  .doc-section-heading {
+    font-size: 11px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; color: #374151;
+    padding: 8px 0 6px;
+    border-bottom: 1px solid #e5e7eb;
+    margin: 18px 0 0;
+  }
+  .doc-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 8px; }
+  .doc-table th {
+    background: #f8fafc; padding: 7px 8px;
+    text-align: center; font-weight: 600; font-size: 11px;
+    border: 1px solid #e2e8f0; white-space: nowrap;
+  }
+  .doc-table th.th-name { text-align: left; min-width: 170px; }
+  .doc-table th.th-ref { color: #9ca3af; font-weight: 500; min-width: 90px; }
+  .doc-table td {
+    padding: 6px 8px; border: 1px solid #e5e7eb;
+    text-align: center; white-space: nowrap;
+  }
+  .doc-table td.td-name { text-align: left; font-weight: 500; color: #374151; background: #fafafa; }
+  .doc-table td.td-ref { color: #9ca3af; font-size: 11px; }
+  .doc-table tr.group-row td { background: #f1f5f9; font-weight: 700; font-size: 11px; color: #374151; border-color: #d1d5db; letter-spacing: 0.3px; }
+  .fl { background: #fef2f2 !important; color: #dc2626 !important; font-weight: 700; }
+  .fh { background: #fffbeb !important; color: #b45309 !important; font-weight: 700; }
+  .doc-legend { display: flex; gap: 14px; padding: 10px 0 4px; font-size: 11px; flex-wrap: wrap; }
+  .doc-legend span { display: flex; align-items: center; gap: 5px; color: #6b7280; }
+  .doc-legend-swatch { width: 24px; height: 14px; border-radius: 3px; border: 1px solid; }
+  .doc-disclaimer { font-size: 10px; color: #9ca3af; text-align: center; padding: 14px 0 4px; border-top: 1px solid #f1f5f9; margin-top: 16px; }
 
-/* ── GAUGE ── */
-.gauge-track {
-  position: relative;
-  height: 4px;
-  background: var(--border);
-  border-radius: 2px;
-  margin: 4px 0 2px;
-}
-.gauge-normal-zone {
-  position: absolute;
-  left: 10%; right: 10%;
-  top: 0; bottom: 0;
-  border-radius: 2px;
-}
-.gauge-dot {
-  position: absolute;
-  top: -4px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  transform: translateX(-50%);
-  box-shadow: 0 0 6px;
-}
-.gauge-labels {
-  display: flex;
-  justify-content: space-between;
-}
-.gauge-labels span { font-size: 9px; color: var(--muted); }
+  @media print {
+    body { background: #fff !important; }
+    #audience-bar, .doc-toolbar { display: none !important; }
+    #view-family, #view-michael { display: none !important; }
+    #view-doctor { display: block !important; padding: 0; }
+    .doc-panel { box-shadow: none; border: none; padding: 0; }
+    .fl, .fh { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
 
-/* ── CLINICAL NOTES ── */
-.clinical-note {
-  padding: 10px 14px;
-  margin-bottom: 8px;
-  border-radius: 0 6px 6px 0;
-  border-left: 3px solid;
-  font-size: 12px;
-  line-height: 1.7;
-}
-.clinical-note strong { display: block; margin-bottom: 4px; font-size: 13px; }
+  /* ══════════════════════════════════════
+     MICHAEL VIEW (dark theme preserved)
+  ══════════════════════════════════════ */
+  #view-michael {
+    display: none;
+    --bg: #0f1623;
+    --panel: #161f30;
+    --border: #1e2d45;
+    --accent: #3b8aff;
+    --accent-glow: rgba(59,138,255,0.12);
+    --low: #ff6b6b;
+    --high: #ffaa00;
+    --normal: #34d399;
+    --text: #e2eaf5;
+    --muted: #7a90a8;
+    --grid: #1a2640;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    padding: 16px;
+    border-radius: 12px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  #view-michael.zh { font-family: 'Noto Sans SC', 'DM Mono', monospace; }
 
-/* ── CHARTS ── */
-.chart-note {
-  font-size: 11px;
-  color: var(--muted);
-  padding: 6px 12px;
-  background: var(--panel);
-  border-radius: 6px;
-  margin-bottom: 12px;
-  border: 1px solid var(--border);
-}
-.chart-card { margin-bottom: 12px; }
-.chart-card canvas { max-height: 200px; }
+  .m-lang-bar { display: flex; justify-content: flex-end; margin-bottom: 10px; gap: 4px; }
+  .m-lang-btn { background: var(--panel); border: 1px solid var(--border); color: var(--muted); padding: 5px 14px; border-radius: 20px; cursor: pointer; font-size: 12px; font-family: inherit; transition: all 0.2s; }
+  .m-lang-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
 
-/* ── FULL CBC TABLE ── */
-.cbc-group-title {
-  font-size: 11px;
-  color: var(--accent);
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  margin: 14px 0 8px;
-}
-.cbc-row {
-  display: grid;
-  grid-template-columns: 1fr 90px 50px 130px;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 12px;
-}
-.cbc-row-name { color: var(--muted); }
-.cbc-row-val { text-align: right; font-weight: 500; }
-.cbc-row-badge { text-align: center; }
-.cbc-row-gauge {}
+  .m-header { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; }
+  .m-hlabel { font-size: 11px; color: var(--accent); letter-spacing: 2px; font-weight: 600; margin-bottom: 4px; text-transform: uppercase; }
+  .m-hname { font-size: 20px; font-weight: 700; color: var(--text); }
+  .m-hsub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .m-hright { text-align: right; }
+  .m-hright div { font-size: 12px; color: var(--text); }
+  .m-hlabel2 { font-size: 11px; color: var(--muted); margin-bottom: 2px; }
+  .m-hhighlight { color: var(--accent); font-weight: 600; }
 
-/* ── PRINT ── */
-@media print {
-  body { background: #fff; color: #000; padding: 8px; }
-  .lang-bar, .tabs { display: none; }
-  .tab-panel { display: block !important; }
-  .card { break-inside: avoid; border: 1px solid #ccc; background: #f9f9f9; }
-  .header { background: #f0f4ff; }
-  :root { --text: #111; --muted: #555; --panel: #f5f8ff; --bg: #fff; --border: #dde; }
-}
+  .m-tabs { display: flex; gap: 4px; margin-bottom: 12px; flex-wrap: wrap; }
+  .m-tab { padding: 7px 16px; border-radius: 6px; border: 1px solid var(--border); cursor: pointer; font-size: 12px; font-weight: 600; font-family: inherit; background: var(--panel); color: var(--muted); transition: all 0.2s; }
+  .m-tab.on { background: var(--accent); border-color: var(--accent); color: #fff; }
 
-@media (max-width: 480px) {
-  .header { flex-direction: column; }
-  .header-right { text-align: left; }
-  .cbc-row { grid-template-columns: 1fr 70px 40px 100px; font-size: 11px; }
-}
+  .m-pane { display: none; }
+  .m-pane.on { display: block; }
+
+  .m-card { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+  .m-ctitle { font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .m-tl-note { margin-top: 10px; padding: 8px 12px; background: var(--accent-glow); border-radius: 6px; font-size: 11px; color: var(--accent); line-height: 1.6; }
+
+  .m-alert { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; margin-bottom: 6px; border-radius: 6px; border: 1px solid; flex-wrap: wrap; gap: 6px; }
+  .m-metrics { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+  .m-metric { background: var(--bg); border-radius: 8px; padding: 12px; border: 1px solid; display: flex; flex-direction: column; gap: 4px; }
+  .m-mlabel { font-size: 10px; color: var(--muted); font-weight: 600; }
+  .m-mval { font-size: 22px; font-weight: 700; line-height: 1; }
+  .m-munit { font-size: 10px; color: var(--muted); }
+  .m-mref { font-size: 9px; color: var(--muted); }
+
+  .m-gt { position: relative; height: 4px; background: var(--border); border-radius: 2px; margin: 4px 0 2px; }
+  .m-gnz { position: absolute; left: 10%; right: 10%; top: 0; bottom: 0; border-radius: 2px; }
+  .m-gd { position: absolute; top: -4px; width: 12px; height: 12px; border-radius: 50%; transform: translateX(-50%); }
+  .m-glab { display: flex; justify-content: space-between; }
+  .m-glab span { font-size: 9px; color: var(--muted); }
+
+  .m-clin { padding: 10px 14px; margin-bottom: 8px; border-radius: 0 6px 6px 0; border-left: 3px solid; font-size: 12px; line-height: 1.7; }
+  .m-clin strong { display: block; margin-bottom: 4px; font-size: 13px; }
+  .m-cnote { font-size: 11px; color: var(--muted); padding: 6px 12px; background: var(--panel); border-radius: 6px; margin-bottom: 12px; border: 1px solid var(--border); }
+  .m-cc canvas { max-height: 200px; }
+  .m-grp-title { font-size: 11px; color: var(--accent); font-weight: 700; letter-spacing: 0.5px; margin: 14px 0 8px; }
+  .m-row { display: grid; grid-template-columns: 1fr 90px 50px 130px; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
+  .m-rname { color: var(--muted); }
+  .m-rval { text-align: right; font-weight: 500; }
+  .m-rbadge { text-align: center; }
+
+  @media (max-width: 480px) {
+    .m-header { flex-direction: column; }
+    .m-hright { text-align: left; }
+    .m-row { grid-template-columns: 1fr 70px 40px 100px; font-size: 11px; }
+    .fam-grid { grid-template-columns: 1fr; }
+  }
 </style>
-
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════════════════════
-     TRANSLATIONS
-════════════════════════════════════════════════════════════ -->
+<!-- AUDIENCE SWITCHER -->
+<div id="audience-bar">
+  <button class="aud-btn" id="aud-family" onclick="setAud('family')">
+    <span class="aud-icon">❤️</span>
+    <span class="aud-label">Family &amp; Friends</span>
+  </button>
+  <button class="aud-btn" id="aud-doctor" onclick="setAud('doctor')">
+    <span class="aud-icon">🏥</span>
+    <span class="aud-label">For My Doctors</span>
+  </button>
+  <button class="aud-btn" id="aud-michael" onclick="setAud('michael')">
+    <span class="aud-icon">📊</span>
+    <span class="aud-label">My Data</span>
+  </button>
+</div>
+
+<!-- ══ FAMILY VIEW ══ -->
+<div id="view-family">
+  <div class="fam-topbar">
+    <button class="fam-lang-btn active" id="fb-en" onclick="setFamLang('en')">EN</button>
+    <button class="fam-lang-btn" id="fb-zh" onclick="setFamLang('zh')">中文</button>
+  </div>
+  <div class="fam-header">
+    <h1 id="f-title"></h1>
+    <p id="f-sub"></p>
+  </div>
+  <div class="fam-overall" id="f-overall"></div>
+  <div class="fam-section-label" id="f-sys-label"></div>
+  <div class="fam-grid" id="f-systems"></div>
+  <div class="fam-prayer" id="f-prayers"></div>
+  <div class="fam-share" id="f-share"></div>
+  <div class="fam-footer" id="f-footer"></div>
+</div>
+
+<!-- ══ DOCTOR VIEW ══ -->
+<div id="view-doctor">
+  <div class="doc-toolbar">
+    <button class="doc-print-btn" onclick="window.print()">🖨 Print / Save PDF</button>
+  </div>
+  <div class="doc-panel">
+    <div class="doc-header-row">
+      <div class="doc-header-left">
+        <h1>Michael Patrick Hanson</h1>
+        <p>CapeOX Chemotherapy · CBC &amp; Liver Function Monitoring</p>
+      </div>
+      <div class="doc-header-right" id="d-meta"></div>
+    </div>
+    <div id="d-cbc"></div>
+    <div id="d-lft"></div>
+    <div class="doc-legend">
+      <span><div class="doc-legend-swatch" style="background:#fef2f2;border-color:#fca5a5"></div> Below range ↓</span>
+      <span><div class="doc-legend-swatch" style="background:#fffbeb;border-color:#fcd34d"></div> Above range ↑</span>
+      <span>Unmarked = within reference range</span>
+    </div>
+    <div class="doc-disclaimer">Clinical reference only. All treatment decisions should be confirmed with the treating oncologist. Values should be verified against original laboratory reports.</div>
+  </div>
+</div>
+
+<!-- ══ MICHAEL VIEW ══ -->
+<div id="view-michael">
+  <div class="m-lang-bar">
+    <button class="m-lang-btn active" id="mb-en" onclick="setMLang('en')">EN</button>
+    <button class="m-lang-btn" id="mb-zh" onclick="setMLang('zh')">中文</button>
+  </div>
+  <div class="m-header">
+    <div>
+      <div class="m-hlabel" id="m-rlabel"></div>
+      <div class="m-hname" id="m-rname"></div>
+      <div class="m-hsub" id="m-rsub"></div>
+    </div>
+    <div class="m-hright">
+      <div class="m-hlabel2" id="m-onclab"></div>
+      <div id="m-dr1"></div><div id="m-dr2"></div>
+      <div style="margin-top:6px">
+        <span class="m-hlabel2" id="m-dlabel"></span>
+        <span class="m-hhighlight"> Mar 6, 2026</span>
+        &nbsp;·&nbsp;
+        <span id="m-dcount" style="color:var(--muted);font-size:11px"></span>
+      </div>
+    </div>
+  </div>
+  <div class="m-tabs">
+    <button class="m-tab on" id="mt-summary" onclick="showMTab('summary')"></button>
+    <button class="m-tab" id="mt-charts" onclick="showMTab('charts')"></button>
+    <button class="m-tab" id="mt-full" onclick="showMTab('full')"></button>
+    <button class="m-tab" id="mt-lft" onclick="showMTab('lft')"></button>
+  </div>
+
+  <!-- Summary pane -->
+  <div class="m-pane on" id="mp-summary">
+    <div class="m-card"><div class="m-ctitle" id="m-tltitle"></div><div id="m-tl"></div><div class="m-tl-note" id="m-tlnote"></div></div>
+    <div class="m-card"><div class="m-ctitle" id="m-flagtitle"></div><div id="m-flags"></div></div>
+    <div class="m-card"><div class="m-ctitle" id="m-metrictitle"></div><div class="m-metrics" id="m-metrics"></div></div>
+    <div class="m-card"><div class="m-ctitle" id="m-clintitle"></div><div id="m-clin"></div></div>
+  </div>
+
+  <!-- Charts pane -->
+  <div class="m-pane" id="mp-charts">
+    <div class="m-cnote" id="m-cnote"></div>
+    <div class="m-card m-cc"><div class="m-ctitle" id="mct-0"></div><canvas id="mc-0"></canvas></div>
+    <div class="m-card m-cc"><div class="m-ctitle" id="mct-1"></div><canvas id="mc-1"></canvas></div>
+    <div class="m-card m-cc"><div class="m-ctitle" id="mct-2"></div><canvas id="mc-2"></canvas></div>
+    <div class="m-card m-cc"><div class="m-ctitle" id="mct-3"></div><canvas id="mc-3"></canvas></div>
+    <div class="m-card m-cc"><div class="m-ctitle" id="mct-4"></div><canvas id="mc-4"></canvas></div>
+  </div>
+
+  <!-- Full CBC pane -->
+  <div class="m-pane" id="mp-full">
+    <div id="m-drawsel" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px"></div>
+    <div id="m-imgs"></div>
+    <div class="m-card"><div class="m-ctitle" id="m-fulltitle"></div><div id="m-fulltbl"></div></div>
+  </div>
+
+  <!-- LFT pane -->
+  <div class="m-pane" id="mp-lft">
+    <div id="m-lftsel" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px"></div>
+    <div class="m-cnote" id="m-lftnote"></div>
+    <div class="m-card m-cc" style="margin-bottom:12px"><div class="m-ctitle" id="m-lftct0"></div><canvas id="m-lc0"></canvas></div>
+    <div class="m-card m-cc" style="margin-bottom:12px"><div class="m-ctitle" id="m-lftct1"></div><canvas id="m-lc1"></canvas></div>
+    <div class="m-card"><div class="m-ctitle" id="m-lfttbltitle"></div><div id="m-lfttbl"></div></div>
+  </div>
+
+  <div style="text-align:center;padding:16px 0 8px;font-size:10px;color:var(--muted)" id="m-footer"></div>
+</div>
 
 <script>
+// ══════════════════════════════════════════════════════════
+// TRANSLATIONS
+// ══════════════════════════════════════════════════════════
 const T = {
   en: {
-    pageTitle: "CBC Oncology Tracking Report",
-    reportLabel: "ONCOLOGY · CBC TRACKING",
-    patientName: "Michael Patrick Hanson",
-    reportSubtitle: "CapeOX Chemotherapy · Weekly Monitoring Report",
-    oncologists: "Oncologists",
-    drLiu: "Dr. Rico Liu · Hong Kong",
-    drWen: "Dr. Wen · Guangzhou",
-    latestDraw: "Latest draw",
-    draws: "draws recorded",
-    tabSummary: "Summary",
-    tabCharts: "Trend Charts",
-    tabFull: "Full CBC",
-    timelineTitle: "CapeOX Treatment Timeline",
-    cycleLabel: ["Cycle 1","Cycle 2","Cycle 3","Cycle 4","Cycle 5","Cycle 6","Cycle 7","Cycle 8"],
-    cycleDates: ["Jan 19","Feb 11","Mar 9","Mar 30","Apr 20","May 11","Jun 1","Jun 22"],
-    timelineNote: "📅 Mar 6 draw = <strong>Pre-Cycle 3 check (C2 Day 24)</strong> · Cycle 3 delayed — starts <strong>Mar 9 at HKSH</strong> · 5 draws recorded across Cycles 1, 2 & pre-C3 — C3–C8 in-cycle data pending",
-    flagsTitle: "⚠ Flags & Alerts — Latest Draw (Mar 6, 2026 · Pre-C3)",
-    allNormal: "All values within reference range ✓",
-    keyMetricsTitle: "Key Oncology Markers — Latest Draw",
-    clinicalTitle: "Clinical Interpretation & Trends",
-    chartNote: "📊 5 draws: Jan 26 (C1D7) → Feb 2 (C1D14) → Feb 18 (C2D7) → Feb 24 (C2D14) → Mar 6 (Pre-C3). Note: Cycle 3 starts Mar 9 (HKSH). C3–C8 in-cycle draws pending. Dashed lines = reference range.",
-    fullCBCTitle: "Complete Blood Count — All Values",
-    refRange: "ref",
-    statusLow: "▼ LOW",
-    statusHigh: "▲ HIGH",
-    statusNormal: "✓",
-    disclaimer: "This report is for clinical reference only. Always consult your oncologist for treatment decisions.",
-    groups: [
-      "🔴 Priority: Infection / Immune Risk",
-      "🩸 Red Cell / Anemia Markers",
-      "🟡 Platelet / Bleeding Risk",
-      "Other WBC Differentials"
+    reportLabel:"ONCOLOGY · CBC TRACKING", patientName:"Michael Patrick Hanson",
+    reportSubtitle:"CapeOX Chemotherapy · Weekly Monitoring Report",
+    oncologists:"Oncologists", drLiu:"Dr. Rico Liu · Hong Kong", drWen:"Dr. Wen · Guangzhou",
+    latestDraw:"Latest draw", draws:"draws recorded",
+    tabSummary:"Summary", tabCharts:"Trend Charts", tabFull:"Full CBC", tabLFT:"Liver Function",
+    timelineTitle:"CapeOX Treatment Timeline",
+    cycleLabel:["Cycle 1","Cycle 2","Cycle 3","Cycle 4","Cycle 5","Cycle 6","Cycle 7","Cycle 8"],
+    cycleDates:["Jan 19","Feb 11","Mar 9","Mar 30","Apr 20","May 11","Jun 1","Jun 22"],
+    timelineNote:"📅 Mar 6 draw = <strong>Pre-Cycle 3 check (C2 Day 24)</strong> · Cycle 3 delayed — starts <strong>Mar 9 at HKSH</strong> · 5 draws recorded across Cycles 1, 2 &amp; pre-C3 — C3–C8 in-cycle data pending",
+    flagsTitle:"⚠ Flags &amp; Alerts — Latest Draw (Mar 6, 2026 · Pre-C3)",
+    allNormal:"All values within reference range ✓",
+    keyMetricsTitle:"Key Oncology Markers — Latest Draw",
+    clinicalTitle:"Clinical Interpretation &amp; Trends",
+    chartNote:"📊 5 draws: Jan 26 (C1D7) → Feb 2 (C1D14) → Feb 18 (C2D7) → Feb 24 (C2D14) → Mar 6 (Pre-C3). Cycle 3 starts Mar 9 (HKSH). Dashed lines = reference range.",
+    fullCBCTitle:"Complete Blood Count — All Values",
+    refRange:"ref", statusLow:"▼ LOW", statusHigh:"▲ HIGH", statusNormal:"✓",
+    disclaimer:"Clinical reference only. Always consult your oncologist for treatment decisions.",
+    groups:["🔴 Priority: Infection / Immune Risk","🩸 Red Cell / Anemia Markers","🟡 Platelet / Bleeding Risk","Other WBC Differentials"],
+    clinicalNotes:[
+      { color:"low", title:"ANC — Persistent Neutropenia Across All Recorded Draws",
+        body:"C1D7: <strong>2.84</strong> ✓ → C1D14: <strong>2.85</strong> ✓ → C2D7: <strong>1.66</strong> ↓ → C2D14: <strong>1.71</strong> ↓ → Pre-C3: <strong>1.68</strong> ↓<br>ANC remains below threshold (1.8) entering Cycle 3. The Mar 6 pre-infusion value of 1.68 — taken 3 days before the planned Mar 9 start — confirms persistent Grade 1 neutropenia with no recovery during the extended inter-cycle break. Cumulative oxaliplatin myelosuppression pattern clear. Please advise on G-CSF support or dose modification plan for C3+." },
+      { color:"high", title:"Mono% — Persistently Elevated, Mono# Normal",
+        body:"C1D7: <strong>6.1%</strong> ✓ → C1D14: <strong>8.6%</strong> ↑ → C2D7: <strong>11.4%</strong> ↑↑ → C2D14: <strong>10.3%</strong> ↑ → Pre-C3: <strong>9.5%</strong> ↑<br>Mono% consistently above range (3.0–8.0%) since C1D14. Slight downward trend from peak 11.4% to 9.5% but still above ceiling. Mono# (0.37) remains within normal range throughout." },
+      { color:"high", title:"RDW-CV 16.2% — New High Flag on Mar 6",
+        body:"RDW-CV within range across all C1–C2 draws (12.7–14.5%). Mar 6 value of <strong>16.2%</strong> exceeds upper limit. Elevated RDW-CV indicates increasing red cell size variability — may reflect early iron deficiency, B12/folate depletion, or capecitabine-related macrocytosis. MCV (95.6) remains normal — mixed picture. <strong>Worth investigating nutritional indices.</strong>" },
+      { color:"normal", title:"HGB Recovered · PLT Stable · WBC Borderline",
+        body:"HGB: 153 → 152 → 150 → 147 → <strong>153 g/L</strong> — fully recovered to baseline. PLT: 350 → 353 → 247 → 258 → <strong>301</strong> — stable mid-range. WBC: 4.72 → 5.15 → 4.16 → 4.21 → <strong>3.89</strong> — slow decline, still normal (≥3.5) but approaching lower boundary." },
+      { color:"accent", title:"MPV 8.5 ↓ · Chemistry Panel All Normal",
+        body:"MPV remains below range (8.5 vs ref 9.4–12.5). Mar 6 metabolic panel: BUN 4.06, Creatinine 69 µmol/L, Na 140.3, K 4.8, Ca 2.39, Cl 106.3 — all normal. Renal function preserved." }
     ],
-    clinicalNotes: [
-      {
-        color: "low",
-        title: "ANC — Persistent Neutropenia Across All Recorded Draws",
-        body: "C1D7: <strong>2.84</strong> ✓ → C1D14: <strong>2.85</strong> ✓ → C2D7: <strong>1.66</strong> ↓ → C2D14: <strong>1.71</strong> ↓ → Pre-C3: <strong>1.68</strong> ↓<br>ANC remains below threshold (1.8) entering Cycle 3. The Mar 6 pre-infusion value of 1.68 — taken 3 days before the planned Mar 9 start — confirms persistent Grade 1 neutropenia with no recovery during the extended inter-cycle break. Cycle 3 delayed due to drug availability; now commencing at HKSH. Cumulative oxaliplatin myelosuppression pattern clear. Please advise on G-CSF support or dose modification plan for C3+."
-      },
-      {
-        color: "high",
-        title: "Mono% — Persistently Elevated, Mono# Normal",
-        body: "C1D7: <strong>6.1%</strong> ✓ → C1D14: <strong>8.6%</strong> ↑ → C2D7: <strong>11.4%</strong> ↑↑ → C2D14: <strong>10.3%</strong> ↑ → Pre-C3: <strong>9.5%</strong> ↑<br>Mono% has been consistently above range (3.0–8.0%) in all draws since C1D14. Slight downward trend from peak 11.4% to 9.5% but still above ceiling. Mono# (0.37) remains within normal range throughout."
-      },
-      {
-        color: "high",
-        title: "RDW-CV 16.2% — New High Flag on Mar 6",
-        body: "RDW-CV was within range across all C1–C2 draws (12.7–14.5%). The Mar 6 value of <strong>16.2%</strong> exceeds the upper limit and is the highest recorded. Elevated RDW-CV indicates increasing red cell size variability — a marker that can reflect early iron deficiency, B12/folate depletion, or capecitabine-related macrocytosis. Notable that MCV (95.6) remains normal, so mixed picture. <strong>Worth investigating nutritional indices.</strong>"
-      },
-      {
-        color: "normal",
-        title: "HGB Recovered · PLT Stable · WBC Borderline",
-        body: "HGB: 153 → 152 → 150 → 147 → <strong>153 g/L</strong> — fully recovered to baseline level, encouraging. PLT: 350 → 353 → 247 → 258 → <strong>301</strong> — stable mid-range, no bleeding concern. WBC: 4.72 → 5.15 → 4.16 → 4.21 → <strong>3.89</strong> — continuing slow decline. Still within normal range (≥3.5) but approaching lower boundary. Monitor trajectory."
-      },
-      {
-        color: "accent",
-        title: "MPV 8.5 ↓ · Chemistry Panel All Normal",
-        body: "MPV remains below range (8.5 vs ref 9.4–12.5) — consistent with previous draws. The Mar 6 draw also included a full metabolic panel: BUN 4.06, Creatinine 69 µmol/L, Na 140.3, K 4.8, Ca 2.39, Cl 106.3 — all within reference ranges. Renal function preserved. No electrolyte concerns."
-      }
+    chartTitles:["WBC & ANC (Neutrophils)","Platelets (PLT)","Hemoglobin (HGB)","Lymphocytes % & Monocytes %","Red Cell Volume (MCV)"],
+    chartLabels:{ WBC:"WBC", Neut_abs:"ANC (Neut#)", PLT:"PLT", HGB:"HGB", Lymph_pct:"Lymph%", Mono_pct:"Mono%", MCV:"MCV" },
+    lftTitle:"Liver Function Tests — All Recorded Draws",
+    lftNote:"📊 LFT data from Mar 6, 2026 (Pre-C3) onwards. All values normal — excellent hepatic tolerance to CapeOX.",
+    lftGroups:[
+      { title:"🟢 Liver Enzymes", keys:["ALT","AST","ALP","GGT"] },
+      { title:"🟡 Bilirubin", keys:["TBIL","DBIL","IBIL"] },
+      { title:"🔵 Proteins & Synthetic Function", keys:["ALB","GLB","TP","AG","CHE","PA"] },
+      { title:"Other", keys:["TBA","ADA","AFU"] },
     ],
-    chartTitles: ["WBC & ANC (Neutrophils)", "Platelets (PLT)", "Hemoglobin (HGB)", "Lymphocytes % & Monocytes %", "Red Cell Volume (MCV)"],
-    chartLabels: {
-      WBC: "WBC", Neut_abs: "ANC (Neut#)", PLT: "PLT", HGB: "HGB",
-      Lymph_pct: "Lymph%", Mono_pct: "Mono%", MCV: "MCV"
-    },
-    tabLFT: "Liver Function",
-    lftTitle: "Liver Function Tests (LFTs) — All Recorded Draws",
-    lftNote: "📊 LFT data available from Mar 6, 2026 (Pre-C3) onwards. All values normal on first draw — excellent hepatic tolerance to CapeOX so far.",
-    lftGroups: [
-      { title: "🟢 Liver Enzymes", keys: ["ALT","AST","ALP","GGT"] },
-      { title: "🟡 Bilirubin", keys: ["TBIL","DBIL","IBIL"] },
-      { title: "🔵 Proteins & Synthetic Function", keys: ["ALB","GLB","TP","AG","CHE","PA"] },
-      { title: "Other", keys: ["TBA","ADA","AFU"] },
-    ],
-    lftDrawLabel: "Select draw:",
   },
   zh: {
-    pageTitle: "血常规肿瘤监测报告",
-    reportLabel: "肿瘤科 · 血常规追踪",
-    patientName: "Michael Patrick Hanson（韩迈克）",
-    reportSubtitle: "卡培他滨+奥沙利铂（CapeOX）化疗 · 每周监测报告",
-    oncologists: "主治医生",
-    drLiu: "廖医生 · 香港",
-    drWen: "文医生 · 广州",
-    latestDraw: "最近抽血日期",
-    draws: "份记录",
-    tabSummary: "摘要",
-    tabCharts: "趋势图表",
-    tabFull: "完整血常规",
-    timelineTitle: "CapeOX 治疗时间线",
-    cycleLabel: ["第1周期","第2周期","第3周期","第4周期","第5周期","第6周期","第7周期","第8周期"],
-    cycleDates: ["1月19日","2月11日","3月9日","3月30日","4月20日","5月11日","6月1日","6月22日"],
-    timelineNote: "📅 3月6日抽血 = <strong>第3周期前检查（第2周期第24天）</strong> · 第3周期因药物供应延迟，改为 <strong>3月9日在香港港安医院（HKSH）</strong> 开始 · 当前共5份血常规，覆盖第1、2周期及第3周期前 — 第3–8周期中期数据待补充",
-    flagsTitle: "⚠ 异常项目提示 — 最近一次抽血（2026年3月6日 · 第3周期前）",
-    allNormal: "所有指标均在参考范围内 ✓",
-    keyMetricsTitle: "关键肿瘤科指标 — 最近一次抽血",
-    clinicalTitle: "临床解读与趋势分析",
-    chartNote: "📊 共5次抽血：1月26日（C1D7）→ 2月2日（C1D14）→ 2月18日（C2D7）→ 2月24日（C2D14）→ 3月6日（第3周期前）。注：第3周期3月9日在HKSH开始，第3–8周期中期数据待补充。虚线为参考范围上下限。",
-    fullCBCTitle: "完整血常规数值 — 所有指标",
-    refRange: "参考范围",
-    statusLow: "▼ 偏低",
-    statusHigh: "▲ 偏高",
-    statusNormal: "✓",
-    disclaimer: "本报告仅供临床参考，所有治疗决策请咨询主治医生。",
-    groups: [
-      "🔴 重点关注：感染风险 / 免疫功能",
-      "🩸 红细胞 / 贫血相关指标",
-      "🟡 血小板 / 出血风险",
-      "其他白细胞分类"
+    reportLabel:"肿瘤科 · 血常规追踪", patientName:"Michael Patrick Hanson（韩迈克）",
+    reportSubtitle:"卡培他滨+奥沙利铂（CapeOX）化疗 · 每周监测报告",
+    oncologists:"主治医生", drLiu:"廖医生 · 香港", drWen:"文医生 · 广州",
+    latestDraw:"最近抽血日期", draws:"份记录",
+    tabSummary:"摘要", tabCharts:"趋势图表", tabFull:"完整血常规", tabLFT:"肝功能",
+    timelineTitle:"CapeOX 治疗时间线",
+    cycleLabel:["第1周期","第2周期","第3周期","第4周期","第5周期","第6周期","第7周期","第8周期"],
+    cycleDates:["1月19日","2月11日","3月9日","3月30日","4月20日","5月11日","6月1日","6月22日"],
+    timelineNote:"📅 3月6日抽血 = <strong>第3周期前检查</strong> · 第3周期3月9日在HKSH开始 · 共5份记录，C3–C8中期数据待补充",
+    flagsTitle:"⚠ 异常项目 — 最近抽血（2026年3月6日）",
+    allNormal:"所有指标均在参考范围内 ✓",
+    keyMetricsTitle:"关键肿瘤科指标 — 最近抽血",
+    clinicalTitle:"临床解读与趋势分析",
+    chartNote:"📊 共5次抽血：1月26日→2月2日→2月18日→2月24日→3月6日。虚线为参考范围。",
+    fullCBCTitle:"完整血常规数值",
+    refRange:"参考范围", statusLow:"▼ 偏低", statusHigh:"▲ 偏高", statusNormal:"✓",
+    disclaimer:"本报告仅供临床参考，所有治疗决策请咨询主治医生。",
+    groups:["🔴 重点关注：感染风险 / 免疫功能","🩸 红细胞 / 贫血相关指标","🟡 血小板 / 出血风险","其他白细胞分类"],
+    clinicalNotes:[
+      { color:"low", title:"ANC — 所有记录周期持续偏低",
+        body:"C1D7：<strong>2.84</strong> ✓ → C1D14：<strong>2.85</strong> ✓ → C2D7：<strong>1.66</strong> ↓ → C2D14：<strong>1.71</strong> ↓ → 第3周期前：<strong>1.68</strong> ↓<br>ANC持续低于参考下限（1.8），在延长的周期间隔中未能恢复。奥沙利铂累积性骨髓抑制趋势明确，请告知G-CSF支持或剂量调整方案。" },
+      { color:"high", title:"单核细胞百分比 — 持续升高，绝对值正常",
+        body:"C1D7：<strong>6.1%</strong> ✓ → C1D14：<strong>8.6%</strong> ↑ → C2D7：<strong>11.4%</strong> ↑↑ → C2D14：<strong>10.3%</strong> ↑ → 第3周期前：<strong>9.5%</strong> ↑<br>自C1D14起持续超出参考范围（3.0–8.0%）。绝对值（0.37）始终正常。" },
+      { color:"high", title:"RDW-CV 16.2% — 3月6日首次偏高",
+        body:"3月6日升至<strong>16.2%</strong>，首次超出参考上限。建议检查铁蛋白、B12及叶酸水平。MCV（95.6）仍正常。" },
+      { color:"normal", title:"血红蛋白恢复 · 血小板稳定 · 白细胞偏低",
+        body:"HGB：153→152→150→147→<strong>153 g/L</strong>，已恢复基线。PLT：<strong>301</strong>，稳定。WBC：<strong>3.89</strong>，仍在正常范围但接近下限。" },
+      { color:"accent", title:"MPV 偏低 · 代谢全套均正常",
+        body:"3月6日代谢全套：肌酐69、钠140.3、钾4.8、钙2.39 — 均正常。肾功能良好。" }
     ],
-    clinicalNotes: [
-      {
-        color: "low",
-        title: "中性粒细胞绝对值（ANC）— 所有记录周期持续偏低",
-        body: "C1D7：<strong>2.84</strong> ✓ → C1D14：<strong>2.85</strong> ✓ → C2D7：<strong>1.66</strong> ↓ → C2D14：<strong>1.71</strong> ↓ → 第3周期前：<strong>1.68</strong> ↓<br>ANC在进入第3周期前仍低于参考下限（1.8）。3月6日的输液前检查值为1.68，距计划3月9日开始仅3天，提示在延长的周期间隔中中性粒细胞未能恢复。第3周期因广州药物供应问题延期，现改在香港港安医院进行。奥沙利铂累积性骨髓抑制趋势明确，请告知第3周期及后续G-CSF支持或剂量调整方案。"
-      },
-      {
-        color: "high",
-        title: "单核细胞百分比 — 持续升高，绝对值正常",
-        body: "C1D7：<strong>6.1%</strong> ✓ → C1D14：<strong>8.6%</strong> ↑ → C2D7：<strong>11.4%</strong> ↑↑ → C2D14：<strong>10.3%</strong> ↑ → 第3周期前：<strong>9.5%</strong> ↑<br>自C1D14起，单核细胞百分比在所有记录中持续超出参考范围（3.0–8.0%）。单核细胞绝对值（0.37）始终在正常范围内。此持续性相对单核细胞增多症提示治疗相关免疫调节，建议持续关注。"
-      },
-      {
-        color: "high",
-        title: "RDW-CV 16.2% — 3月6日首次出现偏高",
-        body: "红细胞分布宽度（RDW-CV）在第1–2周期均正常（12.7–14.5%），3月6日升至<strong>16.2%</strong>，为首次超出参考上限。RDW-CV升高提示红细胞大小不均，可见于缺铁、维生素B12/叶酸缺乏或卡培他滨相关巨幼细胞变化。平均红细胞体积（MCV 95.6）仍正常，呈混合表现。<strong>建议检查铁蛋白、维生素B12及叶酸水平。</strong>"
-      },
-      {
-        color: "normal",
-        title: "血红蛋白恢复 · 血小板稳定 · 白细胞偏低",
-        body: "HGB：153 → 152 → 150 → 147 → <strong>153 g/L</strong> — 已恢复至基线水平，令人鼓舞。PLT：350 → 353 → 247 → 258 → <strong>301</strong> — 稳定，无出血风险。WBC：4.72 → 5.15 → 4.16 → 4.21 → <strong>3.89</strong> — 持续缓慢下降，仍在正常范围内（≥3.5），但已接近下限，需持续关注。"
-      },
-      {
-        color: "accent",
-        title: "MPV 8.5 偏低 · 代谢全套指标均正常",
-        body: "平均血小板容积（MPV）持续低于参考范围（8.5 vs 参考值9.4–12.5），与既往记录一致。3月6日同时检测了生化代谢全套：尿素氮4.06、肌酐69 µmol/L、钠140.3、钾4.8、钙2.39、氯106.3 — 均在参考范围内。肾功能良好，电解质无异常。"
-      }
+    chartTitles:["白细胞 & ANC","血小板（PLT）","血红蛋白（HGB）","淋巴细胞% & 单核细胞%","MCV"],
+    chartLabels:{ WBC:"白细胞", Neut_abs:"ANC", PLT:"血小板", HGB:"血红蛋白", Lymph_pct:"淋巴细胞%", Mono_pct:"单核细胞%", MCV:"MCV" },
+    lftTitle:"肝功能检测 — 所有记录",
+    lftNote:"📊 肝功能数据自2026年3月6日起。首次检测所有指标均正常。",
+    lftGroups:[
+      { title:"🟢 肝酶", keys:["ALT","AST","ALP","GGT"] },
+      { title:"🟡 胆红素", keys:["TBIL","DBIL","IBIL"] },
+      { title:"🔵 蛋白质与合成功能", keys:["ALB","GLB","TP","AG","CHE","PA"] },
+      { title:"其他", keys:["TBA","ADA","AFU"] },
     ],
-    chartTitles: ["白细胞总数 & 中性粒细胞绝对值（ANC）", "血小板（PLT）", "血红蛋白（HGB）", "淋巴细胞% & 单核细胞%", "平均红细胞体积（MCV）"],
-    chartLabels: {
-      WBC: "白细胞", Neut_abs: "ANC（中性粒细胞）", PLT: "血小板", HGB: "血红蛋白",
-      Lymph_pct: "淋巴细胞%", Mono_pct: "单核细胞%", MCV: "MCV"
-    },
-    tabLFT: "肝功能",
-    lftTitle: "肝功能检测（LFTs）— 所有记录",
-    lftNote: "📊 肝功能数据自2026年3月6日（第3周期前）起开始记录。首次检测所有指标均正常，提示CapeOX化疗对肝脏耐受性良好。",
-    lftGroups: [
-      { title: "🟢 肝酶", keys: ["ALT","AST","ALP","GGT"] },
-      { title: "🟡 胆红素", keys: ["TBIL","DBIL","IBIL"] },
-      { title: "🔵 蛋白质与合成功能", keys: ["ALB","GLB","TP","AG","CHE","PA"] },
-      { title: "其他", keys: ["TBA","ADA","AFU"] },
-    ],
-    lftDrawLabel: "选择抽血日期：",
   }
 };
 
-// ─── REFERENCE RANGES ───────────────────────────────────────
+// ══════════════════════════════════════════════════════════
+//  FAMILY TAB — EDIT THIS BLOCK FOR EACH UPDATE
+//  Everything in this section is plain text — no code knowledge needed.
+//  en = English  |  zh = Chinese
+// ══════════════════════════════════════════════════════════
+const FAMILY_CONTENT = {
+
+  // ── Header date & subtitle ──────────────────────────────
+  lastUpdated: { en:"March 6, 2026", zh:"2026年3月6日" },
+  checkLabel:  { en:"Pre-Cycle 3 Check", zh:"第3次化疗前检查" },
+
+  // ── Overall status line below the headline ──────────────
+  // overallSentence appears after the green/yellow status headline (auto-computed)
+  overallSentence: {
+    en: "Michael is entering Cycle 3 of 8, starting March 9 at Hong Kong Sanatorium Hospital.",
+    zh: "迈克正在进行8轮化疗中的第3轮，3月9日在香港港安医院开始。",
+  },
+
+  // ── System status cards ─────────────────────────────────
+  // status: "good" (green) | "caution" (amber) | "progress" (blue)
+  systems: [
+    { icon:"🛡️",
+      name:   { en:"Immune System",   zh:"免疫系统" },
+      status: "caution",
+      text:   { en:"His infection-fighting cells are slightly low from chemo — this is expected. He needs to avoid large crowds and sick contacts.",
+                zh:"免疫细胞（中性粒细胞）因化疗有所减弱，属正常反应。需注意避免感染和人多场所。" } },
+    { icon:"🩸",
+      name:   { en:"Blood Strength",  zh:"血液健康" },
+      status: "good",
+      text:   { en:"Hemoglobin recovered to normal — energy should be better. Platelets (clotting) are stable.",
+                zh:"血红蛋白恢复至正常水平——精力应有所改善。血小板（凝血功能）正常。" } },
+    { icon:"🫀",
+      name:   { en:"Liver & Organs",  zh:"肝脏与器官" },
+      status: "good",
+      text:   { en:"Liver function tested March 6 — all normal. His body is tolerating the chemo drugs well.",
+                zh:"3月6日肝功能检测一切正常，身体对化疗药物耐受良好。" } },
+    { icon:"💊",
+      name:   { en:"Treatment Progress", zh:"治疗进展" },
+      status: "progress",
+      text:   { en:"2 of 8 cycles complete. Cycle 3 was briefly delayed due to drug supply in China — now back on track in Hong Kong.",
+                zh:"已完成8轮中的2轮。第3轮因广州药物供应问题略有延迟，现安排在香港继续。" } },
+  ],
+
+  // ── Answered prayers ────────────────────────────────────
+  // Leave array empty [] to hide this section entirely
+  answeredPrayers: [
+    { en:"HGB fully recovered to baseline (153 g/L) after dropping during Cycle 2 — praise God!",
+      zh:"感谢神！血红蛋白已完全恢复至基线水平（153 g/L），第2周期下降后已完全好转。" },
+    { en:"Cycle 3 successfully relocated to Hong Kong Sanatorium after drug shortage in Guangzhou — logistics worked out.",
+      zh:"感谢神！第3轮化疗成功改在香港港安医院进行，广州药物短缺问题得以解决。" },
+  ],
+
+  // ── Active prayer requests ───────────────────────────────
+  prayerRequests: [
+    { en:"Pray for Michael's immune system. His infection-fighting white cells (neutrophils) have been running low since Cycle 2, and didn't recover to normal before Cycle 3 begins. Pray they strengthen through treatment.",
+      zh:"求神保护迈克的免疫系统。他的中性粒细胞（对抗感染的白细胞）从第2周期开始一直偏低，在第3轮化疗前未能恢复到正常水平。求神帮助它们在接下来的治疗中逐渐恢复。" },
+    { en:"Pray for a smooth Cycle 3 starting March 9 at Hong Kong Sanatorium. Pray his body tolerates it well, side effects stay manageable, and for Dr. Liu and the medical team caring for him.",
+      zh:"求神保守第3轮治疗（3月9日，香港港安医院）顺利进行，让迈克的身体能够承受，副作用轻微，并感谢廖医生和医疗团队的悉心照顾。" },
+    { en:"Pray for Michael and Jenny — for peace, strength, and joy together through this demanding season. Pray for wisdom and faith to lean on God throughout the full course of treatment.",
+      zh:"求神赐迈克和珍妮在艰难的治疗期间彼此扶持、平安喜乐。求神赐他们智慧与信心，在整个疗程中倚靠祂。" },
+  ],
+
+  // ── "What to share" paragraph ───────────────────────────
+  shareText: {
+    en: "Michael is currently on CapeOX chemotherapy and doing well overall. His latest labs (March 6) show his blood strength has recovered and his liver function is excellent. His immune cells are slightly low — something the doctors are watching closely. He starts Round 3 of 8 on March 9 at Hong Kong Sanatorium Hospital. Please keep him in your prayers.",
+    zh: "迈克目前正在进行CapeOX化疗，整体状况良好。最新检查（3月6日）显示血红蛋白恢复正常，肝功能各项指标均正常。免疫系统（中性粒细胞）略低，医生正密切监测。第3轮治疗将于3月9日在香港港安医院进行，请继续为他代祷。",
+  },
+
+  // ── Footer ──────────────────────────────────────────────
+  cyclesComplete: 2,
+  totalCycles: 8,
+};
+// ══════════════════════════════════════════════════════════
+//  END OF FAMILY TAB CONTENT — do not edit below this line
+// ══════════════════════════════════════════════════════════
+
+// ══════════════════════════════════════════════════════════
+// REFERENCE RANGES
+// ══════════════════════════════════════════════════════════
 const REFS = {
-  WBC:       { lo:3.5,   hi:9.5,   unit:"10⁹/L",  en:"WBC (White Blood Cells)",          zh:"白细胞总数（WBC）" },
-  Neut_abs:  { lo:1.8,   hi:6.3,   unit:"10⁹/L",  en:"ANC (Absolute Neutrophils)",       zh:"中性粒细胞绝对值（ANC）" },
-  Neut_pct:  { lo:40,    hi:75,    unit:"%",       en:"Neutrophils %",                    zh:"中性粒细胞百分比" },
-  PLT:       { lo:125,   hi:350,   unit:"10⁹/L",  en:"Platelets",                        zh:"血小板计数（PLT）" },
-  HGB:       { lo:130,   hi:175,   unit:"g/L",    en:"Hemoglobin",                       zh:"血红蛋白（HGB）" },
-  RBC:       { lo:4.3,   hi:5.8,   unit:"10¹²/L", en:"Red Blood Cells",                  zh:"红细胞总数（RBC）" },
-  Lymph_abs: { lo:1.1,   hi:3.2,   unit:"10⁹/L",  en:"Lymphocytes (Abs)",                zh:"淋巴细胞绝对值" },
-  Lymph_pct: { lo:20,    hi:50,    unit:"%",       en:"Lymphocytes %",                    zh:"淋巴细胞百分比" },
-  Mono_abs:  { lo:0.1,   hi:0.6,   unit:"10⁹/L",  en:"Monocytes (Abs)",                  zh:"单核细胞绝对值" },
-  Mono_pct:  { lo:3.0,   hi:8.0,   unit:"%",       en:"Monocytes %",                      zh:"单核细胞百分比" },
-  Hct:       { lo:40,    hi:50,    unit:"%",       en:"Hematocrit",                       zh:"红细胞比容（Hct）" },
-  MCV:       { lo:82,    hi:100,   unit:"fL",      en:"MCV (Mean Cell Volume)",           zh:"平均红细胞体积（MCV）" },
-  MCH:       { lo:27,    hi:34,    unit:"pg",      en:"MCH",                              zh:"平均红细胞血红蛋白量（MCH）" },
-  MCHC:      { lo:320,   hi:360,   unit:"g/L",    en:"MCHC",                             zh:"平均红细胞血红蛋白浓度（MCHC）" },
-  RDW_CV:    { lo:11.5,  hi:14.8,  unit:"%",       en:"RDW-CV",                           zh:"红细胞分布宽度CV" },
-  RDW_SD:    { lo:37,    hi:54,    unit:"fL",      en:"RDW-SD",                           zh:"红细胞分布宽度SD" },
-  MPV:       { lo:9.4,   hi:12.5,  unit:"fL",      en:"MPV (Mean Platelet Volume)",       zh:"平均血小板容积（MPV）" },
-  PDW:       { lo:15.5,  hi:18.1,  unit:"fL",      en:"PDW (Platelet Dist. Width)",       zh:"血小板分布宽度（PDW）" },
-  PCT:       { lo:0.108, hi:0.272, unit:"%",       en:"PCT (Plateletcrit)",               zh:"血小板比容（PCT）" },
-  P_LCR:     { lo:13.0,  hi:43.0,  unit:"%",       en:"P-LCR (Large Platelet Ratio)",     zh:"大血小板比例（P-LCR）" },
-  Eos_pct:   { lo:0.5,   hi:5.0,   unit:"%",       en:"Eosinophils %",                    zh:"嗜酸性粒细胞百分比" },
-  Eos_abs:   { lo:0.02,  hi:0.52,  unit:"10⁹/L",  en:"Eosinophils (Abs)",                zh:"嗜酸性粒细胞绝对值" },
-  Baso_pct:  { lo:0,     hi:2.5,   unit:"%",       en:"Basophils %",                      zh:"嗜碱性粒细胞百分比" },
-  Baso_abs:  { lo:0,     hi:0.06,  unit:"10⁹/L",  en:"Basophils (Abs)",                  zh:"嗜碱性粒细胞绝对值" },
+  WBC:      { lo:3.5,   hi:9.5,   unit:"10⁹/L",  en:"WBC (White Blood Cells)",           zh:"白细胞总数（WBC）" },
+  Neut_abs: { lo:1.8,   hi:6.3,   unit:"10⁹/L",  en:"ANC (Absolute Neutrophils)",        zh:"中性粒细胞绝对值（ANC）" },
+  Neut_pct: { lo:40,    hi:75,    unit:"%",       en:"Neutrophils %",                     zh:"中性粒细胞百分比" },
+  PLT:      { lo:125,   hi:350,   unit:"10⁹/L",  en:"Platelets",                         zh:"血小板计数（PLT）" },
+  HGB:      { lo:130,   hi:175,   unit:"g/L",     en:"Hemoglobin",                        zh:"血红蛋白（HGB）" },
+  RBC:      { lo:4.3,   hi:5.8,   unit:"10¹²/L", en:"Red Blood Cells",                   zh:"红细胞总数（RBC）" },
+  Lymph_abs:{ lo:1.1,   hi:3.2,   unit:"10⁹/L",  en:"Lymphocytes (Abs)",                 zh:"淋巴细胞绝对值" },
+  Lymph_pct:{ lo:20,    hi:50,    unit:"%",       en:"Lymphocytes %",                     zh:"淋巴细胞百分比" },
+  Mono_abs: { lo:0.1,   hi:0.6,   unit:"10⁹/L",  en:"Monocytes (Abs)",                   zh:"单核细胞绝对值" },
+  Mono_pct: { lo:3.0,   hi:8.0,   unit:"%",       en:"Monocytes %",                       zh:"单核细胞百分比" },
+  Hct:      { lo:40,    hi:50,    unit:"%",       en:"Hematocrit",                        zh:"红细胞比容（Hct）" },
+  MCV:      { lo:82,    hi:100,   unit:"fL",      en:"MCV (Mean Cell Volume)",            zh:"平均红细胞体积（MCV）" },
+  MCH:      { lo:27,    hi:34,    unit:"pg",      en:"MCH",                               zh:"平均红细胞血红蛋白量（MCH）" },
+  MCHC:     { lo:320,   hi:360,   unit:"g/L",     en:"MCHC",                              zh:"平均红细胞血红蛋白浓度（MCHC）" },
+  RDW_CV:   { lo:11.5,  hi:14.8,  unit:"%",       en:"RDW-CV",                            zh:"红细胞分布宽度CV" },
+  RDW_SD:   { lo:37,    hi:54,    unit:"fL",      en:"RDW-SD",                            zh:"红细胞分布宽度SD" },
+  MPV:      { lo:9.4,   hi:12.5,  unit:"fL",      en:"MPV (Mean Platelet Volume)",        zh:"平均血小板容积（MPV）" },
+  PDW:      { lo:15.5,  hi:18.1,  unit:"fL",      en:"PDW (Platelet Dist. Width)",        zh:"血小板分布宽度（PDW）" },
+  PCT:      { lo:0.108, hi:0.272, unit:"%",       en:"PCT (Plateletcrit)",                zh:"血小板比容（PCT）" },
+  P_LCR:    { lo:13.0,  hi:43.0,  unit:"%",       en:"P-LCR (Large Platelet Ratio)",      zh:"大血小板比例（P-LCR）" },
+  Eos_pct:  { lo:0.5,   hi:5.0,   unit:"%",       en:"Eosinophils %",                     zh:"嗜酸性粒细胞百分比" },
+  Eos_abs:  { lo:0.02,  hi:0.52,  unit:"10⁹/L",  en:"Eosinophils (Abs)",                 zh:"嗜酸性粒细胞绝对值" },
+  Baso_pct: { lo:0,     hi:2.5,   unit:"%",       en:"Basophils %",                       zh:"嗜碱性粒细胞百分比" },
+  Baso_abs: { lo:0,     hi:0.06,  unit:"10⁹/L",  en:"Basophils (Abs)",                   zh:"嗜碱性粒细胞绝对值" },
 };
 
-// ─── LFT REFERENCE RANGES ───────────────────────────────────
 const LFT_REFS = {
-  ALT:  { lo:9,    hi:50,    unit:"U/L",    en:"ALT (Alanine Aminotransferase)",   zh:"谷丙转氨酶（ALT）" },
-  AST:  { lo:15,   hi:40,    unit:"U/L",    en:"AST (Aspartate Aminotransferase)", zh:"谷草转氨酶（AST）" },
-  ALP:  { lo:45,   hi:125,   unit:"U/L",    en:"ALP (Alkaline Phosphatase)",       zh:"碱性磷酸酶（ALP）" },
-  GGT:  { lo:10,   hi:60,    unit:"U/L",    en:"GGT (Gamma-Glutamyltransferase)",  zh:"转肽酶（GGT）" },
-  TBIL: { lo:0,    hi:26,    unit:"µmol/L", en:"TBIL (Total Bilirubin)",           zh:"总胆红素（TBIL）" },
-  DBIL: { lo:0,    hi:4,     unit:"µmol/L", en:"DBIL (Direct Bilirubin)",          zh:"直接胆红素（DBIL）" },
-  IBIL: { lo:0,    hi:22,    unit:"µmol/L", en:"IBIL (Indirect Bilirubin)",        zh:"间接胆红素（IBIL）" },
-  ALB:  { lo:40,   hi:55,    unit:"g/L",    en:"Albumin (ALB)",                    zh:"白蛋白（ALB）" },
-  GLB:  { lo:20,   hi:40,    unit:"g/L",    en:"Globulin (GLB)",                   zh:"球蛋白（GLB）" },
-  TP:   { lo:65,   hi:85,    unit:"g/L",    en:"Total Protein (TP)",               zh:"总蛋白（TP）" },
-  AG:   { lo:1.2,  hi:2.4,   unit:"",       en:"A/G Ratio",                        zh:"白蛋白/球蛋白比值（A/G）" },
-  CHE:  { lo:5300, hi:11300, unit:"U/L",    en:"Cholinesterase (CHE)",             zh:"胆碱酯酶（CHE）" },
-  TBA:  { lo:0,    hi:12,    unit:"µmol/L", en:"Total Bile Acids (TBA)",           zh:"总胆汁酸（TBA）" },
-  PA:   { lo:0.2,  hi:0.43,  unit:"g/L",    en:"Prealbumin (PA)",                  zh:"前白蛋白（PA）" },
-  ADA:  { lo:4,    hi:22,    unit:"U/L",    en:"Adenosine Deaminase (ADA)",        zh:"腺苷脱氨酶（ADA）" },
-  AFU:  { lo:0,    hi:40,    unit:"U/L",    en:"Alpha-L-Fucosidase (AFU)",         zh:"α-L-岩藻糖苷酶（AFU）" },
+  ALT:  { lo:9,    hi:50,    unit:"U/L",    en:"ALT",                      zh:"谷丙转氨酶（ALT）" },
+  AST:  { lo:15,   hi:40,    unit:"U/L",    en:"AST",                      zh:"谷草转氨酶（AST）" },
+  ALP:  { lo:45,   hi:125,   unit:"U/L",    en:"ALP",                      zh:"碱性磷酸酶（ALP）" },
+  GGT:  { lo:10,   hi:60,    unit:"U/L",    en:"GGT",                      zh:"转肽酶（GGT）" },
+  TBIL: { lo:0,    hi:26,    unit:"µmol/L", en:"Total Bilirubin (TBIL)",   zh:"总胆红素（TBIL）" },
+  DBIL: { lo:0,    hi:4,     unit:"µmol/L", en:"Direct Bilirubin (DBIL)",  zh:"直接胆红素（DBIL）" },
+  IBIL: { lo:0,    hi:22,    unit:"µmol/L", en:"Indirect Bilirubin (IBIL)",zh:"间接胆红素（IBIL）" },
+  ALB:  { lo:40,   hi:55,    unit:"g/L",    en:"Albumin (ALB)",            zh:"白蛋白（ALB）" },
+  GLB:  { lo:20,   hi:40,    unit:"g/L",    en:"Globulin (GLB)",           zh:"球蛋白（GLB）" },
+  TP:   { lo:65,   hi:85,    unit:"g/L",    en:"Total Protein (TP)",       zh:"总蛋白（TP）" },
+  AG:   { lo:1.2,  hi:2.4,   unit:"",       en:"A/G Ratio",                zh:"A/G比值" },
+  CHE:  { lo:5300, hi:11300, unit:"U/L",    en:"Cholinesterase (CHE)",     zh:"胆碱酯酶（CHE）" },
+  TBA:  { lo:0,    hi:12,    unit:"µmol/L", en:"Bile Acids (TBA)",         zh:"总胆汁酸（TBA）" },
+  PA:   { lo:0.2,  hi:0.43,  unit:"g/L",    en:"Prealbumin (PA)",          zh:"前白蛋白（PA）" },
+  ADA:  { lo:4,    hi:22,    unit:"U/L",    en:"ADA",                      zh:"腺苷脱氨酶（ADA）" },
+  AFU:  { lo:0,    hi:40,    unit:"U/L",    en:"AFU",                      zh:"α-L-岩藻糖苷酶（AFU）" },
 };
 
-// ─── DATA ───────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════
+// PATIENT DATA
+// ══════════════════════════════════════════════════════════
 const DATA = [
   { date:"Jan 26\nC1D7",  fullDate:"Jan 26, 2026", cycleZH:"第1周期第7天",
-    WBC:4.72,  Neut_abs:2.84, Neut_pct:60.1, PLT:350,  HGB:153, RBC:4.91,
+    WBC:4.72, Neut_abs:2.84, Neut_pct:60.1, PLT:350, HGB:153, RBC:4.91,
     Lymph_abs:1.48, Lymph_pct:31.2, Mono_abs:0.30, Mono_pct:6.1,
     Hct:46.7, MCV:95.1, MCH:31.2, MCHC:328, RDW_CV:12.7, RDW_SD:44.1,
     MPV:9.6, PDW:22.9, PCT:0.337, P_LCR:16.0, Eos_pct:2.2, Eos_abs:0.10, Baso_pct:0.1, Baso_abs:0.00 },
-  { date:"Feb 2\nC1D14", fullDate:"Feb 2, 2026", cycleZH:"第1周期第14天",
-    WBC:5.15,  Neut_abs:2.85, Neut_pct:55.3, PLT:353,  HGB:152, RBC:4.90,
+  { date:"Feb 2\nC1D14",  fullDate:"Feb 2, 2026",  cycleZH:"第1周期第14天",
+    WBC:5.15, Neut_abs:2.85, Neut_pct:55.3, PLT:353, HGB:152, RBC:4.90,
     Lymph_abs:1.72, Lymph_pct:33.4, Mono_abs:0.41, Mono_pct:8.6,
     Hct:48.0, MCV:98.0, MCH:30.9, MCHC:317, RDW_CV:13.1, RDW_SD:46.1,
     MPV:8.9, PDW:16.2, PCT:0.316, P_LCR:18.8, Eos_pct:2.6, Eos_abs:0.13, Baso_pct:0.1, Baso_abs:0.01 },
   { date:"Feb 18\nC2D7",  fullDate:"Feb 18, 2026", cycleZH:"第2周期第7天",
-    WBC:4.16,  Neut_abs:1.66, Neut_pct:39.9, PLT:247,  HGB:150, RBC:4.72,
+    WBC:4.16, Neut_abs:1.66, Neut_pct:39.9, PLT:247, HGB:150, RBC:4.72,
     Lymph_abs:1.93, Lymph_pct:46.4, Mono_abs:0.47, Mono_pct:11.4,
     Hct:46.0, MCV:97.4, MCH:31.8, MCHC:326, RDW_CV:14.1, RDW_SD:49.2,
     MPV:9.5, PDW:16.4, PCT:0.235, P_LCR:22.6, Eos_pct:2.3, Eos_abs:0.10, Baso_pct:0.0, Baso_abs:0.00 },
   { date:"Feb 24\nC2D14", fullDate:"Feb 24, 2026", cycleZH:"第2周期第14天",
-    WBC:4.21,  Neut_abs:1.71, Neut_pct:40.6, PLT:258,  HGB:147, RBC:4.60,
+    WBC:4.21, Neut_abs:1.71, Neut_pct:40.6, PLT:258, HGB:147, RBC:4.60,
     Lymph_abs:2.00, Lymph_pct:47.4, Mono_abs:0.43, Mono_pct:10.3,
     Hct:45.1, MCV:98.1, MCH:31.9, MCHC:326, RDW_CV:14.5, RDW_SD:51.1,
     MPV:9.3, PDW:16.5, PCT:0.239, P_LCR:21.9, Eos_pct:1.7, Eos_abs:0.07, Baso_pct:0.0, Baso_abs:0.00 },
-  { date:"Mar 6\nPre-C3", fullDate:"Mar 6, 2026", cycleZH:"第3周期前（第2周期第24天）",
-    WBC:3.89,  Neut_abs:1.68, Neut_pct:43.4, PLT:301,  HGB:153, RBC:4.89,
+  { date:"Mar 6\nPre-C3", fullDate:"Mar 6, 2026",  cycleZH:"第3周期前（第2周期第24天）",
+    WBC:3.89, Neut_abs:1.68, Neut_pct:43.4, PLT:301, HGB:153, RBC:4.89,
     Lymph_abs:1.72, Lymph_pct:44.1, Mono_abs:0.37, Mono_pct:9.5,
     Hct:46.7, MCV:95.6, MCH:31.4, MCHC:328, RDW_CV:16.2, RDW_SD:53.9,
     MPV:8.5, PDW:15.9, PCT:0.256, P_LCR:16.8, Eos_pct:2.5, Eos_abs:0.10, Baso_pct:0.5, Baso_abs:0.02,
-    lft: { ALT:28, AST:33, ALP:67, GGT:33.0, TBIL:13.7, DBIL:2.20, IBIL:11.5, ALB:49.5, GLB:28.1, TP:77.6, AG:1.8, CHE:8345, TBA:0.8, PA:0.385, ADA:8.0, AFU:26.1 },
-    images: [
+    lft:{ ALT:28, AST:33, ALP:67, GGT:33.0, TBIL:13.7, DBIL:2.20, IBIL:11.5, ALB:49.5, GLB:28.1, TP:77.6, AG:1.8, CHE:8345, TBA:0.8, PA:0.385, ADA:8.0, AFU:26.1 },
+    images:[
       { label:"Page 1", url:"images/20260306-1.jpeg" },
       { label:"Page 2", url:"images/20260306-2.jpeg" },
       { label:"Page 3", url:"images/20260306-3.jpeg" },
       { label:"Page 4", url:"images/20260306-4.jpeg" },
-    ]
-  },
+    ]},
 ];
 
-const LATEST = DATA[DATA.length - 1];
+const LATEST = DATA[DATA.length-1];
 const CHART_LABELS = DATA.map(d => d.date.replace('\n',' '));
 
-// ─── HELPERS ────────────────────────────────────────────────
-function getStatus(key, val) {
-  const r = REFS[key];
-  if (!r || val === null || val === undefined) return "normal";
+// ══════════════════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════════════════
+function status(key, val, refs) {
+  const r = (refs||REFS)[key];
+  if (!r || val==null) return "normal";
   if (val < r.lo) return "low";
   if (val > r.hi) return "high";
   return "normal";
 }
-function pctPos(key, val) {
+function pct(key, val) {
   const r = REFS[key];
-  const range = r.hi - r.lo;
-  const p = ((val - r.lo) / range) * 100;
-  return Math.max(0, Math.min(100, 10 + p * 0.8));
+  return Math.max(0, Math.min(100, 10 + ((val-r.lo)/(r.hi-r.lo))*80));
 }
-const COLORS = { low:"#ff6b6b", high:"#ffaa00", normal:"#34d399", accent:"#3b8aff" };
+const C = { low:"#ff6b6b", high:"#ffaa00", normal:"#34d399", accent:"#3b8aff" };
 
-let currentLang = "en";
-let charts = {};
-let selectedDrawIndex = DATA.length - 1; // default to latest
-</script>
+// ══════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════
+let curAud = 'family';
+let famLang = 'en';
+let mLang = 'en';
+let mCharts = {};
+let mLftCharts = {};
+let mSelDraw = DATA.length-1;
+let mSelLFT = null;
 
-<!-- ═══════════════════════════════════════════════════════════
-     HTML STRUCTURE
-════════════════════════════════════════════════════════════ -->
-
-<div class="lang-bar">
-  <button class="lang-btn active" onclick="setLang('en')" id="btn-en">EN</button>
-  <button class="lang-btn" onclick="setLang('zh')" id="btn-zh">中文</button>
-</div>
-
-<!-- HEADER -->
-
-<div class="header">
-  <div>
-    <div class="header-label" id="h-label"></div>
-    <div class="header-name" id="h-name"></div>
-    <div class="header-sub" id="h-sub"></div>
-  </div>
-  <div class="header-right">
-    <div class="label" id="h-onc-label"></div>
-    <div id="h-dr1"></div>
-    <div id="h-dr2"></div>
-    <div style="margin-top:6px">
-      <span class="label" id="h-draw-label"></span>
-      <span class="highlight"> Mar 6, 2026</span>
-      &nbsp;·&nbsp;
-      <span id="h-draw-count" style="color:var(--muted);font-size:11px"></span>
-    </div>
-  </div>
-</div>
-
-<!-- TABS -->
-
-<div class="tabs">
-  <button class="tab-btn active" onclick="showTab('summary')" id="tab-summary"></button>
-  <button class="tab-btn" onclick="showTab('charts')" id="tab-charts"></button>
-  <button class="tab-btn" onclick="showTab('full')" id="tab-full"></button>
-  <button class="tab-btn" onclick="showTab('lft')" id="tab-lft"></button>
-</div>
-
-<!-- ── TAB: SUMMARY ── -->
-
-<div class="tab-panel active" id="panel-summary">
-
-  <!-- Cycle Timeline -->
-
-  <div class="card">
-    <div class="card-title" id="s-timeline-title"></div>
-    <div class="timeline" id="s-timeline"></div>
-    <div class="timeline-note" id="s-timeline-note"></div>
-  </div>
-
-  <!-- Alerts -->
-
-  <div class="card">
-    <div class="card-title" id="s-flags-title"></div>
-    <div id="s-alerts"></div>
-  </div>
-
-  <!-- Key Metrics -->
-
-  <div class="card">
-    <div class="card-title" id="s-metrics-title"></div>
-    <div class="metrics-grid" id="s-metrics"></div>
-  </div>
-
-  <!-- Clinical Notes -->
-
-  <div class="card">
-    <div class="card-title" id="s-clinical-title"></div>
-    <div id="s-clinical"></div>
-  </div>
-
-</div>
-
-<!-- ── TAB: CHARTS ── -->
-
-<div class="tab-panel" id="panel-charts">
-  <div class="chart-note" id="c-note"></div>
-  <div class="card chart-card"><div class="card-title" id="ct-0"></div><canvas id="chart-0"></canvas></div>
-  <div class="card chart-card"><div class="card-title" id="ct-1"></div><canvas id="chart-1"></canvas></div>
-  <div class="card chart-card"><div class="card-title" id="ct-2"></div><canvas id="chart-2"></canvas></div>
-  <div class="card chart-card"><div class="card-title" id="ct-3"></div><canvas id="chart-3"></canvas></div>
-  <div class="card chart-card"><div class="card-title" id="ct-4"></div><canvas id="chart-4"></canvas></div>
-</div>
-
-<!-- ── TAB: FULL CBC ── -->
-
-<div class="tab-panel" id="panel-full">
-  <div id="f-draw-selector" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px"></div>
-  <div id="f-images"></div>
-  <div class="card">
-    <div class="card-title" id="f-title"></div>
-    <div id="f-table"></div>
-  </div>
-</div>
-
-<!-- ── TAB: LFT ── -->
-
-<div class="tab-panel" id="panel-lft">
-  <div id="lft-draw-selector" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px"></div>
-  <div class="chart-note" id="lft-note"></div>
-  <div class="card chart-card" style="margin-bottom:12px">
-    <div class="card-title" id="lft-chart-title-enzymes"></div>
-    <canvas id="lft-chart-0"></canvas>
-  </div>
-  <div class="card chart-card" style="margin-bottom:12px">
-    <div class="card-title" id="lft-chart-title-proteins"></div>
-    <canvas id="lft-chart-1"></canvas>
-  </div>
-  <div class="card">
-    <div class="card-title" id="lft-table-title"></div>
-    <div id="lft-table"></div>
-  </div>
-</div>
-
-<!-- FOOTER -->
-
-<div style="text-align:center;padding:16px 0 8px;font-size:10px;color:var(--muted)" id="footer"></div>
-
-<!-- ═══════════════════════════════════════════════════════════
-     RENDER LOGIC
-════════════════════════════════════════════════════════════ -->
-
-<script>
-function setLang(lang) {
-  currentLang = lang;
-  document.body.className = lang === 'zh' ? 'lang-zh' : '';
-  document.getElementById('btn-en').className = 'lang-btn' + (lang==='en'?' active':'');
-  document.getElementById('btn-zh').className = 'lang-btn' + (lang==='zh'?' active':'');
-  renderAll();
-}
-
-function showTab(name) {
-  ['summary','charts','full','lft'].forEach(t => {
-    document.getElementById('panel-'+t).className = 'tab-panel' + (t===name?' active':'');
-    document.getElementById('tab-'+t).className = 'tab-btn' + (t===name?' active':'');
+// ══════════════════════════════════════════════════════════
+// AUDIENCE SWITCHING
+// ══════════════════════════════════════════════════════════
+function setAud(aud) {
+  curAud = aud;
+  ['family','doctor','michael'].forEach(a => {
+    document.getElementById('view-'+a).style.display = 'none';
+    document.getElementById('aud-'+a).className = 'aud-btn' + (a===aud ? ' active-'+a : '');
   });
-  if (name === 'charts') renderCharts();
-  if (name === 'lft') renderLFT();
+  document.getElementById('view-'+aud).style.display = 'block';
+  document.body.style.background = aud==='michael' ? '#0a0f1a' : '#f0f2f5';
+  if (aud==='family')  renderFamily();
+  if (aud==='doctor')  renderDoctor();
+  if (aud==='michael') renderMichael();
 }
 
-function renderAll() {
-  const t = T[currentLang];
-  document.title = t.pageTitle;
-
-  // Header
-  document.getElementById('h-label').textContent = t.reportLabel;
-  document.getElementById('h-name').textContent = t.patientName;
-  document.getElementById('h-sub').textContent = t.reportSubtitle;
-  document.getElementById('h-onc-label').textContent = t.oncologists;
-  document.getElementById('h-dr1').textContent = t.drLiu;
-  document.getElementById('h-dr2').textContent = t.drWen;
-  document.getElementById('h-draw-label').textContent = t.latestDraw + ':';
-  document.getElementById('h-draw-count').textContent = '5 ' + t.draws;
-
-  // Tabs
-  document.getElementById('tab-summary').textContent = t.tabSummary;
-  document.getElementById('tab-charts').textContent = t.tabCharts;
-  document.getElementById('tab-full').textContent = t.tabFull;
-  document.getElementById('tab-lft').textContent = t.tabLFT;
-
-  renderSummary();
-  renderFull();
-  renderCharts();
-  renderLFT();
+// ══════════════════════════════════════════════════════════
+// FAMILY VIEW
+// ══════════════════════════════════════════════════════════
+function setFamLang(lang) {
+  famLang = lang;
+  document.getElementById('fb-en').className = 'fam-lang-btn' + (lang==='en'?' active':'');
+  document.getElementById('fb-zh').className = 'fam-lang-btn' + (lang==='zh'?' active':'');
+  renderFamily();
 }
 
-function renderSummary() {
-  const t = T[currentLang];
-  document.getElementById('s-timeline-title').textContent = t.timelineTitle;
-  document.getElementById('s-flags-title').textContent = t.flagsTitle;
-  document.getElementById('s-metrics-title').textContent = t.keyMetricsTitle;
-  document.getElementById('s-clinical-title').textContent = t.clinicalTitle;
+function renderFamily() {
+  const zh = famLang === 'zh';
+  const fc = FAMILY_CONTENT;
+  const L = (obj) => obj[zh ? 'zh' : 'en'];
 
-  // Timeline — 8 cycles, compact
-  const cyclesWithDraws = [0, 1, 2]; // C1, C2, C3 (pre)
-  const infusionDates = ["2026-01-19","2026-02-11","2026-03-09","2026-03-30","2026-04-20","2026-05-11","2026-06-01","2026-06-22"];
+  document.getElementById('f-title').textContent = zh ? "迈克健康动态" : "Michael's Health Update";
+  document.getElementById('f-sub').textContent = `${L(fc.lastUpdated)} · ${L(fc.checkLabel)}`;
+
+  // Overall status — auto-computed from latest ANC, sentence from config
+  const ancLow = LATEST.Neut_abs < REFS.Neut_abs.lo;
+  const overallHeadline = ancLow
+    ? { en:'Under close monitoring — some values need watching', zh:'治疗监测期，部分指标需关注' }
+    : { en:'Doing well overall — treatment is on track',        zh:'整体状况良好，治疗按计划推进' };
+  const oc = ancLow
+    ? { bg:'#fffbeb', border:'#fbbf24', title:'#92400e', body:'#78350f', icon:'🟡' }
+    : { bg:'#f0fdf4', border:'#86efac', title:'#14532d', body:'#166534', icon:'🟢' };
+  document.getElementById('f-overall').style.cssText = `background:${oc.bg};border-color:${oc.border};`;
+  document.getElementById('f-overall').innerHTML = `
+    <div class="fam-overall-icon">${oc.icon}</div>
+    <div>
+      <div class="fam-overall-title" style="color:${oc.title}">${L(overallHeadline)}</div>
+      <div class="fam-overall-body"  style="color:${oc.body}">${L(fc.overallSentence)}</div>
+    </div>`;
+
+  // System cards from config
+  document.getElementById('f-sys-label').textContent = zh ? "各系统状态" : "HOW EACH SYSTEM IS DOING";
+  const sc = { good:{dot:"#16a34a",border:"#bbf7d0",bg:"#f0fdf4"}, caution:{dot:"#d97706",border:"#fde68a",bg:"#fffbeb"}, progress:{dot:"#2563eb",border:"#bfdbfe",bg:"#eff6ff"} };
+  document.getElementById('f-systems').innerHTML = fc.systems.map(s => {
+    const col = sc[s.status];
+    return `<div class="fam-card" style="background:${col.bg};border-color:${col.border}">
+      <div class="fam-card-top">
+        <div class="fam-card-dot" style="background:${col.dot}"></div>
+        <div class="fam-card-name">${s.icon} ${L(s.name)}</div>
+      </div>
+      <div class="fam-card-text">${L(s.text)}</div>
+    </div>`;
+  }).join('');
+
+  // Answered prayers + active requests from config
+  let pHTML = '';
+  if (fc.answeredPrayers && fc.answeredPrayers.length) {
+    const answTitle = zh ? "✅ 蒙应允的祷告" : "✅ Answered Prayers";
+    pHTML += `<div class="fam-prayer-title" style="color:#16a34a">${answTitle}</div>`;
+    fc.answeredPrayers.forEach(p => {
+      pHTML += `<div class="fam-prayer-item">
+        <div class="fam-prayer-num" style="background:#16a34a">✓</div>
+        <div style="color:#166534">${L(p)}</div>
+      </div>`;
+    });
+    pHTML += `<div style="height:12px"></div>`;
+  }
+  pHTML += `<div class="fam-prayer-title">${zh ? "🙏 代祷事项" : "🙏 Prayer Requests"}</div>`;
+  fc.prayerRequests.forEach((p, i) => {
+    pHTML += `<div class="fam-prayer-item">
+      <div class="fam-prayer-num">${i+1}</div>
+      <div>${L(p)}</div>
+    </div>`;
+  });
+  document.getElementById('f-prayers').innerHTML = pHTML;
+
+  // Share text from config
+  document.getElementById('f-share').innerHTML = `
+    <div class="fam-share-label">${zh ? "转发给关心迈克的朋友" : "WHAT TO SHARE"}</div>
+    <div class="fam-share-text">${L(fc.shareText)}</div>`;
+
+  // Footer from config
+  document.getElementById('f-footer').textContent = zh
+    ? `报告更新于 ${L(fc.lastUpdated)} · 已完成${fc.totalCycles}轮中的${fc.cyclesComplete}轮`
+    : `Updated ${L(fc.lastUpdated)} · ${fc.cyclesComplete} of ${fc.totalCycles} treatment cycles complete`;
+}
+
+// ══════════════════════════════════════════════════════════
+// DOCTOR VIEW
+// ══════════════════════════════════════════════════════════
+function renderDoctor() {
+  document.getElementById('d-meta').innerHTML = `
+    <div><strong>Oncologists:</strong> Dr. Rico Liu (HK) · Dr. Wen (GZ)</div>
+    <div><strong>Regimen:</strong> CapeOX (Capecitabine + Oxaliplatin)</div>
+    <div><strong>Report date:</strong> Mar 6, 2026 &nbsp;·&nbsp; <strong>Draws:</strong> ${DATA.length}</div>
+    <div><strong>Cycle 3 start:</strong> Mar 9, 2026 — Hong Kong Sanatorium Hospital</div>`;
+
+  // CBC TABLE
+  const cbcGroups = [
+    { t:"White Cell / Immune",   keys:['WBC','Neut_abs','Neut_pct','Lymph_abs','Lymph_pct','Mono_abs','Mono_pct'] },
+    { t:"Red Cell / Anemia",     keys:['HGB','RBC','Hct','MCV','MCH','MCHC','RDW_CV','RDW_SD'] },
+    { t:"Platelets",             keys:['PLT','MPV','PDW','PCT','P_LCR'] },
+    { t:"Other Differentials",   keys:['Eos_pct','Eos_abs','Baso_pct','Baso_abs'] },
+  ];
+
+  const heads = DATA.map(d => `<th>${d.fullDate}<br><small style="font-weight:400;color:#9ca3af">${d.date.replace('\n',' ')}</small></th>`).join('');
+  let cbcHTML = `<div class="doc-section-heading">Complete Blood Count (CBC) — ${DATA.length} Draws</div>
+    <table class="doc-table"><thead><tr>
+      <th class="th-name">Marker</th><th class="th-ref">Reference</th>${heads}
+    </tr></thead><tbody>`;
+
+  cbcGroups.forEach(g => {
+    cbcHTML += `<tr class="group-row"><td colspan="${DATA.length+2}">${g.t}</td></tr>`;
+    g.keys.forEach(k => {
+      const r = REFS[k];
+      let row = `<tr><td class="td-name">${r.en}</td><td class="td-ref">${r.lo}–${r.hi} ${r.unit}</td>`;
+      DATA.forEach(d => {
+        const v = d[k]; const s = status(k,v);
+        row += `<td class="${s==='low'?'fl':s==='high'?'fh':''}">${v}${s==='low'?' ↓':s==='high'?' ↑':''}</td>`;
+      });
+      cbcHTML += row+'</tr>';
+    });
+  });
+  cbcHTML += '</tbody></table>';
+  document.getElementById('d-cbc').innerHTML = cbcHTML;
+
+  // LFT TABLE
+  const lftDraws = DATA.filter(d => d.lft);
+  if (lftDraws.length) {
+    const lftGroups = [
+      { t:"Liver Enzymes",         keys:['ALT','AST','ALP','GGT'] },
+      { t:"Bilirubin",             keys:['TBIL','DBIL','IBIL'] },
+      { t:"Proteins & Synthetic",  keys:['ALB','GLB','TP','AG','CHE','PA'] },
+      { t:"Other",                 keys:['TBA','ADA','AFU'] },
+    ];
+    const lftHeads = lftDraws.map(d => `<th>${d.fullDate}<br><small style="font-weight:400;color:#9ca3af">${d.date.replace('\n',' ')}</small></th>`).join('');
+    let lftHTML = `<div class="doc-section-heading">Liver Function Tests (LFTs) — ${lftDraws.length} Draw${lftDraws.length>1?'s':''}</div>
+      <table class="doc-table"><thead><tr>
+        <th class="th-name">Marker</th><th class="th-ref">Reference</th>${lftHeads}
+      </tr></thead><tbody>`;
+    lftGroups.forEach(g => {
+      lftHTML += `<tr class="group-row"><td colspan="${lftDraws.length+2}">${g.t}</td></tr>`;
+      g.keys.forEach(k => {
+        const r = LFT_REFS[k];
+        let row = `<tr><td class="td-name">${r.en}</td><td class="td-ref">${r.lo}–${r.hi} ${r.unit}</td>`;
+        lftDraws.forEach(d => {
+          const v = d.lft[k]; const s = (v<r.lo)?'low':(v>r.hi)?'high':'normal';
+          row += `<td class="${s==='low'?'fl':s==='high'?'fh':''}">${v!==undefined?v+(s==='low'?' ↓':s==='high'?' ↑':''):'—'}</td>`;
+        });
+        lftHTML += row+'</tr>';
+      });
+    });
+    lftHTML += '</tbody></table>';
+    document.getElementById('d-lft').innerHTML = lftHTML;
+  }
+}
+
+// ══════════════════════════════════════════════════════════
+// MICHAEL VIEW
+// ══════════════════════════════════════════════════════════
+function setMLang(lang) {
+  mLang = lang;
+  document.getElementById('mb-en').className = 'm-lang-btn' + (lang==='en'?' active':'');
+  document.getElementById('mb-zh').className = 'm-lang-btn' + (lang==='zh'?' active':'');
+  document.getElementById('view-michael').className = lang==='zh' ? 'zh' : '';
+  renderMichael();
+}
+
+function showMTab(name) {
+  ['summary','charts','full','lft'].forEach(t => {
+    document.getElementById('mp-'+t).className = 'm-pane' + (t===name?' on':'');
+    document.getElementById('mt-'+t).className = 'm-tab' + (t===name?' on':'');
+  });
+  if (name==='charts') renderMCharts();
+  if (name==='lft')    renderMLFT();
+}
+
+function renderMichael() {
+  const t = T[mLang];
+  document.getElementById('m-rlabel').textContent = t.reportLabel;
+  document.getElementById('m-rname').textContent  = t.patientName;
+  document.getElementById('m-rsub').textContent   = t.reportSubtitle;
+  document.getElementById('m-onclab').textContent = t.oncologists;
+  document.getElementById('m-dr1').textContent    = t.drLiu;
+  document.getElementById('m-dr2').textContent    = t.drWen;
+  document.getElementById('m-dlabel').textContent = t.latestDraw+':';
+  document.getElementById('m-dcount').textContent = '5 '+t.draws;
+  document.getElementById('mt-summary').textContent = t.tabSummary;
+  document.getElementById('mt-charts').textContent  = t.tabCharts;
+  document.getElementById('mt-full').textContent    = t.tabFull;
+  document.getElementById('mt-lft').textContent     = t.tabLFT;
+  renderMSummary();
+  renderMFull();
+  renderMCharts();
+  renderMLFT();
+}
+
+function renderMSummary() {
+  const t = T[mLang];
+  document.getElementById('m-tltitle').textContent    = t.timelineTitle;
+  document.getElementById('m-flagtitle').textContent  = t.flagsTitle;
+  document.getElementById('m-metrictitle').textContent= t.keyMetricsTitle;
+  document.getElementById('m-clintitle').textContent  = t.clinicalTitle;
+
+  // Timeline
+  const cyclesWithDraws = [0,1,2];
+  const infDates = ["2026-01-19","2026-02-11","2026-03-09","2026-03-30","2026-04-20","2026-05-11","2026-06-01","2026-06-22"];
   const today = new Date();
-  const nextCycleIndex = infusionDates.findIndex(d => new Date(d) > today);
-  const tlColors = t.cycleLabel.map((_, i) => {
-    if (i === nextCycleIndex) return '#ffaa00';
+  const nextIdx = infDates.findIndex(d => new Date(d) > today);
+  const tlCol = t.cycleLabel.map((_,i) => {
+    if (i===nextIdx) return '#ffaa00';
     if (cyclesWithDraws.includes(i)) return '#3b8aff';
-    if (new Date(infusionDates[i]) < today) return '#3b8aff66';
+    if (new Date(infDates[i]) < today) return '#3b8aff66';
     return '#2a3a52';
   });
   let tlHTML = '<div style="overflow-x:auto;padding-bottom:8px"><div style="display:flex;align-items:center;min-width:600px">';
-  t.cycleLabel.forEach((label, i) => {
-    const hasDraw = cyclesWithDraws.includes(i);
-    const color = tlColors[i];
-    tlHTML += `
-      <div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;min-width:60px">
-        <div style="width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-          font-size:11px;font-weight:700;border:2px solid ${color};background:${color}22;color:${color}">
-          ${i+1}
-        </div>
-        <div style="font-size:9px;font-weight:700;color:${color};white-space:nowrap;text-align:center">${label}</div>
-        <div style="font-size:9px;color:var(--muted);white-space:nowrap">${t.cycleDates[i]}</div>
-        ${hasDraw ? `<div style="font-size:8px;color:var(--normal);font-weight:700">● draw</div>` : '<div style="font-size:8px;color:var(--border)">–</div>'}
-      </div>`;
-    if (i < t.cycleLabel.length - 1) {
-      tlHTML += `<div style="flex:1;height:1px;background:var(--border);margin-bottom:24px;min-width:4px"></div>`;
-    }
+  t.cycleLabel.forEach((lbl,i) => {
+    const col = tlCol[i]; const hasDraw = cyclesWithDraws.includes(i);
+    tlHTML += `<div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;min-width:60px">
+      <div style="width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;border:2px solid ${col};background:${col}22;color:${col}">${i+1}</div>
+      <div style="font-size:9px;font-weight:700;color:${col};white-space:nowrap;text-align:center">${lbl}</div>
+      <div style="font-size:9px;color:var(--muted);white-space:nowrap">${t.cycleDates[i]}</div>
+      ${hasDraw?'<div style="font-size:8px;color:var(--normal);font-weight:700">● draw</div>':'<div style="font-size:8px;color:var(--border)">–</div>'}
+    </div>`;
+    if (i < t.cycleLabel.length-1) tlHTML += '<div style="flex:1;height:1px;background:var(--border);margin-bottom:24px;min-width:4px"></div>';
   });
   tlHTML += '</div></div>';
-  document.getElementById('s-timeline').innerHTML = tlHTML;
-  document.getElementById('s-timeline-note').innerHTML = t.timelineNote;
+  document.getElementById('m-tl').innerHTML = tlHTML;
+  document.getElementById('m-tlnote').innerHTML = t.timelineNote;
 
-  // Alerts
-  const keyMetrics = ['WBC','Neut_abs','Neut_pct','PLT','HGB','Mono_pct','MPV','PDW','PCT'];
-  const flags = keyMetrics
-    .map(k => ({ key:k, val:LATEST[k], status:getStatus(k, LATEST[k]) }))
-    .filter(f => f.status !== 'normal');
+  // Flags
+  const watchKeys = ['WBC','Neut_abs','Neut_pct','PLT','HGB','Mono_pct','MPV','PDW','PCT'];
+  const flags = watchKeys.map(k=>({key:k,val:LATEST[k],s:status(k,LATEST[k])})).filter(f=>f.s!=='normal');
+  let fHTML = '';
+  if (!flags.length) { fHTML = `<div style="color:var(--normal);font-size:13px">${t.allNormal}</div>`; }
+  else flags.forEach(f => {
+    const r=REFS[f.key], col=C[f.s], lbl=mLang==='zh'?r.zh:r.en, badge=f.s==='low'?t.statusLow:t.statusHigh;
+    fHTML += `<div class="m-alert" style="background:${col}18;border-color:${col}44">
+      <div><div style="font-size:13px;font-weight:600;color:var(--text)">${lbl}</div>
+      <div style="font-size:11px;color:var(--muted)">${t.refRange}: ${r.lo}–${r.hi} ${r.unit}</div></div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:15px;font-weight:700;color:${col}">${f.val} ${r.unit}</span>
+        <span style="font-size:10px;font-weight:700;color:${col};padding:2px 7px;border-radius:4px;border:1px solid ${col}66;background:${col}22">${badge}</span>
+      </div></div>`;
+  });
+  document.getElementById('m-flags').innerHTML = fHTML;
 
-  let alertHTML = '';
-  if (flags.length === 0) {
-    alertHTML = `<div style="color:var(--normal);font-size:13px">${t.allNormal}</div>`;
-  } else {
-    flags.forEach(f => {
-      const r = REFS[f.key];
-      const color = COLORS[f.status];
-      const label = currentLang === 'zh' ? r.zh : r.en;
-      const badge = f.status === 'low' ? t.statusLow : t.statusHigh;
-      alertHTML += `
-        <div class="alert-item" style="background:${color}18;border-color:${color}44">
-          <div>
-            <div class="alert-name" style="color:var(--text)">${label}</div>
-            <div class="alert-ref">${t.refRange}: ${r.lo}–${r.hi} ${r.unit}</div>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px">
-            <span class="alert-value" style="color:${color}">${f.val} ${r.unit}</span>
-            <span class="alert-badge" style="color:${color};border-color:${color}66;background:${color}22">${badge}</span>
-          </div>
-        </div>`;
-    });
-  }
-  document.getElementById('s-alerts').innerHTML = alertHTML;
-
-  // Key Metrics
+  // Key metrics
   const keyDisplay = ['WBC','Neut_abs','PLT','HGB','Lymph_abs','Mono_pct'];
-  let metricsHTML = '';
+  let mHTML = '';
   keyDisplay.forEach(k => {
-    const r = REFS[k];
-    const val = LATEST[k];
-    const st = getStatus(k, val);
-    const color = COLORS[st];
-    const label = currentLang === 'zh' ? r.zh : r.en;
-    const pos = pctPos(k, val);
-    const badge = st === 'normal' ? t.statusNormal : (st === 'low' ? t.statusLow : t.statusHigh);
-    metricsHTML += `
-      <div class="metric-card" style="border-color:${color}44">
-        <div class="metric-label">${label}</div>
-        <div class="metric-value" style="color:${color}">${val}</div>
-        <div class="metric-unit">${r.unit}</div>
-        <div class="gauge-track">
-          <div class="gauge-normal-zone" style="background:${COLORS.normal}22"></div>
-          <div class="gauge-dot" style="left:${pos}%;background:${color};box-shadow:0 0 6px ${color}"></div>
-        </div>
-        <div class="gauge-labels"><span>${r.lo}</span><span>${r.hi}</span></div>
-        <div class="metric-ref">${t.refRange}: ${r.lo}–${r.hi}</div>
-        <div style="margin-top:4px">
-          <span style="font-size:10px;font-weight:700;color:${color};padding:2px 6px;background:${color}22;border:1px solid ${color}44;border-radius:4px">${badge}</span>
-        </div>
-      </div>`;
+    const r=REFS[k], v=LATEST[k], s=status(k,v), col=C[s], lbl=mLang==='zh'?r.zh:r.en;
+    const pos=pct(k,v), badge=s==='normal'?t.statusNormal:(s==='low'?t.statusLow:t.statusHigh);
+    mHTML += `<div class="m-metric" style="border-color:${col}44">
+      <div class="m-mlabel">${lbl}</div>
+      <div class="m-mval" style="color:${col}">${v}</div>
+      <div class="m-munit">${r.unit}</div>
+      <div class="m-gt"><div class="m-gnz" style="background:${C.normal}22"></div><div class="m-gd" style="left:${pos}%;background:${col};box-shadow:0 0 6px ${col}"></div></div>
+      <div class="m-glab"><span>${r.lo}</span><span>${r.hi}</span></div>
+      <div class="m-mref">${t.refRange}: ${r.lo}–${r.hi}</div>
+      <div style="margin-top:4px"><span style="font-size:10px;font-weight:700;color:${col};padding:2px 6px;background:${col}22;border:1px solid ${col}44;border-radius:4px">${badge}</span></div>
+    </div>`;
   });
-  document.getElementById('s-metrics').innerHTML = metricsHTML;
+  document.getElementById('m-metrics').innerHTML = mHTML;
 
-  // Clinical Notes
-  const noteColors = { low: COLORS.low, high: COLORS.high, normal: COLORS.normal, accent: COLORS.accent };
-  let clinHTML = '';
-  t.clinicalNotes.forEach(note => {
-    const color = noteColors[note.color];
-    clinHTML += `
-      <div class="clinical-note" style="background:${color}15;border-left-color:${color}">
-        <strong style="color:${color}">${note.title}</strong>
-        ${note.body}
-      </div>`;
+  // Clinical notes
+  const ncol = {low:C.low, high:C.high, normal:C.normal, accent:C.accent};
+  let cHTML = '';
+  t.clinicalNotes.forEach(n => {
+    const col = ncol[n.color];
+    cHTML += `<div class="m-clin" style="background:${col}15;border-left-color:${col}">
+      <strong style="color:${col}">${n.title}</strong>${n.body}</div>`;
   });
-  document.getElementById('s-clinical').innerHTML = clinHTML;
+  document.getElementById('m-clin').innerHTML = cHTML;
 }
 
-function renderFull() {
-  const t = T[currentLang];
-  document.getElementById('f-title').textContent = t.fullCBCTitle;
+function renderMFull() {
+  const t = T[mLang];
+  document.getElementById('m-fulltitle').textContent = t.fullCBCTitle;
 
-  // Draw selector buttons
-  const drawLabels_en = ["Jan 26 · C1 Day 7", "Feb 2 · C1 Day 14", "Feb 18 · C2 Day 7", "Feb 24 · C2 Day 14", "Mar 6 · Pre-C3"];
-  const drawLabels_zh = ["1月26日 · C1第7天", "2月2日 · C1第14天", "2月18日 · C2第7天", "2月24日 · C2第14天", "3月6日 · 第3周期前"];
-  const drawLabels = currentLang === 'zh' ? drawLabels_zh : drawLabels_en;
+  const dlEn = ["Jan 26 · C1 Day 7","Feb 2 · C1 Day 14","Feb 18 · C2 Day 7","Feb 24 · C2 Day 14","Mar 6 · Pre-C3"];
+  const dlZh = ["1月26日 · C1第7天","2月2日 · C1第14天","2月18日 · C2第7天","2月24日 · C2第14天","3月6日 · 第3周期前"];
+  const dl = mLang==='zh' ? dlZh : dlEn;
 
-  let selectorHTML = '';
-  DATA.forEach((d, i) => {
-    const isActive = i === selectedDrawIndex;
-    const isLatest = i === DATA.length - 1;
-    selectorHTML += `
-      <button onclick="selectDraw(${i})" style="
-        padding:7px 14px;border-radius:6px;border:1px solid;cursor:pointer;
-        font-size:11px;font-weight:600;font-family:inherit;transition:all 0.2s;
-        background:${isActive ? 'var(--accent)' : 'var(--panel)'};
-        border-color:${isActive ? 'var(--accent)' : 'var(--border)'};
-        color:${isActive ? '#fff' : 'var(--muted)'};
-      ">${drawLabels[i]}${isLatest ? (currentLang==='zh'?' ★最新':' ★ Latest') : ''}</button>`;
+  let selHTML = '';
+  DATA.forEach((_,i) => {
+    const on = i===mSelDraw; const latest = i===DATA.length-1;
+    selHTML += `<button onclick="mPickDraw(${i})" style="padding:7px 14px;border-radius:6px;border:1px solid;cursor:pointer;font-size:11px;font-weight:600;font-family:inherit;background:${on?'var(--accent)':'var(--panel)'};border-color:${on?'var(--accent)':'var(--border)'};color:${on?'#fff':'var(--muted)'}">${dl[i]}${latest?(mLang==='zh'?' ★最新':' ★ Latest'):''}</button>`;
   });
-  document.getElementById('f-draw-selector').innerHTML = selectorHTML;
+  document.getElementById('m-drawsel').innerHTML = selHTML;
 
-  const ROW = DATA[selectedDrawIndex];
-
-  // Image links if available
-  const imgSection = document.getElementById('f-images');
-  if (ROW.images && ROW.images.length > 0) {
-    const imgLabel = currentLang === 'zh' ? '🔬 原始检验报告图像' : '🔬 Original Lab Report Images';
-    const imgViewLabel = currentLang === 'zh' ? '查看' : 'View';
-    let imgHTML = `<div class="card" style="margin-bottom:12px">
-      <div class="card-title">${imgLabel}</div>
-      <div style="display:flex;flex-wrap:wrap;gap:8px">`;
-    ROW.images.forEach((img, i) => {
-      imgHTML += `<a href="${img.url}" target="_blank" style="
-        display:inline-flex;align-items:center;gap:6px;
-        padding:6px 14px;border-radius:6px;
-        background:var(--accent-glow);border:1px solid var(--accent);
-        color:var(--accent);text-decoration:none;font-size:12px;font-weight:600;
-        transition:all 0.2s;
-      " onmouseover="this.style.background='var(--accent)';this.style.color='#fff'"
-        onmouseout="this.style.background='var(--accent-glow)';this.style.color='var(--accent)'">
-        📄 ${img.label || imgViewLabel + ' ' + (i+1)}
-      </a>`;
+  const ROW = DATA[mSelDraw];
+  if (ROW.images && ROW.images.length) {
+    const iLbl = mLang==='zh' ? '🔬 原始检验报告图像' : '🔬 Original Lab Report Images';
+    let iHTML = `<div class="m-card" style="margin-bottom:12px"><div class="m-ctitle">${iLbl}</div><div style="display:flex;flex-wrap:wrap;gap:8px">`;
+    ROW.images.forEach(img => {
+      iHTML += `<a href="${img.url}" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:6px;background:var(--accent-glow);border:1px solid var(--accent);color:var(--accent);text-decoration:none;font-size:12px;font-weight:600">📄 ${img.label}</a>`;
     });
-    imgHTML += `</div></div>`;
-    imgSection.innerHTML = imgHTML;
-  } else {
-    imgSection.innerHTML = '';
-  }
+    iHTML += '</div></div>';
+    document.getElementById('m-imgs').innerHTML = iHTML;
+  } else { document.getElementById('m-imgs').innerHTML = ''; }
 
-  const groups = [
-    { title: t.groups[0], keys: ['WBC','Neut_abs','Neut_pct','Lymph_abs','Lymph_pct','Mono_abs','Mono_pct'] },
-    { title: t.groups[1], keys: ['HGB','RBC','Hct','MCV','MCH','MCHC','RDW_CV','RDW_SD'] },
-    { title: t.groups[2], keys: ['PLT','MPV','PDW','PCT','P_LCR'] },
-    { title: t.groups[3], keys: ['Eos_pct','Eos_abs','Baso_pct','Baso_abs'] },
+  const grps = [
+    { title:t.groups[0], keys:['WBC','Neut_abs','Neut_pct','Lymph_abs','Lymph_pct','Mono_abs','Mono_pct'] },
+    { title:t.groups[1], keys:['HGB','RBC','Hct','MCV','MCH','MCHC','RDW_CV','RDW_SD'] },
+    { title:t.groups[2], keys:['PLT','MPV','PDW','PCT','P_LCR'] },
+    { title:t.groups[3], keys:['Eos_pct','Eos_abs','Baso_pct','Baso_abs'] },
   ];
-
   let html = '';
-  groups.forEach(g => {
-    html += `<div class="cbc-group-title">${g.title}</div>`;
+  grps.forEach(g => {
+    html += `<div class="m-grp-title">${g.title}</div>`;
     g.keys.forEach(k => {
-      const r = REFS[k];
-      const val = ROW[k];
-      const st = getStatus(k, val);
-      const color = COLORS[st];
-      const label = currentLang === 'zh' ? r.zh : r.en;
-      const pos = pctPos(k, val);
-      const badge = st !== 'normal' ? `<span style="font-size:10px;font-weight:700;color:${color};padding:2px 6px;background:${color}22;border:1px solid ${color}44;border-radius:4px">${st==='low'?t.statusLow:t.statusHigh}</span>` : '';
-
-      let sparkHTML = '<div style="display:flex;align-items:center;gap:3px;margin-top:4px">';
-      DATA.forEach((d, di) => {
-        const sv = d[k];
-        const sst = getStatus(k, sv);
-        const sc = COLORS[sst];
-        const isSelected = di === selectedDrawIndex;
-        sparkHTML += `<div title="${CHART_LABELS[di]}: ${sv}" style="
-          width:${isSelected?10:7}px;height:${isSelected?10:7}px;border-radius:50%;
-          background:${sc};opacity:${isSelected?1:0.45};
-          border:${isSelected?'2px solid #fff':'none'};
-          cursor:default;flex-shrink:0;
-        "></div>`;
-        if (di < DATA.length - 1) {
-          sparkHTML += `<div style="width:8px;height:1px;background:var(--border);flex-shrink:0"></div>`;
-        }
+      const r=REFS[k], v=ROW[k], s=status(k,v), col=C[s], lbl=mLang==='zh'?r.zh:r.en;
+      const pos=pct(k,v);
+      const badge = s!=='normal' ? `<span style="font-size:10px;font-weight:700;color:${col};padding:2px 6px;background:${col}22;border:1px solid ${col}44;border-radius:4px">${s==='low'?t.statusLow:t.statusHigh}</span>` : '';
+      let spark = '<div style="display:flex;align-items:center;gap:3px;margin-top:4px">';
+      DATA.forEach((d,di) => {
+        const sv=d[k], ss=status(k,sv), sc=C[ss], sel=di===mSelDraw;
+        spark += `<div title="${CHART_LABELS[di]}: ${sv}" style="width:${sel?10:7}px;height:${sel?10:7}px;border-radius:50%;background:${sc};opacity:${sel?1:0.45};border:${sel?'2px solid #fff':'none'};flex-shrink:0"></div>`;
+        if (di < DATA.length-1) spark += '<div style="width:8px;height:1px;background:var(--border);flex-shrink:0"></div>';
       });
-      sparkHTML += '</div>';
-
-      html += `
-        <div class="cbc-row">
-          <div class="cbc-row-name">
-            ${label}
-            ${sparkHTML}
-          </div>
-          <div class="cbc-row-val" style="color:${st!=='normal'?color:'var(--text)'}">
-            ${val} <span style="font-size:10px;color:var(--muted)">${r.unit}</span>
-          </div>
-          <div class="cbc-row-badge">${badge}</div>
-          <div class="cbc-row-gauge">
-            <div class="gauge-track">
-              <div class="gauge-normal-zone" style="background:${COLORS.normal}22"></div>
-              <div class="gauge-dot" style="left:${pos}%;background:${color};box-shadow:0 0 5px ${color}"></div>
-            </div>
-            <div class="gauge-labels"><span>${r.lo}</span><span>${r.hi}</span></div>
-          </div>
-        </div>`;
+      spark += '</div>';
+      html += `<div class="m-row">
+        <div class="m-rname">${lbl}${spark}</div>
+        <div class="m-rval" style="color:${s!=='normal'?col:'var(--text)'}">${v} <span style="font-size:10px;color:var(--muted)">${r.unit}</span></div>
+        <div class="m-rbadge">${badge}</div>
+        <div>
+          <div class="m-gt"><div class="m-gnz" style="background:${C.normal}22"></div><div class="m-gd" style="left:${pos}%;background:${col};box-shadow:0 0 5px ${col}"></div></div>
+          <div class="m-glab"><span>${r.lo}</span><span>${r.hi}</span></div>
+        </div></div>`;
     });
   });
-  document.getElementById('f-table').innerHTML = html;
-  document.getElementById('footer').textContent = t.disclaimer + ' · Generated ' + new Date().toLocaleDateString();
+  document.getElementById('m-fulltbl').innerHTML = html;
+  document.getElementById('m-footer').textContent = t.disclaimer + ' · Generated ' + new Date().toLocaleDateString();
 }
 
-function selectDraw(index) {
-  selectedDrawIndex = index;
-  renderFull();
-}
+function mPickDraw(i) { mSelDraw=i; renderMFull(); }
 
-function renderCharts() {
-  const t = T[currentLang];
-  document.getElementById('c-note').textContent = t.chartNote;
-  t.chartTitles.forEach((title, i) => {
-    document.getElementById('ct-'+i).textContent = title;
-  });
+function renderMCharts() {
+  const t = T[mLang];
+  document.getElementById('m-cnote').textContent = t.chartNote;
+  t.chartTitles.forEach((title,i) => document.getElementById('mct-'+i).textContent = title);
 
-  const chartConfigs = [
-    {
-      keys: ['WBC', 'Neut_abs'],
-      colors: ['#3b8aff', '#ff6b6b'],
-      refLines: [
-        { value: REFS.WBC.lo, color: '#3b8aff55', label: '' },
-        { value: REFS.WBC.hi, color: '#3b8aff55', label: '' },
-        { value: REFS.Neut_abs.lo, color: '#ff6b6b88', label: '' },
-        { value: REFS.Neut_abs.hi, color: '#ff6b6b33', label: '' },
-      ]
-    },
-    { keys: ['PLT'], colors: ['#a78bfa'], refLines: [
-      { value: REFS.PLT.lo, color: '#a78bfa55' }, { value: REFS.PLT.hi, color: '#a78bfa55' }
-    ]},
-    { keys: ['HGB'], colors: ['#34d399'], refLines: [
-      { value: REFS.HGB.lo, color: '#34d39955' }, { value: REFS.HGB.hi, color: '#34d39955' }
-    ]},
-    { keys: ['Lymph_pct','Mono_pct'], colors: ['#3b8aff','#ffaa00'], refLines: [
-      { value: REFS.Lymph_pct.lo, color: '#3b8aff44' }, { value: REFS.Lymph_pct.hi, color: '#3b8aff44' },
-      { value: REFS.Mono_pct.hi, color: '#ffaa0088' },
-    ]},
-    { keys: ['MCV'], colors: ['#60a5fa'], refLines: [
-      { value: REFS.MCV.lo, color: '#60a5fa55' }, { value: REFS.MCV.hi, color: '#60a5fa55' }
-    ]},
+  const cfgs = [
+    { keys:['WBC','Neut_abs'], colors:['#3b8aff','#ff6b6b'],
+      refs:[{key:'WBC',lo:true},{key:'WBC',lo:false},{key:'Neut_abs',lo:true},{key:'Neut_abs',lo:false}],
+      rcols:['#3b8aff55','#3b8aff33','#ff6b6b88','#ff6b6b33'] },
+    { keys:['PLT'], colors:['#a78bfa'], refs:[{key:'PLT',lo:true},{key:'PLT',lo:false}], rcols:['#a78bfa55','#a78bfa33'] },
+    { keys:['HGB'], colors:['#34d399'], refs:[{key:'HGB',lo:true},{key:'HGB',lo:false}], rcols:['#34d39955','#34d39933'] },
+    { keys:['Lymph_pct','Mono_pct'], colors:['#3b8aff','#ffaa00'],
+      refs:[{key:'Lymph_pct',lo:true},{key:'Lymph_pct',lo:false},{key:'Mono_pct',lo:false}],
+      rcols:['#3b8aff44','#3b8aff44','#ffaa0088'] },
+    { keys:['MCV'], colors:['#60a5fa'], refs:[{key:'MCV',lo:true},{key:'MCV',lo:false}], rcols:['#60a5fa55','#60a5fa33'] },
   ];
 
-  chartConfigs.forEach((cfg, i) => {
-    const canvasId = 'chart-' + i;
-    if (charts[canvasId]) { charts[canvasId].destroy(); }
-    const ctx = document.getElementById(canvasId).getContext('2d');
-
-    const datasets = cfg.keys.map((k, ki) => ({
-      label: t.chartLabels[k] || k,
-      data: DATA.map(d => d[k]),
-      borderColor: cfg.colors[ki],
-      backgroundColor: cfg.colors[ki] + '22',
-      borderWidth: 2.5,
-      pointRadius: 5,
-      pointBackgroundColor: cfg.colors[ki],
-      pointBorderColor: '#0f1623',
-      pointBorderWidth: 2,
-      tension: 0.3,
-      fill: false,
+  cfgs.forEach((cfg,i) => {
+    const cid = 'mc-'+i;
+    if (mCharts[cid]) mCharts[cid].destroy();
+    const ctx = document.getElementById(cid).getContext('2d');
+    const datasets = cfg.keys.map((k,ki) => ({
+      label: t.chartLabels[k]||k, data: DATA.map(d=>d[k]),
+      borderColor:cfg.colors[ki], backgroundColor:cfg.colors[ki]+'22',
+      borderWidth:2.5, pointRadius:5, pointBackgroundColor:cfg.colors[ki],
+      pointBorderColor:'#0f1623', pointBorderWidth:2, tension:0.3, fill:false,
     }));
-
-    cfg.refLines.forEach(rl => {
-      datasets.push({
-        label: '',
-        data: DATA.map(() => rl.value),
-        borderColor: rl.color,
-        borderWidth: 1,
-        borderDash: [5, 5],
-        pointRadius: 0,
-        fill: false,
-        tension: 0,
-      });
+    cfg.refs.forEach((ref,ri) => {
+      const val = ref.lo ? REFS[ref.key].lo : REFS[ref.key].hi;
+      datasets.push({ label:'', data:DATA.map(()=>val), borderColor:cfg.rcols[ri], borderWidth:1, borderDash:[5,5], pointRadius:0, fill:false });
     });
-
-    charts[canvasId] = new Chart(ctx, {
-      type: 'line',
-      data: { labels: CHART_LABELS, datasets },
-      options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        plugins: {
-          legend: {
-            display: cfg.keys.length > 1,
-            labels: { color: '#7a90a8', font: { size: 11 }, filter: item => item.text !== '' }
-          },
-          tooltip: {
-            backgroundColor: '#161f30',
-            borderColor: '#1e2d45',
-            borderWidth: 1,
-            titleColor: '#3b8aff',
-            bodyColor: '#e2eaf5',
-            titleFont: { size: 12 },
-            bodyFont: { size: 12 },
-            callbacks: {
-              title: (items) => {
-                const idx = items[0].dataIndex;
-                return currentLang === 'zh' ? DATA[idx].cycleZH : DATA[idx].fullDate;
-              }
-            },
-            filter: item => item.dataset.label !== ''
-          }
+    mCharts[cid] = new Chart(ctx, { type:'line', data:{ labels:CHART_LABELS, datasets },
+      options:{ responsive:true, maintainAspectRatio:true,
+        plugins:{
+          legend:{ display:cfg.keys.length>1, labels:{ color:'#7a90a8', font:{size:11}, filter:item=>item.text!=='' } },
+          tooltip:{ backgroundColor:'#161f30', borderColor:'#1e2d45', borderWidth:1, titleColor:'#3b8aff', bodyColor:'#e2eaf5',
+            callbacks:{ title:items => mLang==='zh' ? DATA[items[0].dataIndex].cycleZH : DATA[items[0].dataIndex].fullDate },
+            filter:item=>item.dataset.label!=='' }
         },
-        scales: {
-          x: {
-            ticks: { color: '#7a90a8', font: { size: 10 } },
-            grid: { color: '#1a2640' }
-          },
-          y: {
-            ticks: { color: '#7a90a8', font: { size: 10 } },
-            grid: { color: '#1a2640' }
-          }
+        scales:{
+          x:{ ticks:{ color:'#7a90a8', font:{size:10} }, grid:{ color:'#1a2640' } },
+          y:{ ticks:{ color:'#7a90a8', font:{size:10} }, grid:{ color:'#1a2640' } }
         }
       }
     });
   });
 }
 
+function renderMLFT() {
+  const t = T[mLang];
+  const lftDraws = DATA.map((d,i)=>({...d,idx:i})).filter(d=>d.lft);
+  if (!lftDraws.length) { document.getElementById('m-lfttbl').innerHTML='<div style="color:var(--muted);padding:12px 0">No LFT data yet.</div>'; return; }
+  if (mSelLFT===null || !DATA[mSelLFT]?.lft) mSelLFT = lftDraws[lftDraws.length-1].idx;
 
-// ─── RENDER LFT ─────────────────────────────────────────────
-let selectedLFTIndex = null; // default to latest draw with LFT data
-let lftCharts = {};
-
-function renderLFT() {
-  const t = T[currentLang];
-
-  // Find draws that have LFT data
-  const lftDraws = DATA.map((d, i) => ({ ...d, idx: i })).filter(d => d.lft);
-  if (lftDraws.length === 0) {
-    document.getElementById('lft-table').innerHTML = `<div style="color:var(--muted);font-size:13px;padding:12px 0">No LFT data recorded yet.</div>`;
-    return;
-  }
-
-  // Default to latest LFT draw
-  if (selectedLFTIndex === null || !DATA[selectedLFTIndex]?.lft) {
-    selectedLFTIndex = lftDraws[lftDraws.length - 1].idx;
-  }
-
-  // Draw selector
-  const drawLabels_en = ["Jan 26 · C1D7","Feb 2 · C1D14","Feb 18 · C2D7","Feb 24 · C2D14","Mar 6 · Pre-C3"];
-  const drawLabels_zh = ["1月26日","2月2日","2月18日","2月24日","3月6日 · 第3周期前"];
-  const drawLabels = currentLang === 'zh' ? drawLabels_zh : drawLabels_en;
+  const dlEn = ["Jan 26 · C1D7","Feb 2 · C1D14","Feb 18 · C2D7","Feb 24 · C2D14","Mar 6 · Pre-C3"];
+  const dlZh = ["1月26日","2月2日","2月18日","2月24日","3月6日 · 第3周期前"];
+  const dl = mLang==='zh' ? dlZh : dlEn;
 
   let selHTML = '';
   lftDraws.forEach(d => {
-    const isActive = d.idx === selectedLFTIndex;
-    selHTML += `<button onclick="selectLFTDraw(${d.idx})" style="
-      padding:7px 14px;border-radius:6px;border:1px solid;cursor:pointer;
-      font-size:11px;font-weight:600;font-family:inherit;transition:all 0.2s;
-      background:${isActive?'var(--accent)':'var(--panel)'};
-      border-color:${isActive?'var(--accent)':'var(--border)'};
-      color:${isActive?'#fff':'var(--muted)'};
-    ">${drawLabels[d.idx]} ★</button>`;
+    const on = d.idx===mSelLFT;
+    selHTML += `<button onclick="mPickLFT(${d.idx})" style="padding:7px 14px;border-radius:6px;border:1px solid;cursor:pointer;font-size:11px;font-weight:600;font-family:inherit;background:${on?'var(--accent)':'var(--panel)'};border-color:${on?'var(--accent)':'var(--border)'};color:${on?'#fff':'var(--muted)'}">${dl[d.idx]} ★</button>`;
   });
-  document.getElementById('lft-draw-selector').innerHTML = selHTML;
+  document.getElementById('m-lftsel').innerHTML = selHTML;
+  document.getElementById('m-lftnote').textContent = t.lftNote;
+  document.getElementById('m-lfttbltitle').textContent = t.lftTitle;
+  document.getElementById('m-lftct0').textContent = mLang==='zh' ? '肝酶趋势（ALT · AST · ALP · GGT）' : 'Liver Enzyme Trends (ALT · AST · ALP · GGT)';
+  document.getElementById('m-lftct1').textContent = mLang==='zh' ? '蛋白质趋势（白蛋白 · 总蛋白）' : 'Protein Trends (Albumin · Total Protein)';
 
-  // Note and titles
-  document.getElementById('lft-note').textContent = t.lftNote;
-  document.getElementById('lft-table-title').textContent = t.lftTitle;
-  document.getElementById('lft-chart-title-enzymes').textContent = currentLang === 'zh' ? '肝酶趋势（ALT · AST · ALP · GGT）' : 'Liver Enzyme Trends (ALT · AST · ALP · GGT)';
-  document.getElementById('lft-chart-title-proteins').textContent = currentLang === 'zh' ? '蛋白质趋势（白蛋白 · 总蛋白）' : 'Protein Trends (Albumin · Total Protein)';
-
-  // Charts — only draws with LFT data
-  const lftLabels = lftDraws.map(d => d.date.replace('\n',' '));
+  const lftLabels = lftDraws.map(d=>d.date.replace('\n',' '));
   const chartColors = ['#ff6b6b','#ffaa00','#a78bfa','#34d399'];
-
-  const enzymeKeys = ['ALT','AST','ALP','GGT'];
-  const proteinKeys = ['ALB','TP'];
-
   [
-    { id:'lft-chart-0', keys: enzymeKeys },
-    { id:'lft-chart-1', keys: proteinKeys },
+    { id:'m-lc0', keys:['ALT','AST','ALP','GGT'] },
+    { id:'m-lc1', keys:['ALB','TP'] },
   ].forEach(cfg => {
-    if (lftCharts[cfg.id]) lftCharts[cfg.id].destroy();
+    if (mLftCharts[cfg.id]) mLftCharts[cfg.id].destroy();
     const ctx = document.getElementById(cfg.id).getContext('2d');
-    const datasets = cfg.keys.map((k, ki) => ({
-      label: currentLang === 'zh' ? LFT_REFS[k].zh.split('（')[0] : k,
-      data: lftDraws.map(d => d.lft[k] ?? null),
-      borderColor: chartColors[ki],
-      backgroundColor: chartColors[ki] + '22',
-      borderWidth: 2.5,
-      pointRadius: 5,
-      pointBackgroundColor: chartColors[ki],
-      pointBorderColor: '#0f1623',
-      pointBorderWidth: 2,
-      tension: 0.3,
-      fill: false,
+    const datasets = cfg.keys.map((k,ki) => ({
+      label: mLang==='zh' ? LFT_REFS[k].zh.split('（')[0] : k,
+      data: lftDraws.map(d=>d.lft[k]??null),
+      borderColor:chartColors[ki], backgroundColor:chartColors[ki]+'22',
+      borderWidth:2.5, pointRadius:5, pointBackgroundColor:chartColors[ki],
+      pointBorderColor:'#0f1623', pointBorderWidth:2, tension:0.3, fill:false,
     }));
-    // Add ref lines for first key only to avoid clutter
     const r = LFT_REFS[cfg.keys[0]];
-    datasets.push({ label:'', data: lftDraws.map(() => r.lo), borderColor:'#ffffff22', borderWidth:1, borderDash:[4,4], pointRadius:0, fill:false });
-    datasets.push({ label:'', data: lftDraws.map(() => r.hi), borderColor:'#ffffff22', borderWidth:1, borderDash:[4,4], pointRadius:0, fill:false });
-
-    lftCharts[cfg.id] = new Chart(ctx, {
-      type: 'line',
-      data: { labels: lftLabels, datasets },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { labels: { color:'#7a90a8', font:{size:11}, filter: item => item.text !== '' } },
-          tooltip: {
-            backgroundColor:'#161f30', borderColor:'#1e2d45', borderWidth:1,
-            titleColor:'#3b8aff', bodyColor:'#e2eaf5',
-            filter: item => item.dataset.label !== ''
-          }
-        },
-        scales: {
-          x: { ticks:{ color:'#7a90a8', font:{size:10} }, grid:{ color:'#1a2640' } },
-          y: { ticks:{ color:'#7a90a8', font:{size:10} }, grid:{ color:'#1a2640' } }
-        }
+    datasets.push({ label:'', data:lftDraws.map(()=>r.lo), borderColor:'#ffffff22', borderWidth:1, borderDash:[4,4], pointRadius:0, fill:false });
+    datasets.push({ label:'', data:lftDraws.map(()=>r.hi), borderColor:'#ffffff22', borderWidth:1, borderDash:[4,4], pointRadius:0, fill:false });
+    mLftCharts[cfg.id] = new Chart(ctx, { type:'line', data:{ labels:lftLabels, datasets },
+      options:{ responsive:true,
+        plugins:{ legend:{ labels:{ color:'#7a90a8', font:{size:11}, filter:item=>item.text!=='' } },
+          tooltip:{ backgroundColor:'#161f30', borderColor:'#1e2d45', borderWidth:1, titleColor:'#3b8aff', bodyColor:'#e2eaf5', filter:item=>item.dataset.label!=='' } },
+        scales:{ x:{ ticks:{ color:'#7a90a8', font:{size:10} }, grid:{ color:'#1a2640' } },
+                 y:{ ticks:{ color:'#7a90a8', font:{size:10} }, grid:{ color:'#1a2640' } } }
       }
     });
   });
 
-  // Table
-  const ROW = DATA[selectedLFTIndex].lft;
-  let tableHTML = '';
+  const ROW = DATA[mSelLFT].lft;
+  let tblHTML = '';
   t.lftGroups.forEach(g => {
-    tableHTML += `<div class="cbc-group-title">${g.title}</div>`;
+    tblHTML += `<div class="m-grp-title">${g.title}</div>`;
     g.keys.forEach(k => {
-      const r = LFT_REFS[k];
-      const val = ROW[k];
-      if (val === undefined || val === null) return;
-      const st = (val < r.lo) ? 'low' : (val > r.hi) ? 'high' : 'normal';
-      const color = COLORS[st];
-      const label = currentLang === 'zh' ? r.zh : r.en;
-      const pos = Math.max(0, Math.min(100, 10 + ((val - r.lo) / (r.hi - r.lo)) * 80));
-      const badge = st !== 'normal' ? `<span style="font-size:10px;font-weight:700;color:${color};padding:2px 6px;background:${color}22;border:1px solid ${color}44;border-radius:4px">${st==='low'?(currentLang==='zh'?'▼ 偏低':'▼ LOW'):(currentLang==='zh'?'▲ 偏高':'▲ HIGH')}</span>` : '';
-
-      // Sparkline across LFT draws
+      const r=LFT_REFS[k], v=ROW[k];
+      if (v==null) return;
+      const s=(v<r.lo)?'low':(v>r.hi)?'high':'normal', col=C[s], lbl=mLang==='zh'?r.zh:r.en;
+      const pos=Math.max(0,Math.min(100,10+((v-r.lo)/(r.hi-r.lo))*80));
+      const badge = s!=='normal' ? `<span style="font-size:10px;font-weight:700;color:${col};padding:2px 6px;background:${col}22;border:1px solid ${col}44;border-radius:4px">${s==='low'?(mLang==='zh'?'▼ 偏低':'▼ LOW'):(mLang==='zh'?'▲ 偏高':'▲ HIGH')}</span>` : '';
       let spark = '<div style="display:flex;align-items:center;gap:3px;margin-top:3px">';
-      lftDraws.forEach((d, di) => {
-        const sv = d.lft[k];
-        if (sv === undefined) return;
-        const sst = (sv < r.lo) ? 'low' : (sv > r.hi) ? 'high' : 'normal';
-        const sc = COLORS[sst];
-        const isSel = d.idx === selectedLFTIndex;
-        spark += `<div title="${lftLabels[di]}: ${sv} ${r.unit}" style="width:${isSel?10:7}px;height:${isSel?10:7}px;border-radius:50%;background:${sc};opacity:${isSel?1:0.45};border:${isSel?'2px solid #fff':'none'};flex-shrink:0"></div>`;
-        if (di < lftDraws.length - 1) spark += `<div style="width:8px;height:1px;background:var(--border);flex-shrink:0"></div>`;
+      lftDraws.forEach((d,di) => {
+        const sv=d.lft[k]; if(sv==null) return;
+        const ss=(sv<r.lo)?'low':(sv>r.hi)?'high':'normal', sc=C[ss], sel=d.idx===mSelLFT;
+        spark += `<div title="${lftLabels[di]}: ${sv} ${r.unit}" style="width:${sel?10:7}px;height:${sel?10:7}px;border-radius:50%;background:${sc};opacity:${sel?1:0.45};border:${sel?'2px solid #fff':'none'};flex-shrink:0"></div>`;
+        if (di < lftDraws.length-1) spark += '<div style="width:8px;height:1px;background:var(--border);flex-shrink:0"></div>';
       });
       spark += '</div>';
-
-      tableHTML += `
-        <div class="cbc-row">
-          <div class="cbc-row-name">${label}${spark}</div>
-          <div class="cbc-row-val" style="color:${st!=='normal'?color:'var(--text)'}">
-            ${val} <span style="font-size:10px;color:var(--muted)">${r.unit}</span>
-          </div>
-          <div class="cbc-row-badge">${badge}</div>
-          <div class="cbc-row-gauge">
-            <div class="gauge-track">
-              <div class="gauge-normal-zone" style="background:${COLORS.normal}22"></div>
-              <div class="gauge-dot" style="left:${pos}%;background:${color};box-shadow:0 0 5px ${color}"></div>
-            </div>
-            <div class="gauge-labels"><span>${r.lo}</span><span>${r.hi}</span></div>
-          </div>
-        </div>`;
+      tblHTML += `<div class="m-row">
+        <div class="m-rname">${lbl}${spark}</div>
+        <div class="m-rval" style="color:${s!=='normal'?col:'var(--text)'}">${v} <span style="font-size:10px;color:var(--muted)">${r.unit}</span></div>
+        <div class="m-rbadge">${badge}</div>
+        <div>
+          <div class="m-gt"><div class="m-gnz" style="background:${C.normal}22"></div><div class="m-gd" style="left:${pos}%;background:${col};box-shadow:0 0 5px ${col}"></div></div>
+          <div class="m-glab"><span>${r.lo}</span><span>${r.hi}</span></div>
+        </div></div>`;
     });
   });
-  document.getElementById('lft-table').innerHTML = tableHTML;
+  document.getElementById('m-lfttbl').innerHTML = tblHTML;
 }
 
-function selectLFTDraw(index) {
-  selectedLFTIndex = index;
-  renderLFT();
-}
+function mPickLFT(i) { mSelLFT=i; renderMLFT(); }
 
-// ─── INIT ───────────────────────────────────────────────────
-renderAll();
+// ── INIT ──────────────────────────────────────────────────
+setAud('family');
 </script>
-
 </body>
 </html>
