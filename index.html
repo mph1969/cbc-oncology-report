@@ -355,6 +355,11 @@
 <!-- ══ DOCTOR VIEW ══ -->
 <div id="view-doctor">
   <div class="doc-toolbar">
+    <label style="display:flex;align-items:center;gap:7px;font-size:12px;font-family:'Inter',sans-serif;color:#374151;cursor:pointer;margin-right:auto">
+      <input type="checkbox" id="latest-only-toggle" onchange="toggleLatestOnly(this.checked)"
+        style="width:15px;height:15px;cursor:pointer;accent-color:#2563eb">
+      Latest draw only
+    </label>
     <button class="doc-print-btn" onclick="window.print()">🖨 Print / Save PDF</button>
   </div>
   <div class="doc-panel">
@@ -594,13 +599,11 @@ const FAMILY_CONTENT = {
       zh:"求神保守第3轮治疗（3月9日，香港港安医院）顺利进行，让迈克的身体能够承受，副作用轻微，并感谢廖医生和医疗团队的悉心照顾。" },
     { en:"Pray for Michael and Jenny — for peace, strength, and joy together through this demanding season. Pray for wisdom and faith to lean on God throughout the full course of treatment.",
       zh:"求神赐迈克和珍妮在艰难的治疗期间彼此扶持、平安喜乐。求神赐他们智慧与信心，在整个疗程中倚靠祂。" },
-    { en:"Pray that the side effects from the injection wear off quickly. Typically last 7 - 10 days. This cycle is consistent with normal trends where the chemo begins to feel 'real'. ",
-      zh:"祈祷注射的副作用能尽快消退。通常持续7-10天。这个周期符合化疗开始产生“真实”效果的正常规律。" },
   ],
 
   // ── "What to share" paragraph ───────────────────────────
   shareText: {
-    en: "Michael is currently on CapeOX chemotherapy and doing well overall. His latest labs (March 6) show his blood strength has recovered and his liver function is excellent. His immune cells are slightly low — something the doctors are watching closely. He starts Round 3 of 8 on March 9 at Hong Kong Sanatorium Hospital. Cycle 3 injection completed with the following notes: side effects are noticeably increased. Tinnitus is now persistent. Numbing and tingling in finders and toes is elevated and more pronounced. Please keep him in your prayers.",
+    en: "Michael is currently on CapeOX chemotherapy and doing well overall. His latest labs (March 6) show his blood strength has recovered and his liver function is excellent. His immune cells are slightly low — something the doctors are watching closely. He starts Round 3 of 8 on March 9 at Hong Kong Sanatorium Hospital. Please keep him in your prayers.",
     zh: "迈克目前正在进行CapeOX化疗，整体状况良好。最新检查（3月6日）显示血红蛋白恢复正常，肝功能各项指标均正常。免疫系统（中性粒细胞）略低，医生正密切监测。第3轮治疗将于3月9日在香港港安医院进行，请继续为他代祷。",
   },
 
@@ -830,10 +833,13 @@ function renderFamily() {
 // DOCTOR VIEW
 // ══════════════════════════════════════════════════════════
 function renderDoctor() {
+  const docData = docLatestOnly ? [DATA[DATA.length-1]] : DATA;
+  const drawLabel = docLatestOnly ? `Latest draw only — ${LATEST.fullDate}` : `${docData.length} draws`;
+
   document.getElementById('d-meta').innerHTML = `
     <div><strong>Oncologists:</strong> Dr. Rico Liu (HK) · Dr. Wen (GZ)</div>
     <div><strong>Regimen:</strong> CapeOX (Capecitabine + Oxaliplatin)</div>
-    <div><strong>Report date:</strong> Mar 6, 2026 &nbsp;·&nbsp; <strong>Draws:</strong> ${DATA.length}</div>
+    <div><strong>Report date:</strong> ${LATEST.fullDate} &nbsp;·&nbsp; <strong>Showing:</strong> ${drawLabel}</div>
     <div><strong>Cycle 3 start:</strong> Mar 9, 2026 — Hong Kong Sanatorium Hospital</div>`;
 
   // CBC TABLE
@@ -844,18 +850,18 @@ function renderDoctor() {
     { t:"Other Differentials",   keys:['Eos_pct','Eos_abs','Baso_pct','Baso_abs'] },
   ];
 
-  const heads = DATA.map(d => `<th>${d.fullDate}<br><small style="font-weight:400;color:#9ca3af">${d.date.replace('\n',' ')}</small></th>`).join('');
-  let cbcHTML = `<div class="doc-section-heading">Complete Blood Count (CBC) — ${DATA.length} Draws</div>
+  const heads = docData.map(d => `<th>${d.fullDate}<br><small style="font-weight:400;color:#9ca3af">${d.date.replace('\n',' ')}</small></th>`).join('');
+  let cbcHTML = `<div class="doc-section-heading">Complete Blood Count (CBC) — ${drawLabel}</div>
     <table class="doc-table"><thead><tr>
       <th class="th-name">Marker</th><th class="th-ref">Reference</th>${heads}
     </tr></thead><tbody>`;
 
   cbcGroups.forEach(g => {
-    cbcHTML += `<tr class="group-row"><td colspan="${DATA.length+2}">${g.t}</td></tr>`;
+    cbcHTML += `<tr class="group-row"><td colspan="${docData.length+2}">${g.t}</td></tr>`;
     g.keys.forEach(k => {
       const r = REFS[k];
       let row = `<tr><td class="td-name">${r.en}</td><td class="td-ref">${r.lo}–${r.hi} ${r.unit}</td>`;
-      DATA.forEach(d => {
+      docData.forEach(d => {
         const v = d[k]; const s = status(k,v);
         row += `<td class="${s==='low'?'fl':s==='high'?'fh':''}">${v}${s==='low'?' ↓':s==='high'?' ↑':''}</td>`;
       });
@@ -866,7 +872,7 @@ function renderDoctor() {
   document.getElementById('d-cbc').innerHTML = cbcHTML;
 
   // LFT TABLE
-  const lftDraws = DATA.filter(d => d.lft);
+  const lftDraws = (docLatestOnly ? [DATA[DATA.length-1]] : DATA).filter(d => d.lft);
   if (lftDraws.length) {
     const lftGroups = [
       { t:"Liver Enzymes",         keys:['ALT','AST','ALP','GGT'] },
@@ -1207,8 +1213,23 @@ function renderMLFT() {
 
 function mPickLFT(i) { mSelLFT=i; renderMLFT(); }
 
+function toggleLatestOnly(on) {
+  // Re-render doctor view showing only the latest draw when checked
+  docLatestOnly = on;
+  renderDoctor();
+}
+
 // ── INIT ──────────────────────────────────────────────────
-setAud('family');
+// Supports deep-links:
+//   ?view=doctor   → opens directly to doctor view
+//   ?view=family   → opens directly to family view
+//   ?view=michael  → opens directly to Michael's data view
+// Send doctors:  https://mph1969.github.io/cbc-oncology-report/?view=doctor
+let docLatestOnly = false;
+const urlParams = new URLSearchParams(window.location.search);
+const startView = urlParams.get('view');
+setAud(['family','doctor','michael'].includes(startView) ? startView : 'family');
+
 </script>
 </body>
 </html>
