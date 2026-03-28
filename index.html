@@ -398,7 +398,7 @@
       <div id="m-dr1"></div><div id="m-dr2"></div>
       <div style="margin-top:6px">
         <span class="m-hlabel2" id="m-dlabel"></span>
-        <span class="m-hhighlight"> Mar 6, 2026</span>
+        <span class="m-hhighlight" id="m-latest-date"></span>
         &nbsp;·&nbsp;
         <span id="m-dcount" style="color:var(--muted);font-size:11px"></span>
       </div>
@@ -462,32 +462,34 @@ const T = {
     timelineTitle:"CapeOX Treatment Timeline",
     cycleLabel:["Cycle 1","Cycle 2","Cycle 3","Cycle 4","Cycle 5","Cycle 6","Cycle 7","Cycle 8"],
     cycleDates:["Jan 19","Feb 11","Mar 9","Mar 30","Apr 20","May 11","Jun 1","Jun 22"],
-    timelineNote:"📅 Mar 6 draw = <strong>Pre-Cycle 3 check (C2 Day 24)</strong> · Cycle 3 delayed — starts <strong>Mar 9 at HKSH</strong> · 5 draws recorded across Cycles 1, 2 &amp; pre-C3 — C3–C8 in-cycle data pending",
-    flagsTitle:"⚠ Flags &amp; Alerts — Latest Draw (Mar 6, 2026 · Pre-C3)",
+    timelineNote:"📅 Mar 27 draw = <strong>Pre-C4 check (C3 Day 18)</strong> · Cycle 4 starts <strong>Mar 30</strong> · 6 draws recorded across Cycles 1–3 — C4–C8 in-cycle data pending",
+    flagsTitle:"⚠ Flags &amp; Alerts — Latest Draw (Mar 27, 2026 · Pre-C4)",
     allNormal:"All values within reference range ✓",
     keyMetricsTitle:"Key Oncology Markers — Latest Draw",
     clinicalTitle:"Clinical Interpretation &amp; Trends",
-    chartNote:"📊 5 draws: Jan 26 (C1D7) → Feb 2 (C1D14) → Feb 18 (C2D7) → Feb 24 (C2D14) → Mar 6 (Pre-C3). Cycle 3 starts Mar 9 (HKSH). Dashed lines = reference range.",
+    chartNote:"📊 6 draws: Jan 26 (C1D7) → Feb 2 (C1D14) → Feb 18 (C2D7) → Feb 24 (C2D14) → Mar 6 (Pre-C3) → Mar 27 (Pre-C4). Cycle 4 starts Mar 30. Dashed lines = reference range.",
     fullCBCTitle:"Complete Blood Count — All Values",
     refRange:"ref", statusLow:"▼ LOW", statusHigh:"▲ HIGH", statusNormal:"✓",
     disclaimer:"Clinical reference only. Always consult your oncologist for treatment decisions.",
     groups:["🔴 Priority: Infection / Immune Risk","🩸 Red Cell / Anemia Markers","🟡 Platelet / Bleeding Risk","Other WBC Differentials"],
     clinicalNotes:[
-      { color:"low", title:"ANC — Persistent Neutropenia Across All Recorded Draws",
-        body:"C1D7: <strong>2.84</strong> ✓ → C1D14: <strong>2.85</strong> ✓ → C2D7: <strong>1.66</strong> ↓ → C2D14: <strong>1.71</strong> ↓ → Pre-C3: <strong>1.68</strong> ↓<br>ANC remains below threshold (1.8) entering Cycle 3. The Mar 6 pre-infusion value of 1.68 — taken 3 days before the planned Mar 9 start — confirms persistent Grade 1 neutropenia with no recovery during the extended inter-cycle break. Cumulative oxaliplatin myelosuppression pattern clear. Please advise on G-CSF support or dose modification plan for C3+." },
-      { color:"high", title:"Mono% — Persistently Elevated, Mono# Normal",
-        body:"C1D7: <strong>6.1%</strong> ✓ → C1D14: <strong>8.6%</strong> ↑ → C2D7: <strong>11.4%</strong> ↑↑ → C2D14: <strong>10.3%</strong> ↑ → Pre-C3: <strong>9.5%</strong> ↑<br>Mono% consistently above range (3.0–8.0%) since C1D14. Slight downward trend from peak 11.4% to 9.5% but still above ceiling. Mono# (0.37) remains within normal range throughout." },
-      { color:"high", title:"RDW-CV 16.2% — New High Flag on Mar 6",
-        body:"RDW-CV within range across all C1–C2 draws (12.7–14.5%). Mar 6 value of <strong>16.2%</strong> exceeds upper limit. Elevated RDW-CV indicates increasing red cell size variability — may reflect early iron deficiency, B12/folate depletion, or capecitabine-related macrocytosis. MCV (95.6) remains normal — mixed picture. <strong>Worth investigating nutritional indices.</strong>" },
-      { color:"normal", title:"HGB Recovered · PLT Stable · WBC Borderline",
-        body:"HGB: 153 → 152 → 150 → 147 → <strong>153 g/L</strong> — fully recovered to baseline. PLT: 350 → 353 → 247 → 258 → <strong>301</strong> — stable mid-range. WBC: 4.72 → 5.15 → 4.16 → 4.21 → <strong>3.89</strong> — slow decline, still normal (≥3.5) but approaching lower boundary." },
-      { color:"accent", title:"MPV 8.5 ↓ · Chemistry Panel All Normal",
-        body:"MPV remains below range (8.5 vs ref 9.4–12.5). Mar 6 metabolic panel: BUN 4.06, Creatinine 69 µmol/L, Na 140.3, K 4.8, Ca 2.39, Cl 106.3 — all normal. Renal function preserved." }
+      { color:"normal", title:"✅ ANC RECOVERED — 2.61 (Pre-C4, Mar 27)",
+        body:"C1D7: <strong>2.84</strong> ✓ → C1D14: <strong>2.85</strong> ✓ → C2D7: <strong>1.66</strong> ↓ → C2D14: <strong>1.71</strong> ↓ → Pre-C3: <strong>1.68</strong> ↓ → Pre-C4: <strong>2.61</strong> ✓<br>ANC has fully recovered above threshold (1.8) — Grade 1 neutropenia resolved. Excellent response between C3 and C4. WBC also stable at 4.40. Safe to proceed with Cycle 4." },
+      { color:"normal", title:"✅ Mono% Normalized — 6.7% (First time in range since C1D7)",
+        body:"C1D7: <strong>6.1%</strong> ✓ → C1D14: <strong>8.6%</strong> ↑ → C2D7: <strong>11.4%</strong> ↑↑ → C2D14: <strong>10.3%</strong> ↑ → Pre-C3: <strong>9.5%</strong> ↑ → Pre-C4: <strong>6.7%</strong> ✓<br>Relative monocytosis has resolved. After 4 consecutive above-range draws, Mono% is now fully within normal range (3.0–8.0%)." },
+      { color:"low", title:"HGB Declining — 142 g/L (still normal, trend worth watching)",
+        body:"153 → 152 → 150 → 147 → 153 → <strong>142 g/L</strong><br>HGB dropped from 153 (Pre-C3) to 142 this draw — still above the lower limit (130 g/L) but a notable step down. Cumulative chemo effect on red cell production likely contributing. Monitor closely through C4." },
+      { color:"high", title:"RDW-CV 16.9% ↑ · RDW-SD 57.8 ↑ — Continuing to Rise",
+        body:"RDW-CV: 12.7 → 13.1 → 14.1 → 14.5 → 16.2 → <strong>16.9%</strong> ↑ · RDW-SD: <strong>57.8</strong> ↑ (ref 37–54)<br>Red cell size variability continues to increase through every draw. Now 6 consecutive draws showing a clear upward trend. HGB dropping simultaneously (153→142). Pattern consistent with cumulative capecitabine effect or developing nutritional deficiency (iron/B12/folate). Worth flagging to Dr. Liu before C4." },
+      { color:"high", title:"URIC 430 µmol/L — New Mild Flag",
+        body:"Uric acid mildly above reference range (208–428 µmol/L) at <strong>430</strong>. First time flagged. Marginally elevated — may relate to cell turnover during recovery phase. Renal function preserved: CREA 72, eGFR 99." },
+      { color:"accent", title:"LFT All Normal · MPV Slightly Improved",
+        body:"Mar 27 LFT: ALT 26 · AST 31 · ALP 68 · GGT 32 — all normal, continuing excellent hepatic tolerance through Cycle 3. MPV 9.2 remains just below range (ref 9.4–12.5) but improved from 8.5 at Pre-C3. PA 0.321 (slight drop from 0.385, still within range)." }
     ],
     chartTitles:["WBC & ANC (Neutrophils)","Platelets (PLT)","Hemoglobin (HGB)","Lymphocytes % & Monocytes %","Red Cell Volume (MCV)"],
     chartLabels:{ WBC:"WBC", Neut_abs:"ANC (Neut#)", PLT:"PLT", HGB:"HGB", Lymph_pct:"Lymph%", Mono_pct:"Mono%", MCV:"MCV" },
     lftTitle:"Liver Function Tests — All Recorded Draws",
-    lftNote:"📊 LFT data from Mar 6, 2026 (Pre-C3) onwards. All values normal — excellent hepatic tolerance to CapeOX.",
+    lftNote:"📊 LFT data from Mar 6 (Pre-C3) and Mar 27 (Pre-C4). All values normal across both draws — excellent hepatic tolerance to CapeOX through Cycle 3.",
     lftGroups:[
       { title:"🟢 Liver Enzymes", keys:["ALT","AST","ALP","GGT"] },
       { title:"🟡 Bilirubin", keys:["TBIL","DBIL","IBIL"] },
@@ -504,32 +506,34 @@ const T = {
     timelineTitle:"CapeOX 治疗时间线",
     cycleLabel:["第1周期","第2周期","第3周期","第4周期","第5周期","第6周期","第7周期","第8周期"],
     cycleDates:["1月19日","2月11日","3月9日","3月30日","4月20日","5月11日","6月1日","6月22日"],
-    timelineNote:"📅 3月6日抽血 = <strong>第3周期前检查</strong> · 第3周期3月9日在HKSH开始 · 共5份记录，C3–C8中期数据待补充",
-    flagsTitle:"⚠ 异常项目 — 最近抽血（2026年3月6日）",
+    timelineNote:"📅 3月27日抽血 = <strong>第4周期前检查（第3周期第18天）</strong> · 第4周期3月30日开始 · 共6份记录，C4–C8数据待补充",
+    flagsTitle:"⚠ 异常项目 — 最近抽血（2026年3月27日）",
     allNormal:"所有指标均在参考范围内 ✓",
     keyMetricsTitle:"关键肿瘤科指标 — 最近抽血",
     clinicalTitle:"临床解读与趋势分析",
-    chartNote:"📊 共5次抽血：1月26日→2月2日→2月18日→2月24日→3月6日。虚线为参考范围。",
+    chartNote:"📊 共6次抽血：1月26日→2月2日→2月18日→2月24日→3月6日→3月27日。虚线为参考范围。",
     fullCBCTitle:"完整血常规数值",
     refRange:"参考范围", statusLow:"▼ 偏低", statusHigh:"▲ 偏高", statusNormal:"✓",
     disclaimer:"本报告仅供临床参考，所有治疗决策请咨询主治医生。",
     groups:["🔴 重点关注：感染风险 / 免疫功能","🩸 红细胞 / 贫血相关指标","🟡 血小板 / 出血风险","其他白细胞分类"],
     clinicalNotes:[
-      { color:"low", title:"ANC — 所有记录周期持续偏低",
-        body:"C1D7：<strong>2.84</strong> ✓ → C1D14：<strong>2.85</strong> ✓ → C2D7：<strong>1.66</strong> ↓ → C2D14：<strong>1.71</strong> ↓ → 第3周期前：<strong>1.68</strong> ↓<br>ANC持续低于参考下限（1.8），在延长的周期间隔中未能恢复。奥沙利铂累积性骨髓抑制趋势明确，请告知G-CSF支持或剂量调整方案。" },
-      { color:"high", title:"单核细胞百分比 — 持续升高，绝对值正常",
-        body:"C1D7：<strong>6.1%</strong> ✓ → C1D14：<strong>8.6%</strong> ↑ → C2D7：<strong>11.4%</strong> ↑↑ → C2D14：<strong>10.3%</strong> ↑ → 第3周期前：<strong>9.5%</strong> ↑<br>自C1D14起持续超出参考范围（3.0–8.0%）。绝对值（0.37）始终正常。" },
-      { color:"high", title:"RDW-CV 16.2% — 3月6日首次偏高",
-        body:"3月6日升至<strong>16.2%</strong>，首次超出参考上限。建议检查铁蛋白、B12及叶酸水平。MCV（95.6）仍正常。" },
-      { color:"normal", title:"血红蛋白恢复 · 血小板稳定 · 白细胞偏低",
-        body:"HGB：153→152→150→147→<strong>153 g/L</strong>，已恢复基线。PLT：<strong>301</strong>，稳定。WBC：<strong>3.89</strong>，仍在正常范围但接近下限。" },
-      { color:"accent", title:"MPV 偏低 · 代谢全套均正常",
-        body:"3月6日代谢全套：肌酐69、钠140.3、钾4.8、钙2.39 — 均正常。肾功能良好。" }
+      { color:"normal", title:"✅ ANC 已恢复 — 2.61（3月27日，第4周期前）",
+        body:"C1D7：<strong>2.84</strong> ✓ → C1D14：<strong>2.85</strong> ✓ → C2D7：<strong>1.66</strong> ↓ → C2D14：<strong>1.71</strong> ↓ → 第3周期前：<strong>1.68</strong> ↓ → 第4周期前：<strong>2.61</strong> ✓<br>ANC已完全恢复至正常阈值（1.8）以上，1级中性粒细胞减少已缓解。第3–4周期间隔恢复良好，可按计划开始第4周期。" },
+      { color:"normal", title:"✅ 单核细胞百分比恢复正常 — 6.7%",
+        body:"C1D7：<strong>6.1%</strong> ✓ → C1D14：<strong>8.6%</strong> ↑ → C2D7：<strong>11.4%</strong> ↑↑ → C2D14：<strong>10.3%</strong> ↑ → 第3周期前：<strong>9.5%</strong> ↑ → 第4周期前：<strong>6.7%</strong> ✓<br>连续4次超出参考范围（3.0–8.0%）后，单核细胞百分比已恢复正常。" },
+      { color:"low", title:"血红蛋白下降 — 142 g/L（仍在正常范围，需关注趋势）",
+        body:"153→152→150→147→153→<strong>142 g/L</strong><br>较3月6日（153 g/L）明显下降，仍高于下限（130 g/L）。化疗累积效应影响红细胞生成，建议第4周期期间密切监测。" },
+      { color:"high", title:"RDW-CV 16.9% ↑ · RDW-SD 57.8 ↑ — 持续升高",
+        body:"RDW-CV：12.7→13.1→14.1→14.5→16.2→<strong>16.9%</strong> ↑ · RDW-SD：<strong>57.8</strong> ↑（参考范围37–54）<br>红细胞大小不均度在每次抽血中持续上升，已连续6次呈上升趋势，同时血红蛋白下降（153→142 g/L）。与卡培他滨累积效应或营养性缺乏（铁/B12/叶酸）模式一致，建议第4周期前向廖医生说明。" },
+      { color:"high", title:"尿酸 430 µmol/L — 新出现轻微升高",
+        body:"尿酸轻微超出参考范围（208–428 µmol/L），值为<strong>430</strong>。为首次出现此标志。可能与恢复期细胞代谢相关。肾功能正常：肌酐72、eGFR 99。" },
+      { color:"accent", title:"肝功能全部正常 · MPV 略有改善",
+        body:"3月27日肝功能：ALT 26 · AST 31 · ALP 68 · GGT 32 — 全部正常，第3周期肝脏耐受性良好。MPV 9.2较之前（8.5）有所改善，仍略低于参考下限（9.4–12.5）。前白蛋白PA 0.321（较上次0.385略降，仍在正常范围内）。" }
     ],
     chartTitles:["白细胞 & ANC","血小板（PLT）","血红蛋白（HGB）","淋巴细胞% & 单核细胞%","MCV"],
     chartLabels:{ WBC:"白细胞", Neut_abs:"ANC", PLT:"血小板", HGB:"血红蛋白", Lymph_pct:"淋巴细胞%", Mono_pct:"单核细胞%", MCV:"MCV" },
     lftTitle:"肝功能检测 — 所有记录",
-    lftNote:"📊 肝功能数据自2026年3月6日起。首次检测所有指标均正常。",
+    lftNote:"📊 肝功能数据：3月6日（第3周期前）及3月27日（第4周期前）。两次检测所有指标均正常，第3周期肝脏耐受性优良。",
     lftGroups:[
       { title:"🟢 肝酶", keys:["ALT","AST","ALP","GGT"] },
       { title:"🟡 胆红素", keys:["TBIL","DBIL","IBIL"] },
@@ -547,68 +551,61 @@ const T = {
 const FAMILY_CONTENT = {
 
   // ── Header date & subtitle ──────────────────────────────
-  lastUpdated: { en:"March 6, 2026", zh:"2026年3月6日" },
-  checkLabel:  { en:"Pre-Cycle 3 Check", zh:"第3次化疗前检查" },
+  lastUpdated: { en:"March 27, 2026", zh:"2026年3月27日" },
+  checkLabel:  { en:"Pre-Cycle 4 Check · C3 Day 18", zh:"第4周期前检查 · 第3周期第18天" },
 
-  // ── Overall status line below the headline ──────────────
-  // overallSentence appears after the green/yellow status headline (auto-computed)
   overallSentence: {
-    en: "Michael is entering Cycle 3 of 8, starting March 9 at Hong Kong Sanatorium Hospital.",
-    zh: "迈克正在进行8轮化疗中的第3轮，3月9日在香港港安医院开始。",
+    en: "Michael completed Cycle 3 and is entering Cycle 4 of 8, starting March 30.",
+    zh: "迈克已完成第3轮化疗，第4轮将于3月30日开始。",
   },
 
-  // ── System status cards ─────────────────────────────────
-  // status: "good" (green) | "caution" (amber) | "progress" (blue)
   systems: [
     { icon:"🛡️",
       name:   { en:"Immune System",   zh:"免疫系统" },
-      status: "caution",
-      text:   { en:"His infection-fighting cells are slightly low from chemo — this is expected. He needs to avoid large crowds and sick contacts.",
-                zh:"免疫细胞（中性粒细胞）因化疗有所减弱，属正常反应。需注意避免感染和人多场所。" } },
+      status: "good",
+      text:   { en:"Great news — his infection-fighting cells (neutrophils) have fully recovered to normal after being low through Cycles 2 and 3. This is an encouraging sign heading into Cycle 4.",
+                zh:"好消息——他的中性粒细胞（对抗感染的免疫细胞）在第2、3周期持续偏低后，已完全恢复正常。进入第4周期是令人鼓舞的信号。" } },
     { icon:"🩸",
       name:   { en:"Blood Strength",  zh:"血液健康" },
-      status: "good",
-      text:   { en:"Hemoglobin recovered to normal — energy should be better. Platelets (clotting) are stable.",
-                zh:"血红蛋白恢复至正常水平——精力应有所改善。血小板（凝血功能）正常。" } },
+      status: "caution",
+      text:   { en:"Hemoglobin (energy/stamina) has dipped slightly compared to last draw — still within normal range, but the doctors are keeping an eye on it. Platelets are stable.",
+                zh:"血红蛋白（影响体力与精力）较上次略有下降，仍在正常范围内，医生会持续监测。血小板稳定。" } },
     { icon:"🫀",
       name:   { en:"Liver & Organs",  zh:"肝脏与器官" },
       status: "good",
-      text:   { en:"Liver function tested March 6 — all normal. His body is tolerating the chemo drugs well.",
-                zh:"3月6日肝功能检测一切正常，身体对化疗药物耐受良好。" } },
+      text:   { en:"Liver function tested March 27 — all normal. Kidney function also excellent. His body continues to handle the chemotherapy drugs well.",
+                zh:"3月27日肝功能检测——全部正常。肾功能亦良好，身体对化疗药物持续耐受良好。" } },
     { icon:"💊",
       name:   { en:"Treatment Progress", zh:"治疗进展" },
       status: "progress",
-      text:   { en:"2 of 8 cycles complete. Cycle 3 was briefly delayed due to drug supply in China — now back on track in Hong Kong.",
-                zh:"已完成8轮中的2轮。第3轮因广州药物供应问题略有延迟，现安排在香港继续。" } },
+      text:   { en:"3 of 8 cycles complete. Cycle 4 begins March 30 — right on schedule. The treatment plan is proceeding well.",
+                zh:"已完成8轮中的3轮。第4轮3月30日按计划开始，治疗顺利推进。" } },
   ],
 
-  // ── Answered prayers ────────────────────────────────────
-  // Leave array empty [] to hide this section entirely
   answeredPrayers: [
-    { en:"HGB fully recovered to baseline (153 g/L) after dropping during Cycle 2 — praise God!",
-      zh:"感谢神！血红蛋白已完全恢复至基线水平（153 g/L），第2周期下降后已完全好转。" },
-    { en:"Cycle 3 successfully relocated to Hong Kong Sanatorium after drug shortage in Guangzhou — logistics worked out.",
-      zh:"感谢神！第3轮化疗成功改在香港港安医院进行，广州药物短缺问题得以解决。" },
+    { en:"Neutrophils fully recovered — ANC back to normal (2.61) after being low through Cycles 2 & 3. Praise God for this clear answer to prayer!",
+      zh:"感谢神！中性粒细胞完全恢复正常（2.61），在第2、3周期持续偏低后终于恢复，这是对祷告明确的回应！" },
+    { en:"Monocyte % normalized for the first time since January — the immune picture has improved significantly.",
+      zh:"感谢神！单核细胞百分比自1月以来首次恢复正常，免疫状况明显改善。" },
+    { en:"Liver function remains excellent through 3 full cycles of CapeOX — a significant blessing given the potency of this regimen.",
+      zh:"感谢神！经历3轮CapeOX化疗，肝功能持续正常——考虑到化疗药物的强效，这实属蒙恩。" },
   ],
 
-  // ── Active prayer requests ───────────────────────────────
   prayerRequests: [
-    { en:"Pray for Michael's immune system. His infection-fighting white cells (neutrophils) have been running low since Cycle 2, and didn't recover to normal before Cycle 3 begins. Pray they strengthen through treatment.",
-      zh:"求神保护迈克的免疫系统。他的中性粒细胞（对抗感染的白细胞）从第2周期开始一直偏低，在第3轮化疗前未能恢复到正常水平。求神帮助它们在接下来的治疗中逐渐恢复。" },
-    { en:"Pray for a smooth Cycle 3 starting March 9 at Hong Kong Sanatorium. Pray his body tolerates it well, side effects stay manageable, and for Dr. Liu and the medical team caring for him.",
-      zh:"求神保守第3轮治疗（3月9日，香港港安医院）顺利进行，让迈克的身体能够承受，副作用轻微，并感谢廖医生和医疗团队的悉心照顾。" },
-    { en:"Pray for Michael and Jenny — for peace, strength, and joy together through this demanding season. Pray for wisdom and faith to lean on God throughout the full course of treatment.",
-      zh:"求神赐迈克和珍妮在艰难的治疗期间彼此扶持、平安喜乐。求神赐他们智慧与信心，在整个疗程中倚靠祂。" },
+    { en:"Pray for Cycle 4 starting March 30 — that Michael's body tolerates it well and the side effects remain manageable. Three cycles in, the cumulative load on his body is real.",
+      zh:"求神保守第4轮化疗（3月30日开始）顺利进行，愿迈克身体能够承受，副作用在可控范围内。经历3轮之后，化疗的累积负荷对身体是真实的考验。" },
+    { en:"Pray for Michael's hemoglobin and red blood cell health — there's a trend of increasing red cell size variability that the doctors are monitoring. Pray this stabilizes.",
+      zh:"求神保守迈克的血红蛋白和红细胞健康。目前红细胞大小不均度持续升高，医生正在监测，求神使之趋于稳定。" },
+    { en:"Pray for Michael and Jenny as they navigate treatment split between Guangzhou and Hong Kong — for strength, peace, and smooth logistics through the remaining 5 cycles.",
+      zh:"求神扶持迈克和珍妮，在广州与香港之间穿梭接受治疗的旅程中赐下力量、平安，以及顺利的安排——还有5轮需要走完。" },
   ],
 
-  // ── "What to share" paragraph ───────────────────────────
   shareText: {
-    en: "Michael is currently on CapeOX chemotherapy and doing well overall. His latest labs (March 6) show his blood strength has recovered and his liver function is excellent. His immune cells are slightly low — something the doctors are watching closely. He starts Round 3 of 8 on March 9 at Hong Kong Sanatorium Hospital. Please keep him in your prayers.",
-    zh: "迈克目前正在进行CapeOX化疗，整体状况良好。最新检查（3月6日）显示血红蛋白恢复正常，肝功能各项指标均正常。免疫系统（中性粒细胞）略低，医生正密切监测。第3轮治疗将于3月9日在香港港安医院进行，请继续为他代祷。",
+    en: "Great news — Michael's latest labs (March 27) show his immune system has fully recovered going into Cycle 4. His infection-fighting cells were low through Cycles 2 and 3, so this is a real answer to prayer. Liver and kidney function remain excellent. He starts Cycle 4 of 8 on March 30. Please continue to pray for his strength and stamina through the remaining treatment.",
+    zh: "好消息！迈克3月27日的最新检查显示，他的免疫系统在进入第4轮化疗前已完全恢复。对抗感染的中性粒细胞在第2、3周期持续偏低，如今恢复正常，是对祷告真实的回应。肝肾功能持续良好。他将于3月30日开始第4轮（共8轮）化疗，请继续为他的力量与耐力祷告。",
   },
 
-  // ── Footer ──────────────────────────────────────────────
-  cyclesComplete: 2,
+  cyclesComplete: 3,
   totalCycles: 8,
 };
 // ══════════════════════════════════════════════════════════
@@ -700,6 +697,18 @@ const DATA = [
       { label:"Page 3", url:"images/20260306-3.jpeg" },
       { label:"Page 4", url:"images/20260306-4.jpeg" },
     ]},
+  { date:"Mar 27\nPre-C4", fullDate:"Mar 27, 2026", cycleZH:"第3周期第18天（第4周期前）",
+    WBC:4.40, Neut_abs:2.61, Neut_pct:59.2, PLT:258, HGB:142, RBC:4.43,
+    Lymph_abs:1.43, Lymph_pct:32.5, Mono_abs:0.29, Mono_pct:6.7,
+    Hct:41.7, MCV:94.1, MCH:32.0, MCHC:341, RDW_CV:16.9, RDW_SD:57.8,
+    MPV:9.2, PDW:16.2, PCT:0.238, P_LCR:21.4, Eos_pct:1.1, Eos_abs:0.05, Baso_pct:0.5, Baso_abs:0.02,
+    lft:{ ALT:26, AST:31, ALP:68, GGT:32.0, TBIL:11.3, DBIL:2.10, IBIL:9.2, ALB:44.7, GLB:27.8, TP:72.5, AG:1.6, CHE:7510, TBA:1.2, PA:0.321, ADA:8.3, AFU:27.0 },
+    images:[
+      { label:"Page 1", url:"images/20260327-1.jpeg" },
+      { label:"Page 2", url:"images/20260327-2.jpeg" },
+      { label:"Page 3", url:"images/20260327-3.jpeg" },
+      { label:"Page 4", url:"images/20260327-4.jpeg" },
+    ]},
 ];
 
 const LATEST = DATA[DATA.length-1];
@@ -716,6 +725,7 @@ function status(key, val, refs) {
   return "normal";
 }
 function pct(key, val) {
+  if (val == null) return 50;
   const r = REFS[key];
   return Math.max(0, Math.min(100, 10 + ((val-r.lo)/(r.hi-r.lo))*80));
 }
@@ -931,7 +941,8 @@ function renderMichael() {
   document.getElementById('m-dr1').textContent    = t.drLiu;
   document.getElementById('m-dr2').textContent    = t.drWen;
   document.getElementById('m-dlabel').textContent = t.latestDraw+':';
-  document.getElementById('m-dcount').textContent = '5 '+t.draws;
+  document.getElementById('m-dcount').textContent = DATA.length + ' ' + t.draws;
+  document.getElementById('m-latest-date').textContent = ' ' + LATEST.fullDate;
   document.getElementById('mt-summary').textContent = t.tabSummary;
   document.getElementById('mt-charts').textContent  = t.tabCharts;
   document.getElementById('mt-full').textContent    = t.tabFull;
@@ -1025,8 +1036,8 @@ function renderMFull() {
   const t = T[mLang];
   document.getElementById('m-fulltitle').textContent = t.fullCBCTitle;
 
-  const dlEn = ["Jan 26 · C1 Day 7","Feb 2 · C1 Day 14","Feb 18 · C2 Day 7","Feb 24 · C2 Day 14","Mar 6 · Pre-C3"];
-  const dlZh = ["1月26日 · C1第7天","2月2日 · C1第14天","2月18日 · C2第7天","2月24日 · C2第14天","3月6日 · 第3周期前"];
+  const dlEn = ["Jan 26 · C1 Day 7","Feb 2 · C1 Day 14","Feb 18 · C2 Day 7","Feb 24 · C2 Day 14","Mar 6 · Pre-C3","Mar 27 · Pre-C4"];
+  const dlZh = ["1月26日 · C1第7天","2月2日 · C1第14天","2月18日 · C2第7天","2月24日 · C2第14天","3月6日 · 第3周期前","3月27日 · 第4周期前"];
   const dl = mLang==='zh' ? dlZh : dlEn;
 
   let selHTML = '';
@@ -1137,8 +1148,8 @@ function renderMLFT() {
   if (!lftDraws.length) { document.getElementById('m-lfttbl').innerHTML='<div style="color:var(--muted);padding:12px 0">No LFT data yet.</div>'; return; }
   if (mSelLFT===null || !DATA[mSelLFT]?.lft) mSelLFT = lftDraws[lftDraws.length-1].idx;
 
-  const dlEn = ["Jan 26 · C1D7","Feb 2 · C1D14","Feb 18 · C2D7","Feb 24 · C2D14","Mar 6 · Pre-C3"];
-  const dlZh = ["1月26日","2月2日","2月18日","2月24日","3月6日 · 第3周期前"];
+  const dlEn = ["Jan 26 · C1D7","Feb 2 · C1D14","Feb 18 · C2D7","Feb 24 · C2D14","Mar 6 · Pre-C3","Mar 27 · Pre-C4"];
+  const dlZh = ["1月26日","2月2日","2月18日","2月24日","3月6日 · 第3周期前","3月27日 · 第4周期前"];
   const dl = mLang==='zh' ? dlZh : dlEn;
 
   let selHTML = '';
