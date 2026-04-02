@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latest Lab Results — Michael Patrick Hanson</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230f1623'/><polyline points='10,55 25,55 32,35 42,72 52,28 62,68 70,48 78,48 90,48' fill='none' stroke='%2334d399' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: #0f1623;
+    color: #e2eaf5;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .container { max-width: 560px; width: 100%; }
+  .header {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .header-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #3b8aff;
+    margin-bottom: 8px;
+  }
+  .header-name { font-size: 20px; font-weight: 700; color: #e2eaf5; }
+  .header-sub { font-size: 12px; color: #7a90a8; margin-top: 4px; }
+
+  .draw-card {
+    background: #161f30;
+    border: 1px solid #1e2d45;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 14px;
+  }
+  .draw-date {
+    font-size: 16px;
+    font-weight: 700;
+    color: #3b8aff;
+    margin-bottom: 2px;
+  }
+  .draw-cycle { font-size: 12px; color: #7a90a8; margin-bottom: 16px; }
+
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .metric {
+    background: #0f1623;
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid;
+    text-align: center;
+  }
+  .metric-name { font-size: 10px; color: #7a90a8; font-weight: 600; margin-bottom: 4px; }
+  .metric-val { font-size: 18px; font-weight: 700; line-height: 1; }
+  .metric-unit { font-size: 9px; color: #7a90a8; margin-top: 2px; }
+
+  .flags-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 4px;
+  }
+  .flag {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 4px;
+    border: 1px solid;
+  }
+  .flag-high { color: #ffaa00; background: rgba(255,170,0,0.12); border-color: rgba(255,170,0,0.3); }
+  .flag-low  { color: #ff6b6b; background: rgba(255,107,107,0.12); border-color: rgba(255,107,107,0.3); }
+  .flag-ok   { color: #34d399; background: rgba(52,211,153,0.12); border-color: rgba(52,211,153,0.3); }
+
+  .subscribe-card {
+    background: #161f30;
+    border: 1px solid #1e2d45;
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+  }
+  .sub-title { font-size: 13px; font-weight: 700; color: #e2eaf5; margin-bottom: 3px; }
+  .sub-text  { font-size: 11px; color: #7a90a8; margin-bottom: 12px; line-height: 1.5; }
+  .sub-form  { display: flex; gap: 8px; flex-wrap: wrap; }
+  .sub-input {
+    flex: 1; min-width: 160px;
+    padding: 8px 12px; border-radius: 6px;
+    border: 1px solid #1e2d45; background: #0f1623;
+    font-size: 12px; color: #e2eaf5; outline: none;
+    font-family: inherit;
+  }
+  .sub-input:focus { border-color: #3b8aff; }
+  .sub-input::placeholder { color: #7a90a8; }
+  .sub-btn {
+    padding: 8px 16px; border-radius: 6px;
+    background: #3b8aff; color: #fff; border: none;
+    font-size: 12px; font-weight: 600; cursor: pointer;
+    font-family: inherit; white-space: nowrap;
+  }
+  .sub-btn:hover { background: #2563eb; }
+  .sub-note { font-size: 10px; color: #7a90a8; margin-top: 8px; }
+
+  .redirect-notice {
+    text-align: center;
+    font-size: 11px;
+    color: #7a90a8;
+    padding: 8px 0;
+  }
+  .redirect-notice a { color: #3b8aff; text-decoration: none; }
+  .redirect-notice a:hover { text-decoration: underline; }
+  .countdown { font-weight: 700; color: #3b8aff; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <div class="header-label">CBC · Oncology · Latest Results</div>
+    <div class="header-name">Michael Patrick Hanson</div>
+    <div class="header-sub">CapeOX Chemotherapy · Blood Draw Summary</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       UPDATE THIS SECTION WHEN NEW LABS ARE POSTED
+       Change the values below, save, and upload to GitHub.
+       This is the only section that needs editing.
+  ═══════════════════════════════════════════════════════ -->
+  <script>
+  const DRAW = {
+    date:        "Mar 27, 2026",
+    cycle:       "Pre-Cycle 4 · C3 Day 18",
+    cycleZH:     "第4周期前 · 第3周期第18天",
+
+    // Key oncology markers
+    WBC:         4.40,
+    ANC:         2.61,    // Neutrophil absolute — threshold 1.8
+    HGB:         142,
+    PLT:         258,
+    Mono_pct:    6.7,
+    RDW_CV:      16.9,
+
+    // LFT summary
+    lft_normal:  true,    // true = all LFT values within range
+    ALT:         26,
+    AST:         31,
+
+    // Flags — add any out-of-range items here
+    flags: [
+      { label:"RDW-CV 16.9%", type:"high" },
+      { label:"RDW-SD 57.8",  type:"high" },
+      { label:"URIC 430",     type:"high" },
+      { label:"ANC ✓",        type:"ok"   },
+      { label:"LFT ✓",        type:"ok"   },
+    ],
+  };
+  </script>
+  <!-- ═══════════════════════════════════════════════════════
+       END UPDATE SECTION
+  ═══════════════════════════════════════════════════════ -->
+
+  <div class="draw-card" id="draw-card"></div>
+
+  <div class="subscribe-card">
+    <div class="sub-title">🔔 Get notified when new results are posted</div>
+    <div class="sub-text">Enter your email — you'll receive a notification only when new blood draw data is available. Typically once per week during active treatment.</div>
+    <!--
+      DOCTOR SUBSCRIBE FORM
+      Replace the action URL below with your follow.it token for labs.html
+      Get it at: follow.it → Add source → enter this page's URL
+    -->
+    <form class="sub-form"
+      action="DOCTOR_FOLLOWIT_TOKEN_REPLACE_ME"
+      method="post"
+      target="followit-labs-popup"
+      onsubmit="window.open('','followit-labs-popup','width=500,height=600,resizable=yes'); return true;">
+      <input class="sub-input" type="email" name="email" placeholder="your@email.com" required />
+      <button class="sub-btn" type="submit">Subscribe</button>
+    </form>
+    <div class="sub-note">Powered by follow.it · Free · Unsubscribe anytime</div>
+  </div>
+
+  <div class="redirect-notice">
+    Redirecting to full report in <span class="countdown" id="countdown">5</span>s ·
+    <a href="https://mph1969.github.io/cbc-oncology-report/?view=doctor">Open now →</a>
+  </div>
+
+</div>
+
+<script>
+// ── RENDER DRAW CARD ──────────────────────────────────────
+const C = { low:"#ff6b6b", high:"#ffaa00", normal:"#34d399", ok:"#34d399" };
+
+function ancColor(v)  { return v >= 1.8  ? C.normal : C.low; }
+function hgbColor(v)  { return v >= 130  ? C.normal : C.low; }
+function pltColor(v)  { return v >= 125  ? C.normal : C.low; }
+function rdwColor(v)  { return v <= 14.8 ? C.normal : C.high; }
+function monoColor(v) { return v <= 8.0  ? C.normal : C.high; }
+
+const card = document.getElementById('draw-card');
+card.innerHTML = `
+  <div class="draw-date">${DRAW.date}</div>
+  <div class="draw-cycle">${DRAW.cycle}</div>
+  <div class="metrics">
+    <div class="metric" style="border-color:${ancColor(DRAW.ANC)}44">
+      <div class="metric-name">ANC</div>
+      <div class="metric-val" style="color:${ancColor(DRAW.ANC)}">${DRAW.ANC}</div>
+      <div class="metric-unit">10⁹/L · ref ≥1.8</div>
+    </div>
+    <div class="metric" style="border-color:${hgbColor(DRAW.HGB)}44">
+      <div class="metric-name">HGB</div>
+      <div class="metric-val" style="color:${hgbColor(DRAW.HGB)}">${DRAW.HGB}</div>
+      <div class="metric-unit">g/L · ref 130–175</div>
+    </div>
+    <div class="metric" style="border-color:${pltColor(DRAW.PLT)}44">
+      <div class="metric-name">PLT</div>
+      <div class="metric-val" style="color:${pltColor(DRAW.PLT)}">${DRAW.PLT}</div>
+      <div class="metric-unit">10⁹/L · ref 125–350</div>
+    </div>
+    <div class="metric" style="border-color:${rdwColor(DRAW.RDW_CV)}44">
+      <div class="metric-name">RDW-CV</div>
+      <div class="metric-val" style="color:${rdwColor(DRAW.RDW_CV)}">${DRAW.RDW_CV}%</div>
+      <div class="metric-unit">ref 11.5–14.8</div>
+    </div>
+    <div class="metric" style="border-color:${monoColor(DRAW.Mono_pct)}44">
+      <div class="metric-name">Mono%</div>
+      <div class="metric-val" style="color:${monoColor(DRAW.Mono_pct)}">${DRAW.Mono_pct}%</div>
+      <div class="metric-unit">ref 3.0–8.0</div>
+    </div>
+    <div class="metric" style="border-color:${DRAW.lft_normal ? C.normal : C.high}44">
+      <div class="metric-name">LFT</div>
+      <div class="metric-val" style="color:${DRAW.lft_normal ? C.normal : C.high};font-size:14px">${DRAW.lft_normal ? 'ALL\nNORMAL' : 'FLAGS'}</div>
+      <div class="metric-unit">ALT ${DRAW.ALT} · AST ${DRAW.AST}</div>
+    </div>
+  </div>
+  <div class="flags-row">
+    ${DRAW.flags.map(f => `<span class="flag flag-${f.type}">${f.label}</span>`).join('')}
+  </div>`;
+
+// ── COUNTDOWN REDIRECT ────────────────────────────────────
+let secs = 5;
+const el = document.getElementById('countdown');
+const timer = setInterval(() => {
+  secs--;
+  if (el) el.textContent = secs;
+  if (secs <= 0) {
+    clearInterval(timer);
+    window.location.href = 'https://mph1969.github.io/cbc-oncology-report/?view=doctor';
+  }
+}, 1000);
+</script>
+
+</body>
+</html>
