@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Michael's Health Update</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230f1623'/><polyline points='10,55 25,55 32,35 42,72 52,28 62,68 70,48 78,48 90,48' fill='none' stroke='%2334d399' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/></svg>">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500;700&family=Inter:wght@400;500;600;700&display=swap');
@@ -920,6 +921,10 @@ function renderDoctor() {
   const docData = docLatestOnly ? [DATA[DATA.length-1]] : DATA;
   const drawLabel = docLatestOnly ? `Latest draw only — ${LATEST.fullDate}` : `${docData.length} draws`;
 
+  // Wire subscribe button
+  const subLink = document.getElementById('doc-subscribe-link');
+  if (subLink) subLink.href = FOLLOWIT_URL;
+
   document.getElementById('d-meta').innerHTML = `
     <div><strong>Oncologists:</strong> Dr. Rico Liu (HK) · Dr. Wen (GZ)</div>
     <div><strong>Regimen:</strong> CapeOX (Capecitabine + Oxaliplatin)</div>
@@ -1304,16 +1309,9 @@ function toggleLatestOnly(on) {
 }
 
 // ── INIT ──────────────────────────────────────────────────
-// Deep-link support:
-//   ?view=doctor   → opens directly to doctor view
-//   ?view=family   → opens directly to family view
-//   ?view=michael  → opens directly to Michael's data view
 let docLatestOnly = false;
-const PAGE_URL = "https://mph1969.github.io/cbc-oncology-report/";
+const PAGE_URL    = "https://mph1969.github.io/cbc-oncology-report/";
 const FOLLOWIT_URL = `https://follow.it/${encodeURIComponent(PAGE_URL)}`;
-
-// Wire doctor subscribe button
-document.getElementById('doc-subscribe-link').href = FOLLOWIT_URL;
 
 const urlParams = new URLSearchParams(window.location.search);
 const startView = urlParams.get('view');
