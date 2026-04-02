@@ -208,16 +208,42 @@
     font-size: 12px; font-weight: 600; cursor: pointer;
     font-family: 'Inter', sans-serif;
   }
-  .doc-subscribe-btn {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 8px 16px; border-radius: 8px;
-    background: #fff; color: #374151;
-    border: 1px solid #d1d5db;
-    font-size: 12px; font-weight: 600; cursor: pointer;
-    font-family: 'Inter', sans-serif; text-decoration: none;
-    transition: all 0.15s;
+  .doc-subscribe-card {
+    margin-top: 14px;
+    background: #0f1623;
+    border: 1px solid #1e2d45;
+    border-radius: 10px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
   }
-  .doc-subscribe-btn:hover { border-color: #2563eb; color: #2563eb; background: #eff6ff; }
+  .doc-subscribe-left { flex: 1; min-width: 200px; }
+  .doc-subscribe-title { font-size: 13px; font-weight: 700; color: #e2eaf5; margin-bottom: 2px; }
+  .doc-subscribe-sub { font-size: 11px; color: #7a90a8; }
+  .doc-subscribe-form { display: flex; gap: 8px; flex-wrap: wrap; }
+  .doc-subscribe-input {
+    padding: 7px 12px; border-radius: 6px;
+    border: 1px solid #1e2d45; background: #161f30;
+    font-size: 12px; font-family: 'Inter', sans-serif;
+    color: #e2eaf5; outline: none; width: 200px;
+  }
+  .doc-subscribe-input:focus { border-color: #3b8aff; box-shadow: 0 0 0 2px rgba(59,138,255,0.15); }
+  .doc-subscribe-input::placeholder { color: #7a90a8; }
+  .doc-subscribe-btn {
+    padding: 7px 14px; border-radius: 6px;
+    background: #3b8aff; color: #fff; border: none;
+    font-size: 12px; font-weight: 600; cursor: pointer;
+    font-family: 'Inter', sans-serif; white-space: nowrap;
+    transition: background 0.2s;
+  }
+  .doc-subscribe-btn:hover { background: #2563eb; }
+  .doc-subscribe-note { font-size: 10px; color: #7a90a8; margin-top: 6px; }
+  @media print {
+    .doc-subscribe-card { display: none !important; }
+  }
   .doc-panel {
     background: #fff;
     border-radius: 12px;
@@ -403,9 +429,6 @@
         style="width:15px;height:15px;cursor:pointer;accent-color:#2563eb">
       Latest draw only
     </label>
-    <a id="doc-subscribe-link" href="#" target="_blank" rel="nofollow" class="doc-subscribe-btn">
-      🔔 Notify me of new lab results
-    </a>
     <button class="doc-print-btn" onclick="window.print()">🖨 Print / Save PDF</button>
   </div>
   <div class="doc-panel">
@@ -424,6 +447,7 @@
       <span>Unmarked = within reference range</span>
     </div>
     <div class="doc-disclaimer">Clinical reference only. All treatment decisions should be confirmed with the treating oncologist. Values should be verified against original laboratory reports.</div>
+    <div id="doc-subscribe-card"></div>
   </div>
 </div>
 
@@ -928,9 +952,30 @@ function renderDoctor() {
   const docData = docLatestOnly ? [DATA[DATA.length-1]] : DATA;
   const drawLabel = docLatestOnly ? `Latest draw only — ${LATEST.fullDate}` : `${docData.length} draws`;
 
-  // Wire subscribe button
-  const subLink = document.getElementById('doc-subscribe-link');
-  if (subLink) subLink.href = FOLLOWIT_URL;
+  // Doctor subscribe card (navy)
+  const DOC_FORM_ACTION = "DOCTOR_FOLLOWIT_TOKEN_REPLACE_ME";
+  const docSubCard = document.getElementById('doc-subscribe-card');
+  if (docSubCard) {
+    if (DOC_FORM_ACTION === "DOCTOR_FOLLOWIT_TOKEN_REPLACE_ME") {
+      docSubCard.innerHTML = '';  // hide until token is set
+    } else {
+      docSubCard.className = 'doc-subscribe-card';
+      docSubCard.innerHTML = `
+        <div class="doc-subscribe-left">
+          <div class="doc-subscribe-title">🔔 Get notified when new lab results are posted</div>
+          <div class="doc-subscribe-sub">Enter your email — you'll only be notified when new blood draw data is available.</div>
+          <div class="doc-subscribe-note">Powered by follow.it · Free · Unsubscribe anytime</div>
+        </div>
+        <div>
+          <form class="doc-subscribe-form" action="${DOC_FORM_ACTION}" method="post"
+            target="followit-doc-popup"
+            onsubmit="window.open('','followit-doc-popup','width=500,height=600,resizable=yes'); return true;">
+            <input class="doc-subscribe-input" type="email" name="email" placeholder="your@email.com" required />
+            <button class="doc-subscribe-btn" type="submit">Subscribe</button>
+          </form>
+        </div>`;
+    }
+  }
 
   document.getElementById('d-meta').innerHTML = `
     <div><strong>Oncologists:</strong> Dr. Rico Liu (HK) · Dr. Wen (GZ)</div>
