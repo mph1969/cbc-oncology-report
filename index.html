@@ -155,23 +155,23 @@
   .fam-footer { text-align: center; font-size: 11px; color: #94a3b8; padding: 6px 0 4px; }
 
   .fam-subscribe {
-    background: linear-gradient(135deg, #f0fdf4 0%, #eff6ff 100%);
-    border: 1px solid #d1fae5;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
     border-radius: 16px;
     padding: 18px 20px;
     margin-bottom: 14px;
     text-align: center;
   }
-  .fam-subscribe-title { font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 4px; }
-  .fam-subscribe-sub { font-size: 12px; color: #64748b; margin-bottom: 14px; line-height: 1.5; }
+  .fam-subscribe-title { font-size: 14px; font-weight: 700; color: #14532d; margin-bottom: 4px; }
+  .fam-subscribe-sub { font-size: 12px; color: #166534; margin-bottom: 14px; line-height: 1.5; }
   .fam-subscribe-form { display: flex; gap: 8px; max-width: 340px; margin: 0 auto; }
   .fam-subscribe-input {
     flex: 1; padding: 9px 12px; border-radius: 8px;
-    border: 1px solid #cbd5e1; font-size: 13px;
+    border: 1px solid #86efac; font-size: 13px;
     font-family: 'Inter', sans-serif; outline: none;
-    color: #0f172a;
+    color: #0f172a; background: #fff;
   }
-  .fam-subscribe-input:focus { border-color: #16a34a; box-shadow: 0 0 0 2px #bbf7d033; }
+  .fam-subscribe-input:focus { border-color: #16a34a; box-shadow: 0 0 0 2px #bbf7d066; }
   .fam-subscribe-btn {
     padding: 9px 16px; border-radius: 8px;
     background: #16a34a; color: #fff; border: none;
@@ -180,7 +180,7 @@
     transition: background 0.2s;
   }
   .fam-subscribe-btn:hover { background: #15803d; }
-  .fam-subscribe-note { font-size: 10px; color: #94a3b8; margin-top: 8px; }
+  .fam-subscribe-note { font-size: 10px; color: #166534; margin-top: 8px; opacity: 0.8; }
   @media (max-width: 400px) {
     .fam-subscribe-form { flex-direction: column; }
   }
@@ -898,16 +898,21 @@ function renderFamily() {
   // Subscribe card — family path (all updates)
   const subTitle = zh ? "📬 订阅所有动态通知" : "📬 Get Notified of Updates";
   const subSub   = zh
-    ? "点击下方按钮，当此页面有任何新动态时，您将收到邮件通知——包括祷告事项更新、病情进展等。"
-    : "Click below to receive an email whenever this page is updated — prayer requests, status changes, and new information.";
-  const subBtn   = zh ? "订阅家庭动态" : "Subscribe to Family Updates";
+    ? "输入您的邮箱，当此页面有任何新动态时，您将收到邮件通知。"
+    : "Enter your email to receive a notification whenever this page is updated.";
+  const subBtn   = zh ? "订阅" : "Subscribe";
   const subNote  = zh ? "通过 follow.it 提供 · 免费 · 随时取消订阅" : "Powered by follow.it · Free · Unsubscribe anytime";
+  const FORM_ACTION = "https://api.follow.it/subscription-form/SjBlTmVVd1BZdW5CS2NUd0Y1TXE2aUE1RVc3NmFtVEVZNGNCWTRLbW4wNEJQdkRXdlRmRUdaRFF3WThkRkVmdE90a2JQUERKRGVpUGtvWVVaRmZOMFZBSHQreEsxMS90YUFWNXRSVjNPbk0xTDRqY3NJczBXUFg5U2hDYkhUNGt8cUZyYXdLRE1ObnlyMFJwSElkSXd6SEtYanZiVHExUjF1WHF6Uy9HZUdkRT0=/21";
   document.getElementById('f-subscribe').innerHTML = `
     <div class="fam-subscribe-title">${subTitle}</div>
     <div class="fam-subscribe-sub">${subSub}</div>
-    <a href="${FOLLOWIT_URL}" target="_blank" rel="nofollow" class="fam-subscribe-btn" style="display:inline-block;text-decoration:none;padding:10px 24px;font-size:13px;border-radius:8px;margin-bottom:8px">
-      ${subBtn}
-    </a>
+    <form class="fam-subscribe-form" action="${FORM_ACTION}" method="post"
+      target="followit-popup"
+      onsubmit="window.open('','followit-popup','width=500,height=600,resizable=yes'); return true;">
+      <input class="fam-subscribe-input" type="email" name="email"
+        placeholder="${zh ? '您的邮箱地址' : 'your@email.com'}" required />
+      <button class="fam-subscribe-btn" type="submit">${subBtn}</button>
+    </form>
     <div class="fam-subscribe-note">${subNote}</div>`;
 
   // Footer from config
