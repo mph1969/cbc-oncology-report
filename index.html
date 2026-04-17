@@ -4,7 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Michael's Health Update</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230f1623'/><polyline points='10,55 25,55 32,35 42,72 52,28 62,68 70,48 78,48 90,48' fill='none' stroke='%2334d399' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+<link rel="icon" type="image/png" sizes="512x512" href="favicon-512.png">
+<link rel="icon" type="image/png" sizes="256x256" href="favicon-256.png">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon" href="favicon-512.png">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500;700&family=Inter:wght@400;500;600;700&display=swap');
@@ -532,36 +535,34 @@ const T = {
     timelineTitle:"CapeOX Treatment Timeline",
     cycleLabel:["Cycle 1","Cycle 2","Cycle 3","Cycle 4","Cycle 5","Cycle 6","Cycle 7","Cycle 8"],
     cycleDates:["Jan 19","Feb 11","Mar 9","Mar 30","Apr 20","May 11","Jun 1","Jun 22"],
-    timelineNote:"📅 Mar 27 draw = <strong>Pre-C4 check (C3 Day 18)</strong> · Cycle 4 starts <strong>Mar 30</strong> · 6 draws recorded across Cycles 1–3 — C4–C8 in-cycle data pending",
-    flagsTitle:"⚠ Flags &amp; Alerts — Latest Draw (Mar 27, 2026 · Pre-C4)",
+    timelineNote:"📅 Apr 17 draw = <strong>Pre-C5 check (C4 Day 18)</strong> · Cycle 5 starts <strong>Apr 21</strong> · 7 draws recorded across Cycles 1–4 — C5–C8 data pending",
+    flagsTitle:"⚠ Flags &amp; Alerts — Latest Draw (Apr 17, 2026 · Pre-C5)",
     allNormal:"All values within reference range ✓",
     keyMetricsTitle:"Key Oncology Markers — Latest Draw",
     clinicalTitle:"Clinical Interpretation &amp; Trends",
-    chartNote:"📊 6 draws: Jan 26 (C1D7) → Feb 2 (C1D14) → Feb 18 (C2D7) → Feb 24 (C2D14) → Mar 6 (Pre-C3) → Mar 27 (Pre-C4). Cycle 4 starts Mar 30. Dashed lines = reference range.",
+    chartNote:"📊 7 draws: Jan 26 → Feb 2 → Feb 18 → Feb 24 → Mar 6 → Mar 27 → Apr 17 (Pre-C5). Cycle 5 starts Apr 21. Dashed lines = reference range.",
     fullCBCTitle:"Complete Blood Count — All Values",
     refRange:"ref", statusLow:"▼ LOW", statusHigh:"▲ HIGH", statusNormal:"✓",
     disclaimer:"Clinical reference only. Always consult your oncologist for treatment decisions.",
     groups:["🔴 Priority: Infection / Immune Risk","🩸 Red Cell / Anemia Markers","🟡 Platelet / Bleeding Risk","Other WBC Differentials"],
     clinicalNotes:[
-      { color:"normal", title:"✅ ANC RECOVERED — 2.61 (Pre-C4, Mar 27)",
-        body:"C1D7: <strong>2.84</strong> ✓ → C1D14: <strong>2.85</strong> ✓ → C2D7: <strong>1.66</strong> ↓ → C2D14: <strong>1.71</strong> ↓ → Pre-C3: <strong>1.68</strong> ↓ → Pre-C4: <strong>2.61</strong> ✓<br>ANC has fully recovered above threshold (1.8) — Grade 1 neutropenia resolved. Excellent response between C3 and C4. WBC also stable at 4.40. Safe to proceed with Cycle 4." },
-      { color:"normal", title:"✅ Mono% Normalized — 6.7% (First time in range since C1D7)",
-        body:"C1D7: <strong>6.1%</strong> ✓ → C1D14: <strong>8.6%</strong> ↑ → C2D7: <strong>11.4%</strong> ↑↑ → C2D14: <strong>10.3%</strong> ↑ → Pre-C3: <strong>9.5%</strong> ↑ → Pre-C4: <strong>6.7%</strong> ✓<br>Relative monocytosis has resolved. After 4 consecutive above-range draws, Mono% is now fully within normal range (3.0–8.0%)." },
-      { color:"low", title:"HGB Declining — 142 g/L (still normal, trend worth watching)",
-        body:"153 → 152 → 150 → 147 → 153 → <strong>142 g/L</strong><br>HGB dropped from 153 (Pre-C3) to 142 this draw — still above the lower limit (130 g/L) but a notable step down. Cumulative chemo effect on red cell production likely contributing. Monitor closely through C4." },
-      { color:"low", title:"⚠ Peripheral Neuropathy Escalating — C4D4",
-        body:"Hands and feet numbness now significant — described as comparable to post-workout forearm fatigue where grip control is lost, with pain in both forearms. <strong>Constant tingling in arms, fingers and feet</strong> since C3. Infusion arm (left) pain: <strong>6/10 on C4D1</strong> (vs 2/10 across C1–C3), declining to ~4/10 by D4. Days 1–2 unable to rest arm on surfaces. Dr. Liu has commenced Vitamin B supplementation (B1/B6/B12 complex) to support myelin sheath integrity and nerve conduction — these co-factors are essential for axonal repair under cumulative oxaliplatin load. Cold sensitivity improving: C1–C3 was 3/10, C4 tracking at 2/10 and dissipating." },
-      { color:"high", title:"RDW-CV 16.9% ↑ · RDW-SD 57.8 ↑ — Continuing to Rise",
-        body:"RDW-CV: 12.7 → 13.1 → 14.1 → 14.5 → 16.2 → <strong>16.9%</strong> ↑ · RDW-SD: <strong>57.8</strong> ↑ (ref 37–54)<br>Red cell size variability continues to increase through every draw. Now 6 consecutive draws showing a clear upward trend. HGB dropping simultaneously (153→142). Pattern consistent with cumulative capecitabine effect or developing nutritional deficiency (iron/B12/folate). Worth flagging to Dr. Liu before C4." },
-      { color:"high", title:"URIC 430 µmol/L — New Mild Flag",
-        body:"Uric acid mildly above reference range (208–428 µmol/L) at <strong>430</strong>. First time flagged. Marginally elevated — may relate to cell turnover during recovery phase. Renal function preserved: CREA 72, eGFR 99." },
-      { color:"accent", title:"LFT All Normal · MPV Slightly Improved",
-        body:"Mar 27 LFT: ALT 26 · AST 31 · ALP 68 · GGT 32 — all normal, continuing excellent hepatic tolerance through Cycle 3. MPV 9.2 remains just below range (ref 9.4–12.5) but improved from 8.5 at Pre-C3. PA 0.321 (slight drop from 0.385, still within range)." }
+      { color:"high", title:"RDW-CV 19.0% ↑↑ · RDW-SD 66.8 ↑↑ — Accelerating",
+        body:"RDW-CV: 12.7 → 13.1 → 14.1 → 14.5 → 16.2 → 16.9 → <strong>19.0%</strong> ↑↑ · RDW-SD: <strong>66.8</strong> ↑↑ (ref 37–54)<br>Seven consecutive draws showing unbroken upward progression. RDW-CV has increased by 2.1 points in one draw cycle — the steepest single-draw jump yet. Combined with HGB holding flat (143) and AST approaching upper limit (38 vs ref 40), the red cell picture warrants close attention entering C5. Nutritional indices (iron/B12/folate) still worth checking." },
+      { color:"high", title:"Mono% 8.3% — Above Range Again",
+        body:"After normalizing to 6.7% Pre-C4, Mono% has crept above range again at <strong>8.3%</strong> (ref 3.0–8.0%). Pattern of oscillating around the upper boundary continues. Mono# (0.33) remains within normal range." },
+      { color:"high", title:"AST 38 — Approaching Upper Limit",
+        body:"AST: 33 (Mar 6) → 31 (Mar 27) → <strong>38</strong> (Apr 17). Ref upper limit is 40. First time approaching the ceiling. ALT stable at 32. Still within range but worth flagging given the trajectory entering Cycle 5. CHE 7620 (stable, well within range)." },
+      { color:"normal", title:"ANC 2.32 ✓ · HGB 143 · PLT 276 — Core Markers Stable · RBC Mildly Low",
+        body:"ANC: <strong>2.32</strong> — above threshold (1.8), second consecutive pre-cycle draw normal. HGB: <strong>143</strong> g/L — slight recovery. PLT: <strong>276</strong> — best result since C1D14. WBC 4.02 stable.<br><strong>RBC 4.27</strong> ↓ (ref 4.3–5.8) — first time below range, mild. MPV 8.8 ↓ (ref 9.4–12.5) — persistent, consistent with prior draws." },
+      { color:"low", title:"⚠ Neuropathy Escalating — New Medications Prescribed",
+        body:"Peripheral neuropathy now the dominant clinical concern. Dr. Wen (Guangzhou) prescribed two targeted medications this cycle:<br><strong>甲钴胺 Mecobalamin</strong> (active B12, methylcobalamin) — supports myelin repair and axonal regeneration.<br><strong>依帕司他 Epalrestat 50mg</strong> — aldose reductase inhibitor; reduces sorbitol accumulation in nerve cells, a specific mechanism for treating chemotherapy-induced peripheral neuropathy. This is a real pharmacological intervention, not a supplement. Patient reports numbness and weakness in fingers, hands, arms and feet described as 'mild paralysis.' Cycle 5 starts Monday." },
+      { color:"high", title:"URIC 429 · P-LCR 17.7 ↓ — Minor Flags Persist",
+        body:"URIC 429 µmol/L — still marginally above range (208–428), essentially unchanged from 430 at Pre-C4. P-LCR 17.7 below range (ref 19.7–42.4%) — present last draw as well. Both minor, renal function preserved (CREA 74, eGFR 98)." },
     ],
     chartTitles:["WBC & ANC (Neutrophils)","Platelets (PLT)","Hemoglobin (HGB)","Lymphocytes % & Monocytes %","Red Cell Volume (MCV)"],
     chartLabels:{ WBC:"WBC", Neut_abs:"ANC (Neut#)", PLT:"PLT", HGB:"HGB", Lymph_pct:"Lymph%", Mono_pct:"Mono%", MCV:"MCV" },
     lftTitle:"Liver Function Tests — All Recorded Draws",
-    lftNote:"📊 LFT data from Mar 6 (Pre-C3) and Mar 27 (Pre-C4). All values normal across both draws — excellent hepatic tolerance to CapeOX through Cycle 3.",
+    lftNote:"📊 LFT data from Mar 6 (Pre-C3), Mar 27 (Pre-C4), and Apr 17 (Pre-C5). All within range across all draws — AST 38 approaching upper limit (40) on latest draw, worth monitoring.",
     lftGroups:[
       { title:"🟢 Liver Enzymes", keys:["ALT","AST","ALP","GGT"] },
       { title:"🟡 Bilirubin", keys:["TBIL","DBIL","IBIL"] },
@@ -578,36 +579,34 @@ const T = {
     timelineTitle:"CapeOX 治疗时间线",
     cycleLabel:["第1周期","第2周期","第3周期","第4周期","第5周期","第6周期","第7周期","第8周期"],
     cycleDates:["1月19日","2月11日","3月9日","3月30日","4月20日","5月11日","6月1日","6月22日"],
-    timelineNote:"📅 3月27日抽血 = <strong>第4周期前检查（第3周期第18天）</strong> · 第4周期3月30日开始 · 共6份记录，C4–C8数据待补充",
-    flagsTitle:"⚠ 异常项目 — 最近抽血（2026年3月27日）",
+    timelineNote:"📅 4月17日抽血 = <strong>第5周期前检查（第4周期第18天）</strong> · 第5周期4月21日开始 · 共7份记录，C5–C8数据待补充",
+    flagsTitle:"⚠ 异常项目 — 最近抽血（2026年4月17日）",
     allNormal:"所有指标均在参考范围内 ✓",
     keyMetricsTitle:"关键肿瘤科指标 — 最近抽血",
     clinicalTitle:"临床解读与趋势分析",
-    chartNote:"📊 共6次抽血：1月26日→2月2日→2月18日→2月24日→3月6日→3月27日。虚线为参考范围。",
+    chartNote:"📊 共7次抽血：1月26日→2月2日→2月18日→2月24日→3月6日→3月27日→4月17日。虚线为参考范围。",
     fullCBCTitle:"完整血常规数值",
     refRange:"参考范围", statusLow:"▼ 偏低", statusHigh:"▲ 偏高", statusNormal:"✓",
     disclaimer:"本报告仅供临床参考，所有治疗决策请咨询主治医生。",
     groups:["🔴 重点关注：感染风险 / 免疫功能","🩸 红细胞 / 贫血相关指标","🟡 血小板 / 出血风险","其他白细胞分类"],
     clinicalNotes:[
-      { color:"normal", title:"✅ ANC 已恢复 — 2.61（3月27日，第4周期前）",
-        body:"C1D7：<strong>2.84</strong> ✓ → C1D14：<strong>2.85</strong> ✓ → C2D7：<strong>1.66</strong> ↓ → C2D14：<strong>1.71</strong> ↓ → 第3周期前：<strong>1.68</strong> ↓ → 第4周期前：<strong>2.61</strong> ✓<br>ANC已完全恢复至正常阈值（1.8）以上，1级中性粒细胞减少已缓解。第3–4周期间隔恢复良好，可按计划开始第4周期。" },
-      { color:"normal", title:"✅ 单核细胞百分比恢复正常 — 6.7%",
-        body:"C1D7：<strong>6.1%</strong> ✓ → C1D14：<strong>8.6%</strong> ↑ → C2D7：<strong>11.4%</strong> ↑↑ → C2D14：<strong>10.3%</strong> ↑ → 第3周期前：<strong>9.5%</strong> ↑ → 第4周期前：<strong>6.7%</strong> ✓<br>连续4次超出参考范围（3.0–8.0%）后，单核细胞百分比已恢复正常。" },
-      { color:"low", title:"血红蛋白下降 — 142 g/L（仍在正常范围，需关注趋势）",
-        body:"153→152→150→147→153→<strong>142 g/L</strong><br>较3月6日（153 g/L）明显下降，仍高于下限（130 g/L）。化疗累积效应影响红细胞生成，建议第4周期期间密切监测。" },
-      { color:"low", title:"⚠ 周围神经病变加重 — 第4周期第4天",
-        body:"手脚麻木感明显——描述为类似于高强度前臂训练后握力丧失的感觉，双侧前臂伴有疼痛。<strong>自第3周期起手臂、手指和脚持续麻刺感</strong>。输液手臂（左臂）疼痛：<strong>第4周期第1天6/10</strong>（第1–3周期均为2/10），至第4天降至约4/10。第1–2天无法将手臂置于任何表面。廖医生已开始补充维生素B（B1/B6/B12复合）以支持髓鞘完整性和神经传导——这些辅酶因子在奥沙利铂累积损伤下对轴突修复至关重要。冷敏感改善中：第1–3周期为3/10，第4周期为2/10且在消退。" },
-      { color:"high", title:"RDW-CV 16.9% ↑ · RDW-SD 57.8 ↑ — 持续升高",
-        body:"RDW-CV：12.7→13.1→14.1→14.5→16.2→<strong>16.9%</strong> ↑ · RDW-SD：<strong>57.8</strong> ↑（参考范围37–54）<br>红细胞大小不均度在每次抽血中持续上升，已连续6次呈上升趋势，同时血红蛋白下降（153→142 g/L）。与卡培他滨累积效应或营养性缺乏（铁/B12/叶酸）模式一致，建议第4周期前向廖医生说明。" },
-      { color:"high", title:"尿酸 430 µmol/L — 新出现轻微升高",
-        body:"尿酸轻微超出参考范围（208–428 µmol/L），值为<strong>430</strong>。为首次出现此标志。可能与恢复期细胞代谢相关。肾功能正常：肌酐72、eGFR 99。" },
-      { color:"accent", title:"肝功能全部正常 · MPV 略有改善",
-        body:"3月27日肝功能：ALT 26 · AST 31 · ALP 68 · GGT 32 — 全部正常，第3周期肝脏耐受性良好。MPV 9.2较之前（8.5）有所改善，仍略低于参考下限（9.4–12.5）。前白蛋白PA 0.321（较上次0.385略降，仍在正常范围内）。" }
+      { color:"high", title:"RDW-CV 19.0% ↑↑ · RDW-SD 66.8 ↑↑ — 加速升高",
+        body:"RDW-CV：12.7→13.1→14.1→14.5→16.2→16.9→<strong>19.0%</strong> ↑↑ · RDW-SD：<strong>66.8</strong> ↑↑（参考范围37–54）<br>连续7次抽血持续升高，本次单次跨度最大（+2.1%）。与HGB持平（143）及AST接近上限（38）同时出现，进入第5周期前需密切关注。" },
+      { color:"high", title:"单核细胞百分比 8.3% — 再次超出范围",
+        body:"在第4周期前恢复至6.7%（正常）后，本次再次升至<strong>8.3%</strong>（参考范围3.0–8.0%）。绝对值（0.33）仍在正常范围内。" },
+      { color:"high", title:"AST 38 — 接近参考上限",
+        body:"AST：33（3月6日）→ 31（3月27日）→ <strong>38</strong>（4月17日），参考上限为40。ALT稳定在32。仍在正常范围内，但趋势值得关注。" },
+      { color:"normal", title:"ANC 2.32 ✓ · HGB 143 · PLT 276 — 核心指标稳定",
+        body:"ANC：<strong>2.32</strong>，连续两次化疗前检查均在正常范围（≥1.8）。HGB：<strong>143</strong> g/L，略有回升。PLT：<strong>276</strong>，为近几个月最佳水平。" },
+      { color:"low", title:"⚠ 周围神经病变加重 — 文医生开具新药",
+        body:"周围神经病变已成为最主要的临床问题。文医生（广州）本次开具两种靶向药物：<br><strong>甲钴胺</strong>（活性维生素B12）——支持髓鞘修复和轴突再生。<br><strong>依帕司他50mg</strong>——醛糖还原酶抑制剂，通过减少神经细胞内山梨醇积聚，专门治疗化疗诱导的周围神经病变。患者报告手指、手掌、手臂和脚部麻木无力，形容为轻度麻痹。第5周期周一开始。" },
+      { color:"high", title:"尿酸429 · P-LCR 17.7 ↓ — 次要异常持续",
+        body:"尿酸429 µmol/L，仍轻微超出参考范围（208–428），与上次（430）基本相同。P-LCR 17.7低于参考下限（19.7–42.4%）。两者均为轻微异常，肾功能正常（肌酐74，eGFR 98）。" },
     ],
     chartTitles:["白细胞 & ANC","血小板（PLT）","血红蛋白（HGB）","淋巴细胞% & 单核细胞%","MCV"],
     chartLabels:{ WBC:"白细胞", Neut_abs:"ANC", PLT:"血小板", HGB:"血红蛋白", Lymph_pct:"淋巴细胞%", Mono_pct:"单核细胞%", MCV:"MCV" },
     lftTitle:"肝功能检测 — 所有记录",
-    lftNote:"📊 肝功能数据：3月6日（第3周期前）及3月27日（第4周期前）。两次检测所有指标均正常，第3周期肝脏耐受性优良。",
+    lftNote:"📊 肝功能数据：3月6日、3月27日及4月17日（第5周期前）。所有指标均在参考范围内，AST 38接近上限（40），进入第5周期需关注。",
     lftGroups:[
       { title:"🟢 肝酶", keys:["ALT","AST","ALP","GGT"] },
       { title:"🟡 胆红素", keys:["TBIL","DBIL","IBIL"] },
@@ -625,70 +624,70 @@ const T = {
 const FAMILY_CONTENT = {
 
   // ── Header date & subtitle ──────────────────────────────
-  lastUpdated: { en:"April 10, 2026", zh:"2026年4月10日" },
-  checkLabel:  { en:"Cycle 4 · Day 11 — nearly done", zh:"第4周期 · 第11天——即将完成" },
+  lastUpdated: { en:"April 17, 2026", zh:"2026年4月17日" },
+  checkLabel:  { en:"Pre-Cycle 5 · Latest labs in", zh:"第5周期前 · 最新检验结果" },
 
   overallSentence: {
-    en: "Michael has taken 49 of 56 Capecitabine doses this cycle — one week of pills left. Side effects are real but he is pushing through.",
-    zh: "迈克已完成本周期56粒卡培他滨中的49粒——还剩最后一周。副作用确实存在，但他正在坚持。",
+    en: "Michael completed Cycle 4 and starts Cycle 5 on Monday. New medications have been prescribed for his nerve symptoms.",
+    zh: "迈克已完成第4轮化疗，将于周一开始第5轮。医生已为其神经症状开具新药。",
   },
 
   systems: [
     { icon:"💊",
       name:   { en:"Treatment Progress", zh:"治疗进展" },
       status: "progress",
-      text:   { en:"49 of 56 Capecitabine tablets done this cycle. Michael takes 1800mg twice a day — morning and night — and is very much looking forward to finishing. 4 of 8 infusion cycles complete.",
-                zh:"本周期56粒卡培他滨已完成49粒。迈克每天早晚各服用1800mg，非常期待完成疗程。8轮输液中已完成4轮。" } },
+      text:   { en:"4 of 8 cycles complete. Cycle 5 starts Monday April 21. Michael is halfway through — holding on and pressing forward.",
+                zh:"已完成8轮中的4轮。第5轮4月21日（周一）开始。迈克已完成一半疗程，正在坚持推进。" } },
     { icon:"🖐️",
-      name:   { en:"Hands & Arms", zh:"手部与手臂" },
+      name:   { en:"Hands, Arms & Feet", zh:"手部、手臂与双脚" },
       status: "caution",
-      text:   { en:"The most significant current issue — pronounced tingling and weakness in both hands and forearms. A friend described it well: it feels like mild paralysis of the forearms and hands. Michael is managing, but this is the hardest symptom right now.",
-                zh:"目前最主要的问题——双手和前臂明显麻木和无力。一位朋友描述得很贴切：感觉像是前臂和双手的轻度麻痹。迈克正在应对中，但这是目前最难熬的症状。" } },
+      text:   { en:"The nerve symptoms are the biggest challenge now — numbness and weakness in the fingers, hands, arms, and feet. A friend described it well: mild paralysis of the forearms and hands. Two doctors have now prescribed specific medications to treat this.",
+                zh:"神经症状是目前最大的挑战——手指、双手、手臂和脚部麻木无力。朋友描述得很贴切：前臂和双手轻度麻痹。两位医生已开具专项药物进行治疗。" } },
+    { icon:"💊",
+      name:   { en:"New Nerve Medications", zh:"新的神经用药" },
+      status: "progress",
+      text:   { en:"Dr. Wen in Guangzhou prescribed two targeted medications this week: Mecobalamin (active B12) for nerve repair, and Epalrestat — a prescription drug specifically for nerve damage. This is an encouraging step.",
+                zh:"广州文医生本周开具两种靶向药物：用于神经修复的甲钴胺（活性B12），以及依帕司他——一种专门针对神经损伤的处方药。这是积极的一步。" } },
     { icon:"👂",
       name:   { en:"Tinnitus", zh:"耳鸣" },
       status: "caution",
-      text:   { en:"The ear ringing is constant and always present. It appears to worsen for a few hours after each Capecitabine dose. Specialist follow-up with ENT is being arranged.",
-                zh:"耳鸣持续不断。每次服用卡培他滨后数小时内似乎会加重。正在安排耳鼻喉科专科随访。" } },
-    { icon:"😴",
-      name:   { en:"Fatigue & Nausea", zh:"疲劳与恶心" },
-      status: "caution",
-      text:   { en:"Mild nausea for a few hours after taking the tablets. Fatigue reliably hits in the mid-afternoon. Both are manageable but cumulative.",
-                zh:"服药后数小时内有轻度恶心。下午固定时间会出现疲劳感。两者均在可控范围内，但有累积效应。" } },
+      text:   { en:"The ear ringing continues. Still awaiting the ENT specialist consultation. Dr. Liu has confirmed it is caused by the medication.",
+                zh:"耳鸣持续中。耳鼻喉科专科会诊仍在安排中。廖医生已确认这是由药物引起的。" } },
     { icon:"🛡️",
-      name:   { en:"Immune System", zh:"免疫系统" },
+      name:   { en:"Blood Results", zh:"血液检查" },
       status: "good",
-      text:   { en:"Immune cells recovered well before Cycle 4 — the best blood result in months. Liver and kidney function remain completely normal.",
-                zh:"免疫细胞在第4周期前恢复良好——是几个月来最好的血液检查结果。肝肾功能持续完全正常。" } },
+      text:   { en:"Immune cells (neutrophils) remain in normal range for the second pre-cycle draw in a row. Hemoglobin and platelets stable. Liver and kidney function all normal.",
+                zh:"免疫细胞（中性粒细胞）连续第二次化疗前检查均保持正常。血红蛋白和血小板稳定。肝肾功能全部正常。" } },
     { icon:"📋",
-      name:   { en:"VA Claim", zh:"退伍军人事务申请" },
+      name:   { en:"VA Claim Submitted", zh:"退伍军人申请已提交" },
       status: "good",
-      text:   { en:"Good news on another front — Michael has completed all his VA disability documentation and submitted it. Waiting to hear back.",
-                zh:"另一个好消息——迈克已完成所有退伍军人事务残疾文件并提交。正在等待回复。" } },
+      text:   { en:"All VA disability documentation has been completed and submitted. Michael is waiting to hear back — please pray for a fair outcome.",
+                zh:"所有退伍军人事务残疾文件已全部完成并提交。迈克正在等待回复——请为公正的结果祷告。" } },
   ],
 
   answeredPrayers: [
-    { en:"Immune cells fully recovered before Cycle 4 — ANC back to normal after months of low counts. A clear answer to prayer.",
-      zh:"感谢神！免疫细胞在第4周期前完全恢复正常，在数月偏低后终于好转。是对祷告明确的回应。" },
-    { en:"Liver and kidney function remain completely normal through 4 full cycles of powerful chemotherapy.",
-      zh:"感谢神！经历4轮强效化疗，肝肾功能持续完全正常。" },
-    { en:"VA disability documentation fully completed and submitted — a significant administrative milestone alongside active treatment.",
-      zh:"感谢神！退伍军人事务残疾文件全部完成并提交——在积极治疗期间完成这一重要行政里程碑实属不易。" },
+    { en:"Immune cells holding normal for two consecutive pre-cycle draws — a significant improvement from the persistent low counts in Cycles 2 and 3.",
+      zh:"感谢神！免疫细胞连续两次化疗前检查保持正常——较第2、3周期持续偏低有显著改善。" },
+    { en:"Two doctors are now actively treating the nerve symptoms with targeted medications — Michael is being well cared for.",
+      zh:"感谢神！两位医生现已积极开具专项药物治疗神经症状，迈克得到了良好的照顾。" },
+    { en:"VA disability documentation fully submitted — a major task completed during an already demanding treatment season.",
+      zh:"感谢神！退伍军人事务残疾文件全部提交——在本已繁重的治疗期间完成了一项重要任务。" },
   ],
 
   prayerRequests: [
-    { en:"Pray for Michael through the final 7 Capecitabine doses — that he finishes well and his body gets the rest it needs when the pill phase ends.",
-      zh:"求神帮助迈克完成最后7粒卡培他滨——愿他顺利完成，并在片剂阶段结束后让身体得到所需的休息。" },
-    { en:"Pray for his hands and arms — the tingling and weakness are the hardest current symptom. Pray the nerve damage does not become permanent, and that the Vitamin B supplements help.",
-      zh:"求神医治他的手部和手臂——麻木和无力是目前最难熬的症状。求神使神经损伤不成为永久性的，并使维生素B补充剂发挥作用。" },
-    { en:"Pray for wisdom from Dr. Liu — Michael sent an email last week asking Dr. Liu to reconsider the treatment intensity given the escalating side effects. No response yet, which likely means Dr. Liu wants to discuss in person. Pray for clarity and the right decision for Michael's body.",
-      zh:"求神赐廖医生智慧——迈克上周发邮件请廖医生重新考虑治疗强度。尚未收到回复，这可能意味着廖医生希望当面讨论。求神赐下清晰的方向和正确的决定。" },
-    { en:"Pray for the VA claim — documentation has been submitted and Michael is waiting to hear back. Pray for a fair and timely outcome.",
-      zh:"求神看顾退伍军人事务申请——文件已提交，迈克正在等待回复。求神赐下公正及时的结果。" },
+    { en:"Pray for Cycle 5 starting Monday — that the new nerve medications help reduce the neuropathy symptoms, and that the infusion is more tolerable than Cycle 4 was.",
+      zh:"求神保守周一开始的第5轮化疗——愿新的神经药物有助于缓解神经病变症状，且输液比第4轮更易承受。" },
+    { en:"Pray for Michael's hands and arms — the weakness and numbness are the hardest part of each day. Pray for real relief and that the nerve damage heals rather than worsens.",
+      zh:"求神医治迈克的手部和手臂——无力和麻木是每天最难熬的部分。求神赐下真实的缓解，并使神经损伤得以恢复而非加重。" },
+    { en:"Pray for Monday's appointment with Dr. Liu — Michael sent an email about reconsidering treatment intensity and hasn't heard back, so Dr. Liu likely wants to discuss in person. Pray for wisdom and a good conversation.",
+      zh:"求神保守周一与廖医生的会诊——迈克发邮件请其重新考虑治疗强度，尚未收到回复，廖医生可能希望当面讨论。求神赐智慧，使会诊顺畅。" },
+    { en:"Pray for the VA claim — documentation submitted, outcome unknown. Pray for a fair and timely response.",
+      zh:"求神看顾退伍军人申请——文件已提交，结果未知。求神赐下公正及时的回复。" },
   ],
 
   shareText: {
-    en: "Michael is nearing the end of his Cycle 4 pill phase — 49 of 56 Capecitabine tablets done. The main challenges right now are pronounced tingling and weakness in his hands and forearms (a nerve side effect of the chemotherapy), persistent tinnitus, afternoon fatigue, and mild nausea after each dose. He is managing, but this is the most difficult stretch so far. On a positive note, his immune system has been holding up well and he has completed all his VA disability paperwork. Please pray for him through the final stretch of this cycle.",
-    zh: "迈克即将完成第4周期的口服药阶段——56粒卡培他滨已完成49粒。目前主要挑战是手部和前臂明显的麻木无力感（化疗的神经系统副作用）、持续耳鸣、下午疲劳及每次服药后的轻度恶心。他正在坚持，但这是迄今为止最艰难的阶段。好消息是，他的免疫系统状况良好，退伍军人事务申请文件也已全部完成。请为他度过这最后阶段祷告。",
+    en: "Michael is heading into his 5th round of chemotherapy on Monday — halfway through the full course. The biggest challenge right now is nerve damage in his hands, arms, and feet (numbness and weakness), and persistent tinnitus. Two of his doctors have now prescribed specific medications to treat the nerve symptoms, which is encouraging. His blood results are stable and his immune system is holding up well. Please pray for a good conversation with his doctor on Monday, and for relief from the nerve symptoms.",
+    zh: "迈克将于周一开始第5轮化疗——完成全程的一半。目前最大的挑战是手部、手臂和双脚的神经损伤（麻木无力）以及持续的耳鸣。两位医生已开具专项药物治疗神经症状，令人鼓舞。血液检查结果稳定，免疫系统状况良好。请为他周一与医生的会诊祷告，也为神经症状的缓解祷告。",
   },
 
   cyclesComplete: 4,
@@ -794,6 +793,20 @@ const DATA = [
       { label:"Page 2", url:"images/20260327-2.jpeg" },
       { label:"Page 3", url:"images/20260327-3.jpeg" },
       { label:"Page 4", url:"images/20260327-4.jpeg" },
+    ]},
+  { date:"Apr 17\nPre-C5", fullDate:"Apr 17, 2026", cycleZH:"第4周期第18天（第5周期前）",
+    WBC:4.02, Neut_abs:2.32, Neut_pct:57.5, PLT:276, HGB:143, RBC:4.27,
+    Lymph_abs:1.30, Lymph_pct:32.4, Mono_abs:0.33, Mono_pct:8.3,
+    Hct:41.5, MCV:97.2, MCH:33.6, MCHC:345, RDW_CV:19.0, RDW_SD:66.8,
+    MPV:8.8, PDW:15.9, PCT:0.243, P_LCR:17.7, Eos_pct:1.2, Eos_abs:0.05, Baso_pct:0.6, Baso_abs:0.02,
+    lft:{ ALT:32, AST:38, ALP:72, GGT:32.0, TBIL:19.2, DBIL:3.00, IBIL:16.2, ALB:48.7, GLB:27.8, TP:76.5, AG:1.8, CHE:7620, TBA:4.0, PA:0.336, ADA:7.6, AFU:28.9 },
+    images:[
+      { label:"Page 1", url:"images/20260417-1.jpeg" },
+      { label:"Page 2", url:"images/20260417-2.jpeg" },
+      { label:"Page 3", url:"images/20260417-3.jpeg" },
+      { label:"Page 4", url:"images/20260417-4.jpeg" },
+      { label:"Page 5", url:"images/20260417-5.jpeg" },
+      { label:"Page 6", url:"images/20260417-6.jpeg" },
     ]},
 ];
 
@@ -1092,7 +1105,7 @@ function renderMSummary() {
   document.getElementById('m-clintitle').textContent  = t.clinicalTitle;
 
   // Timeline
-  const cyclesWithDraws = [0,1,2,3];
+  const cyclesWithDraws = [0,1,2,3,4];
   const infDates = ["2026-01-19","2026-02-11","2026-03-09","2026-03-30","2026-04-20","2026-05-11","2026-06-01","2026-06-22"];
   const today = new Date();
   const nextIdx = infDates.findIndex(d => new Date(d) > today);
@@ -1167,8 +1180,8 @@ function renderMFull() {
   const t = T[mLang];
   document.getElementById('m-fulltitle').textContent = t.fullCBCTitle;
 
-  const dlEn = ["Jan 26 · C1 Day 7","Feb 2 · C1 Day 14","Feb 18 · C2 Day 7","Feb 24 · C2 Day 14","Mar 6 · Pre-C3","Mar 27 · Pre-C4"];
-  const dlZh = ["1月26日 · C1第7天","2月2日 · C1第14天","2月18日 · C2第7天","2月24日 · C2第14天","3月6日 · 第3周期前","3月27日 · 第4周期前"];
+  const dlEn = ["Jan 26 · C1 Day 7","Feb 2 · C1 Day 14","Feb 18 · C2 Day 7","Feb 24 · C2 Day 14","Mar 6 · Pre-C3","Mar 27 · Pre-C4","Apr 17 · Pre-C5"];
+  const dlZh = ["1月26日 · C1第7天","2月2日 · C1第14天","2月18日 · C2第7天","2月24日 · C2第14天","3月6日 · 第3周期前","3月27日 · 第4周期前","4月17日 · 第5周期前"];
   const dl = mLang==='zh' ? dlZh : dlEn;
 
   let selHTML = '';
@@ -1279,8 +1292,8 @@ function renderMLFT() {
   if (!lftDraws.length) { document.getElementById('m-lfttbl').innerHTML='<div style="color:var(--muted);padding:12px 0">No LFT data yet.</div>'; return; }
   if (mSelLFT===null || !DATA[mSelLFT]?.lft) mSelLFT = lftDraws[lftDraws.length-1].idx;
 
-  const dlEn = ["Jan 26 · C1D7","Feb 2 · C1D14","Feb 18 · C2D7","Feb 24 · C2D14","Mar 6 · Pre-C3","Mar 27 · Pre-C4"];
-  const dlZh = ["1月26日","2月2日","2月18日","2月24日","3月6日 · 第3周期前","3月27日 · 第4周期前"];
+  const dlEn = ["Jan 26 · C1D7","Feb 2 · C1D14","Feb 18 · C2D7","Feb 24 · C2D14","Mar 6 · Pre-C3","Mar 27 · Pre-C4","Apr 17 · Pre-C5"];
+  const dlZh = ["1月26日","2月2日","2月18日","2月24日","3月6日 · 第3周期前","3月27日 · 第4周期前","4月17日 · 第5周期前"];
   const dl = mLang==='zh' ? dlZh : dlEn;
 
   let selHTML = '';
