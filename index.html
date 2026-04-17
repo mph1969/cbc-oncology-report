@@ -430,8 +430,12 @@
     <label style="display:flex;align-items:center;gap:7px;font-size:12px;font-family:'Inter',sans-serif;color:#374151;cursor:pointer;margin-right:auto">
       <input type="checkbox" id="latest-only-toggle" onchange="toggleLatestOnly(this.checked)"
         style="width:15px;height:15px;cursor:pointer;accent-color:#2563eb">
-      Latest draw only
+      <span id="doc-latest-label">Latest draw only</span>
     </label>
+    <div style="display:flex;gap:4px;margin-right:8px">
+      <button id="doc-btn-en" onclick="setDocLang('en')" style="padding:4px 10px;border-radius:6px;border:1px solid #d1d5db;background:#fff;font-size:11px;font-weight:600;color:#374151;cursor:pointer;font-family:'Inter',sans-serif">EN</button>
+      <button id="doc-btn-zh" onclick="setDocLang('zh')" style="padding:4px 10px;border-radius:6px;border:1px solid #d1d5db;background:#fff;font-size:11px;font-weight:600;color:#374151;cursor:pointer;font-family:'Inter',sans-serif">中文</button>
+    </div>
     <button class="doc-print-btn" onclick="window.print()">🖨 Print / Save PDF</button>
   </div>
   <div class="doc-panel">
@@ -968,56 +972,64 @@ function renderDoctor() {
   // Doctor subscribe card (navy)
   const DOC_FORM_ACTION = "https://api.follow.it/subscription-form/NUcxUVZyQXNaMlRFcHN2RlFObEtjVkdyT1I1SEZQOHhmc0w2OHljeFByZ1NFcFlrdUg3NnpQekNKaTB3dG9YcXVIdlU2MnpXaUlpMG01SnNacDk1S0ZNbTgyek9MZEpNNGJtK2pNRTJMY0lxWUtNKzRXMjZsVm9kb1VCcGRnS0Z8YlhoN1U5TUN4UnRYbWlSMFBrd1lkWWt0dzJCVGYwWE9yYkNXaEQwTDNIcz0=/21";
   const docSubCard = document.getElementById('doc-subscribe-card');
+  const zh = docLang === 'zh';
+  const L = (en, zhStr) => zh ? zhStr : en;
+
+  // Subscribe card
   if (docSubCard) {
     if (DOC_FORM_ACTION === "DOCTOR_FOLLOWIT_TOKEN_REPLACE_ME") {
-      docSubCard.innerHTML = '';  // hide until token is set
+      docSubCard.innerHTML = '';
     } else {
       docSubCard.className = 'doc-subscribe-card';
       docSubCard.innerHTML = `
         <div class="doc-subscribe-left">
-          <div class="doc-subscribe-title">🔔 Get notified when new lab results are posted</div>
-          <div class="doc-subscribe-sub">Enter your email — you'll only be notified when new blood draw data is available.</div>
-          <div class="doc-subscribe-note">Powered by follow.it · Free · Unsubscribe anytime</div>
+          <div class="doc-subscribe-title">${L('🔔 Get notified when new lab results are posted','🔔 新检验结果提醒')}</div>
+          <div class="doc-subscribe-sub">${L("Enter your email — you'll only be notified when new blood draw data is available.",'输入邮箱，仅在新抽血数据发布时通知您。')}</div>
+          <div class="doc-subscribe-note">${L('Powered by follow.it · Free · Unsubscribe anytime','由 follow.it 提供 · 免费 · 随时取消订阅')}</div>
         </div>
         <div>
           <form class="doc-subscribe-form" action="${DOC_FORM_ACTION}" method="post"
             target="followit-doc-popup"
             onsubmit="window.open('','followit-doc-popup','width=500,height=600,resizable=yes'); return true;">
-            <input class="doc-subscribe-input" type="email" name="email" placeholder="your@email.com" required />
-            <button class="doc-subscribe-btn" type="submit">Subscribe</button>
+            <input class="doc-subscribe-input" type="email" name="email" placeholder="${L('your@email.com','您的邮箱地址')}" required />
+            <button class="doc-subscribe-btn" type="submit">${L('Subscribe','订阅')}</button>
           </form>
         </div>`;
     }
   }
 
   document.getElementById('d-meta').innerHTML = `
-    <div><strong>Oncologists:</strong> Dr. Rico Liu (HK) · Dr. Wen (GZ)</div>
-    <div><strong>Regimen:</strong> CapeOX (Capecitabine + Oxaliplatin)</div>
-    <div><strong>Report date:</strong> ${LATEST.fullDate} &nbsp;·&nbsp; <strong>Showing:</strong> ${drawLabel}</div>
-    <div><strong>Cycle 3 start:</strong> Mar 9, 2026 — Hong Kong Sanatorium Hospital</div>`;
+    <div><strong>${L('Oncologists','主治医生')}:</strong> Dr. Rico Liu (HK) · Dr. Wen (GZ)</div>
+    <div><strong>${L('Regimen','化疗方案')}:</strong> CapeOX (Capecitabine + Oxaliplatin)</div>
+    <div><strong>${L('Report date','报告日期')}:</strong> ${LATEST.fullDate} &nbsp;·&nbsp; <strong>${L('Showing','显示')}:</strong> ${drawLabel}</div>
+    <div><strong>${L('Cycle 3 start','第3周期开始')}:</strong> Mar 9, 2026 — ${L('Hong Kong Sanatorium Hospital','香港港安医院')}</div>`;
 
   // CBC TABLE
   const cbcGroups = [
-    { t:"White Cell / Immune",   keys:['WBC','Neut_abs','Neut_pct','Lymph_abs','Lymph_pct','Mono_abs','Mono_pct'] },
-    { t:"Red Cell / Anemia",     keys:['HGB','RBC','Hct','MCV','MCH','MCHC','RDW_CV','RDW_SD'] },
-    { t:"Platelets",             keys:['PLT','MPV','PDW','PCT','P_LCR'] },
-    { t:"Other Differentials",   keys:['Eos_pct','Eos_abs','Baso_pct','Baso_abs'] },
+    { t: L("White Cell / Immune","白细胞 / 免疫"),    keys:['WBC','Neut_abs','Neut_pct','Lymph_abs','Lymph_pct','Mono_abs','Mono_pct'] },
+    { t: L("Red Cell / Anemia","红细胞 / 贫血"),      keys:['HGB','RBC','Hct','MCV','MCH','MCHC','RDW_CV','RDW_SD'] },
+    { t: L("Platelets","血小板"),                     keys:['PLT','MPV','PDW','PCT','P_LCR'] },
+    { t: L("Other Differentials","其他白细胞分类"),    keys:['Eos_pct','Eos_abs','Baso_pct','Baso_abs'] },
   ];
 
-  const heads = docData.map(d => `<th>${d.fullDate}<br><small style="font-weight:400;color:#9ca3af">${d.date.replace('\n',' ')}</small></th>`).join('');
-  let cbcHTML = `<div class="doc-section-heading">Complete Blood Count (CBC) — ${drawLabel}</div>
+  const markerLabel = L('Marker','指标');
+  const refLabel    = L('Reference','参考范围');
+  const heads = docData.map(d => `<th>${d.fullDate}<br><small style="font-weight:400;color:#9ca3af">${zh ? d.cycleZH : d.date.replace('\n',' ')}</small></th>`).join('');
+  let cbcHTML = `<div class="doc-section-heading">${L('Complete Blood Count (CBC)','完整血常规（CBC）')} — ${drawLabel}</div>
     <table class="doc-table"><thead><tr>
-      <th class="th-name">Marker</th><th class="th-ref">Reference</th>${heads}
+      <th class="th-name">${markerLabel}</th><th class="th-ref">${refLabel}</th>${heads}
     </tr></thead><tbody>`;
 
   cbcGroups.forEach(g => {
     cbcHTML += `<tr class="group-row"><td colspan="${docData.length+2}">${g.t}</td></tr>`;
     g.keys.forEach(k => {
       const r = REFS[k];
-      let row = `<tr><td class="td-name">${r.en}</td><td class="td-ref">${r.lo}–${r.hi} ${r.unit}</td>`;
+      const label = zh ? r.zh : r.en;
+      let row = `<tr><td class="td-name">${label}</td><td class="td-ref">${r.lo}–${r.hi} ${r.unit}</td>`;
       docData.forEach(d => {
         const v = d[k]; const s = status(k,v);
-        row += `<td class="${s==='low'?'fl':s==='high'?'fh':''}">${v}${s==='low'?' ↓':s==='high'?' ↑':''}</td>`;
+        const flag = s==='low' ? ' ↓' : s==='high' ? ' ↑' : '';
+        row += `<td class="${s==='low'?'fl':s==='high'?'fh':''}">${v!=null ? v+flag : '—'}</td>`;
       });
       cbcHTML += row+'</tr>';
     });
@@ -1029,21 +1041,22 @@ function renderDoctor() {
   const lftDraws = (docLatestOnly ? [DATA[DATA.length-1]] : DATA).filter(d => d.lft);
   if (lftDraws.length) {
     const lftGroups = [
-      { t:"Liver Enzymes",         keys:['ALT','AST','ALP','GGT'] },
-      { t:"Bilirubin",             keys:['TBIL','DBIL','IBIL'] },
-      { t:"Proteins & Synthetic",  keys:['ALB','GLB','TP','AG','CHE','PA'] },
-      { t:"Other",                 keys:['TBA','ADA','AFU'] },
+      { t: L("Liver Enzymes","肝酶"),                keys:['ALT','AST','ALP','GGT'] },
+      { t: L("Bilirubin","胆红素"),                  keys:['TBIL','DBIL','IBIL'] },
+      { t: L("Proteins & Synthetic","蛋白质与合成功能"), keys:['ALB','GLB','TP','AG','CHE','PA'] },
+      { t: L("Other","其他"),                        keys:['TBA','ADA','AFU'] },
     ];
-    const lftHeads = lftDraws.map(d => `<th>${d.fullDate}<br><small style="font-weight:400;color:#9ca3af">${d.date.replace('\n',' ')}</small></th>`).join('');
-    let lftHTML = `<div class="doc-section-heading">Liver Function Tests (LFTs) — ${lftDraws.length} Draw${lftDraws.length>1?'s':''}</div>
+    const lftHeads = lftDraws.map(d => `<th>${d.fullDate}<br><small style="font-weight:400;color:#9ca3af">${zh ? d.cycleZH : d.date.replace('\n',' ')}</small></th>`).join('');
+    let lftHTML = `<div class="doc-section-heading">${L('Liver Function Tests (LFTs)','肝功能检测（LFTs）')} — ${lftDraws.length} ${L('Draw','次')}${lftDraws.length>1 && !zh?'s':''}</div>
       <table class="doc-table"><thead><tr>
-        <th class="th-name">Marker</th><th class="th-ref">Reference</th>${lftHeads}
+        <th class="th-name">${markerLabel}</th><th class="th-ref">${refLabel}</th>${lftHeads}
       </tr></thead><tbody>`;
     lftGroups.forEach(g => {
       lftHTML += `<tr class="group-row"><td colspan="${lftDraws.length+2}">${g.t}</td></tr>`;
       g.keys.forEach(k => {
         const r = LFT_REFS[k];
-        let row = `<tr><td class="td-name">${r.en}</td><td class="td-ref">${r.lo}–${r.hi} ${r.unit}</td>`;
+        const label = zh ? r.zh : r.en;
+        let row = `<tr><td class="td-name">${label}</td><td class="td-ref">${r.lo}–${r.hi} ${r.unit}</td>`;
         lftDraws.forEach(d => {
           const v = d.lft[k]; const s = (v<r.lo)?'low':(v>r.hi)?'high':'normal';
           row += `<td class="${s==='low'?'fl':s==='high'?'fh':''}">${v!==undefined?v+(s==='low'?' ↓':s==='high'?' ↑':''):'—'}</td>`;
@@ -1368,6 +1381,17 @@ function renderMLFT() {
 
 function mPickLFT(i) { mSelLFT=i; renderMLFT(); }
 
+function setDocLang(lang) {
+  docLang = lang;
+  const active = 'padding:4px 10px;border-radius:6px;border:1px solid #2563eb;background:#2563eb;font-size:11px;font-weight:600;color:#fff;cursor:pointer;font-family:\'Inter\',sans-serif';
+  const inactive = 'padding:4px 10px;border-radius:6px;border:1px solid #d1d5db;background:#fff;font-size:11px;font-weight:600;color:#374151;cursor:pointer;font-family:\'Inter\',sans-serif';
+  document.getElementById('doc-btn-en').style.cssText = lang==='en' ? active : inactive;
+  document.getElementById('doc-btn-zh').style.cssText = lang==='zh' ? active : inactive;
+  const latestLabel = document.getElementById('doc-latest-label');
+  if (latestLabel) latestLabel.textContent = lang==='zh' ? '仅显示最新一次' : 'Latest draw only';
+  renderDoctor();
+}
+
 function toggleLatestOnly(on) {
   docLatestOnly = on;
   renderDoctor();
@@ -1375,12 +1399,29 @@ function toggleLatestOnly(on) {
 
 // ── INIT ──────────────────────────────────────────────────
 let docLatestOnly = false;
+let docLang = 'en';
 const PAGE_URL    = "https://mph1969.github.io/cbc-oncology-report/";
 const FOLLOWIT_URL = `https://follow.it/${encodeURIComponent(PAGE_URL)}`;
 
 const urlParams = new URLSearchParams(window.location.search);
 const startView = urlParams.get('view');
+const startLang = urlParams.get('lang');
+
+// Apply language before rendering if specified in URL
+if (startLang === 'zh') {
+  famLang = 'zh';
+  mLang = 'zh';
+  docLang = 'zh';
+  document.getElementById('fb-en').className = 'fam-lang-btn';
+  document.getElementById('fb-zh').className = 'fam-lang-btn active';
+  document.getElementById('mb-en').className = 'm-lang-btn';
+  document.getElementById('mb-zh').className = 'm-lang-btn active';
+  document.getElementById('view-michael').className = 'zh';
+}
+
 setAud(['family','doctor','michael'].includes(startView) ? startView : 'family');
+// Apply doctor lang toggle state after render
+if (startLang === 'zh') setDocLang('zh');
 
 </script>
 </body>
