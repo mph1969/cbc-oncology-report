@@ -4,7 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Latest Lab Results — Michael Patrick Hanson</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230f1623'/><polyline points='10,55 25,55 32,35 42,72 52,28 62,68 70,48 78,48 90,48' fill='none' stroke='%2334d399' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+<link rel="icon" type="image/png" sizes="512x512" href="favicon-512.png">
+<link rel="icon" type="image/png" sizes="256x256" href="favicon-256.png">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon" href="favicon-512.png">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -138,30 +141,28 @@
   ═══════════════════════════════════════════════════════ -->
   <script>
   const DRAW = {
-    date:        "Mar 27, 2026",
-    cycle:       "Pre-Cycle 4 · C3 Day 18",
-    cycleZH:     "第4周期前 · 第3周期第18天",
+    date:        "Apr 17, 2026",
+    cycle:       "Pre-Cycle 5 · C4 Day 18",
+    cycleZH:     "第5周期前 · 第4周期第18天",
 
-    // Key oncology markers
-    WBC:         4.40,
-    ANC:         2.61,    // Neutrophil absolute — threshold 1.8
-    HGB:         142,
-    PLT:         258,
-    Mono_pct:    6.7,
-    RDW_CV:      16.9,
+    WBC:         4.02,
+    ANC:         2.32,
+    HGB:         143,
+    PLT:         276,
+    Mono_pct:    8.3,
+    RDW_CV:      19.0,
 
-    // LFT summary
-    lft_normal:  true,    // true = all LFT values within range
-    ALT:         26,
-    AST:         31,
+    lft_normal:  true,
+    ALT:         32,
+    AST:         38,
 
-    // Flags — add any out-of-range items here
     flags: [
-      { label:"RDW-CV 16.9%", type:"high" },
-      { label:"RDW-SD 57.8",  type:"high" },
-      { label:"URIC 430",     type:"high" },
+      { label:"RDW-CV 19.0%", type:"high" },
+      { label:"RDW-SD 66.8",  type:"high" },
+      { label:"Mono% 8.3%",   type:"high" },
+      { label:"AST 38 →40",   type:"high" },
       { label:"ANC ✓",        type:"ok"   },
-      { label:"LFT ✓",        type:"ok"   },
+      { label:"LFT in range", type:"ok"   },
     ],
   };
   </script>
@@ -173,21 +174,15 @@
 
   <div class="subscribe-card">
     <div class="sub-title">🔔 Get notified when new results are posted</div>
-    <div class="sub-text">Enter your email — you'll receive a notification only when new blood draw data is available. Typically once per week during active treatment.</div>
+    <div class="sub-text">Click below to subscribe — you'll receive an email only when new blood draw data is available. Typically once per week during active treatment.</div>
     <!--
       DOCTOR SUBSCRIBE FORM
-      Replace the action URL below with your follow.it token for labs.html
-      Get it at: follow.it → Add source → enter this page's URL
+      Replace DOC_FORM_URL_REPLACE_ME with the Google Form URL.
+      See CLAUDE.md "Subscriber signup" section for setup.
     -->
-    <form class="sub-form"
-      action="https://api.follow.it/subscription-form/NUcxUVZyQXNaMlRFcHN2RlFObEtjVkdyT1I1SEZQOHhmc0w2OHljeFByZ1NFcFlrdUg3NnpQekNKaTB3dG9YcXVIdlU2MnpXaUlpMG01SnNacDk1S0ZNbTgyek9MZEpNNGJtK2pNRTJMY0lxWUtNKzRXMjZsVm9kb1VCcGRnS0Z8YlhoN1U5TUN4UnRYbWlSMFBrd1lkWWt0dzJCVGYwWE9yYkNXaEQwTDNIcz0=/21"
-      method="post"
-      target="followit-labs-popup"
-      onsubmit="window.open('','followit-labs-popup','width=500,height=600,resizable=yes'); return true;">
-      <input class="sub-input" type="email" name="email" placeholder="your@email.com" required />
-      <button class="sub-btn" type="submit">Subscribe</button>
-    </form>
-    <div class="sub-note">Powered by follow.it · Free · Unsubscribe anytime</div>
+    <a class="sub-btn" href="DOC_FORM_URL_REPLACE_ME" target="_blank" rel="noopener"
+       style="display:inline-block;text-decoration:none;padding:9px 20px;">Subscribe</a>
+    <div class="sub-note">Free · Your email stays private · Unsubscribe anytime</div>
   </div>
 
   <div class="redirect-notice">
