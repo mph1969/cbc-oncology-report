@@ -274,6 +274,7 @@
     border-bottom: 1px solid #e5e7eb;
     margin: 18px 0 0;
   }
+  #d-cbc, #d-lft { overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
   .doc-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 8px; }
   .doc-table th {
     background: #f8fafc; padding: 7px 8px;
@@ -539,7 +540,7 @@ const T = {
     timelineTitle:"CapeOX Treatment Timeline",
     cycleLabel:["Cycle 1","Cycle 2","Cycle 3","Cycle 4","Cycle 5","Cycle 6","Cycle 7","Cycle 8"],
     cycleDates:["Jan 19","Feb 11","Mar 9","Mar 30","Apr 20","May 11","Jun 1","Jun 22"],
-    timelineNote:"📅 <strong>Pre-C7 blood draw — May 28, 2026</strong> (GZ clinic). C7 planned ~Jun 1. <strong>Headline:</strong> ANC <strong>3.36</strong> — strongest pre-cycle count of the entire treatment; HGB 146, PLT 278, WBC 5.73 all robust. <strong>RDW-CV reversed</strong> for the first time in 8 draws (19.6 → 17.1). Macrocytosis continues (MCV 106.4 ↑, MCH 36.6 ↑) with new RBC ↓ and MPV ↓ flags — consistent with B12-driven recovery, not marrow stress. <strong>AST 52 ↑ second consecutive flag</strong> (was 46) — ALT, bilirubin, synthetic function all normal. Electrolyte + renal panel all normal. <strong>Open with Dr. Liu:</strong> May 18 email asking to stop at C6 or run oxaliplatin-free C7 still awaits reply. Today's strong CBC weakens the marrow-toxicity argument for stopping; the case now rests on cumulative neuropathy, the new functional walking limitation at C6D7, ongoing C6 chest-discomfort thread, and AST trajectory.",
+    timelineNote:"📅 <strong>Pre-C7 blood draw — May 28, 2026</strong> (GZ clinic). C7 planned ~Jun 1. <strong>Headline:</strong> ANC <strong>3.36</strong> — strongest pre-cycle count of the entire treatment; HGB 146, PLT 278, WBC 5.73 all robust. <strong>RDW-CV reversed</strong> for the first time in 8 draws (19.6 → 17.1). Macrocytosis continues (MCV 106.4 ↑, MCH 36.6 ↑) with new RBC ↓ and MPV ↓ flags — consistent with B12-driven recovery, not marrow stress. <strong>AST 52 ↑ second consecutive flag</strong> (was 46) — ALT, bilirubin, synthetic function all normal. Electrolyte + renal panel all normal. <strong>C6D17 symptom escalation (today):</strong> neuropathy now past both knees, golf-course stumble, pre-syncope at dinner, fatigue step-up. <strong>Open with Dr. Liu:</strong> May 18 email re-sent tonight with the C6D17 picture; awaiting reply before next Monday's planned C7. Today's strong CBC weakens any marrow-toxicity argument for stopping; the case now rests on cumulative neuropathy, fall risk, fatigue, and AST trajectory.",
     flagsTitle:"⚠ Flags &amp; Alerts — Latest Draw (May 28, 2026 · Pre-C7)",
     allNormal:"All values within reference range ✓",
     keyMetricsTitle:"Key Oncology Markers — Latest Draw",
@@ -552,6 +553,8 @@ const T = {
     clinicalNotes:[
       { color:"high", title:"⚠ AST 52 ↑ — Second Consecutive LFT Flag · Question on C7 Dosing",
         body:"AST: 33 → 31 → 38 → 46 → <strong>52</strong> (ref 15–40). <strong>Two consecutive elevations now</strong> — no longer interpretable as single-draw noise. ALT 36 (in range; was 30). Bilirubin actually <em>improved</em>: TBIL 24.1 → 18.5, IBIL 20.3 → 15.2, DBIL 3.80 → 3.30. Synthetic function preserved — ALB 46.5, TP 81.2, A/G 1.3 (down from 1.7 as GLB rose into range at 34.7). CHE, TBA, PA, ADA, AFU not reported on today's panel. <strong>Open question for Dr. Liu:</strong> does the AST trajectory (climbing across two cycles) factor into C7 dose/timing? Capecitabine is hepatically cleared, oxaliplatin is hepatically metabolized — both are relevant." },
+      { color:"high", title:"⚠ C6D17 Symptom Report — Neuropathy Past the Knees · Stumble · Pre-Syncope · Fatigue Step-Up (Today)",
+        body:"<strong>Patient narrative, May 28 — blood/symptom dissociation is the dominant feature this cycle.</strong> Marrow is unfazed (see ANC note below); nervous system is the opposite. <strong>Pattern:</strong> neuropathy steps up by another degree after each infusion — not a linear creep, but a discrete jump. C6 acute symptoms (jaw shock, cold hypersensitivity) dissipated around C6D8–10. The neuropathy did not. <strong>New this cycle:</strong> (1) Leg numbness/pain <em>now past both knees</em> — was confined to the feet through C5, now climbing upward; (2) <strong>Stumbled on the golf course (C6D16, yesterday)</strong> — legs and feet &ldquo;forget how to work&rdquo;; (3) <strong>Strong lightheadedness at dinner tonight</strong> — had to focus hard not to faint; (4) <strong>Fatigue materially higher than prior cycles</strong> — needs daily naps; without one, exhausted by 9–10 pm. <strong>Background:</strong> persistent severe hand, arm, foot, leg numbness/pain; constant &ldquo;chemicals in system&rdquo; sensation; occasional nausea; frequent mild headaches. C6 infusion: good vein, but arm 7/10 pain by end of 4-hour session. <strong>Combined with two consecutive AST elevations, this is the substantive case for stopping at C6 or running C7 on Capecitabine alone</strong> — the marrow argument no longer carries it." },
       { color:"normal", title:"✓ ANC 3.36 — Strongest Pre-Cycle Count of the Entire Treatment",
         body:"ANC: 2.84 → 2.85 → 1.66 → 1.71 → 1.68 → 2.61 → 2.32 → 2.16 → <strong>3.36</strong> (ref 1.8–6.3). <strong>Highest reading since baseline (C1D7).</strong> WBC 5.73 (was 4.19), HGB 146 (was 143), PLT 278 (was 213) — all three lineages stronger than at Pre-C6. Marrow shows no cumulative suppression entering Cycle 7." },
       { color:"normal", title:"✓ RDW-CV 17.1% — First Decline in 8 Draws",
@@ -585,7 +588,7 @@ const T = {
     timelineTitle:"CapeOX 治疗时间线",
     cycleLabel:["第1周期","第2周期","第3周期","第4周期","第5周期","第6周期","第7周期","第8周期"],
     cycleDates:["1月19日","2月11日","3月9日","3月30日","4月20日","5月11日","6月1日","6月22日"],
-    timelineNote:"📅 <strong>2026年5月28日 · 第7周期前抽血</strong>（广州门诊）。第7周期计划约6月1日。<strong>要点：</strong>ANC <strong>3.36</strong> — 整个治疗期最强的化疗前指标；HGB 146、PLT 278、WBC 5.73 均稳健。<strong>RDW-CV首次出现下降</strong>，8次抽血以来首次逆转（19.6 → 17.1）。大细胞性偏移仍在进展（MCV 106.4 ↑、MCH 36.6 ↑），新增 RBC ↓ 与 MPV ↓ 指标——符合B12驱动的红系恢复，而非骨髓压力。<strong>AST 52 ↑ 连续第二次超标</strong>（上次46）—— ALT、胆红素、合成功能均正常。电解质与肾功能全部正常。<strong>与廖医生的悬而未决事项：</strong>5月18日提出在C6停止或第7周期改为单卡培他滨的邮件尚未回复。今日CBC稳健削弱了&ldquo;以骨髓抑制为由停药&rdquo;的论据；停药的依据现集中于累积神经病变、C6D7出现的功能性行走受限、C6后持续的胸部不适、以及AST上升趋势。",
+    timelineNote:"📅 <strong>2026年5月28日 · 第7周期前抽血</strong>（广州门诊）。第7周期计划约6月1日。<strong>要点：</strong>ANC <strong>3.36</strong> — 整个治疗期最强的化疗前指标；HGB 146、PLT 278、WBC 5.73 均稳健。<strong>RDW-CV首次出现下降</strong>，8次抽血以来首次逆转（19.6 → 17.1）。大细胞性偏移仍在进展（MCV 106.4 ↑、MCH 36.6 ↑），新增 RBC ↓ 与 MPV ↓ 指标——符合B12驱动的红系恢复，而非骨髓压力。<strong>AST 52 ↑ 连续第二次超标</strong>（上次46）—— ALT、胆红素、合成功能均正常。电解质与肾功能全部正常。<strong>C6D17 症状跃升（今晚）：</strong>下肢麻木已过双膝、高尔夫球场绊倒、晚餐时晕厥前兆、疲劳明显加重。<strong>与廖医生：</strong>5月18日邮件今晚附C6D17情况重新发送，等待下周一计划C7前的回复。今日稳健的CBC已削弱&ldquo;以骨髓抑制为由停药&rdquo;的论据；停药的依据现集中于累积神经病变、跌倒风险、疲劳与AST上升趋势。",
     flagsTitle:"⚠ 异常项目 — 最近抽血（2026年5月28日 · 第7周期前）",
     allNormal:"所有指标均在参考范围内 ✓",
     keyMetricsTitle:"关键肿瘤科指标 — 最近抽血",
@@ -598,6 +601,8 @@ const T = {
     clinicalNotes:[
       { color:"high", title:"⚠ AST 52 ↑ — 连续第二次超标 · 第7周期剂量问题待廖医生判断",
         body:"AST：33→31→38→46→<strong>52</strong>（参考15–40）。<strong>已连续两次超标</strong>——不再属于单次抽血噪音范畴。ALT 36（仍在范围内；上次30）。胆红素本次<em>改善</em>：TBIL 24.1→18.5、IBIL 20.3→15.2、DBIL 3.80→3.30。合成功能保留——ALB 46.5、TP 81.2、A/G 1.3（自1.7下降，因GLB上升至34.7仍在范围内）。今日检测未包含CHE、TBA、PA、ADA、AFU。<strong>待廖医生判断：</strong>AST跨两周期持续上升是否影响第7周期剂量或时机？卡培他滨经肝清除，奥沙利铂经肝代谢——两者均相关。" },
+      { color:"high", title:"⚠ C6D17 症状记录 — 神经损伤已过双膝 · 跌倒 · 晕厥前兆 · 疲劳加重（今晚）",
+        body:"<strong>患者陈述，5月28日 —— 血液/症状不一致是本周期的主要特征。</strong>骨髓未受影响（见下方ANC条目）；神经系统则相反。<strong>模式：</strong>神经损伤在每次化疗后阶梯式跃升 —— 非线性渐进，而是离散跳变。C6急性症状（下颌痉挛、冷过敏）约在C6D8–10消退，神经损伤未消退。<strong>本周期新出现：</strong>（1）下肢麻木/疼痛<em>现已过双膝</em> —— 第5周期之前仅限于足部，现向上蔓延；（2）<strong>昨日（C6D16）在高尔夫球场绊倒</strong> —— 双腿与双脚&ldquo;不知道该怎么动&rdquo;；（3）<strong>今晚晚餐时强烈头晕</strong> —— 须努力集中精神方能不昏厥；（4）<strong>疲劳较以往周期明显加重</strong> —— 需每日午睡；若不午睡，9–10 pm前已精疲力竭。<strong>背景：</strong>持续严重的手、臂、足、腿麻木/疼痛；持续&ldquo;体内有化学物&rdquo;的感觉；偶发恶心；频繁轻度头痛。C6化疗：一针见血，但4小时输液结束时手臂疼痛7/10。<strong>结合连续两次AST超标，这是C6停药或第7周期改为仅服用卡培他滨的实质性医学依据</strong> —— 不再依赖骨髓抑制论据。" },
       { color:"normal", title:"✓ ANC 3.36 — 整个治疗期最强的化疗前指标",
         body:"ANC：2.84→2.85→1.66→1.71→1.68→2.61→2.32→2.16→<strong>3.36</strong>（参考1.8–6.3）。<strong>自基线（C1D7）以来最高读数。</strong>WBC 5.73（上次4.19）、HGB 146（上次143）、PLT 278（上次213）——三系均较第6周期前更强。骨髓未显示累积抑制。" },
       { color:"normal", title:"✓ RDW-CV 17.1% — 8次抽血以来首次下降",
@@ -636,8 +641,8 @@ const FAMILY_CONTENT = {
   checkLabel:  { en:"Pre-Cycle 7 blood draw · Strongest CBC of treatment", zh:"第7周期前抽血 · 整个治疗期最强血常规" },
 
   overallSentence: {
-    en: "Today (May 28) is the Pre-Cycle 7 blood draw at the Guangzhou clinic, with Cycle 7 planned for around June 1. The headline news is excellent: Michael's <strong>ANC of 3.36</strong> is the strongest pre-cycle count of the entire treatment — hemoglobin, platelets, and white cell counts are all robust, and the 5-month upward climb in RDW-CV finally reversed (a sign B12 supplementation is doing its job). However, AST rose again to 52 — the second consecutive elevation on liver function — while ALT, bilirubin, and synthetic function all remain normal. The May 18 email to Dr. Liu — asking him to consider stopping at Cycle 6 or running Cycle 7 without oxaliplatin — has not yet been answered. The cumulative neuropathy in hands and legs, the new walking limitation reported at C6D7, the AST trajectory, and the ongoing post-C6 chest-discomfort thread are the substantive reasons to have that conversation; today's strong CBC removes any marrow-toxicity argument for stopping.",
-    zh: "今日（5月28日）是在广州门诊进行的第7周期前抽血，第7周期计划约6月1日开始。主要好消息：迈克的 <strong>ANC 3.36</strong> 是整个治疗期最强的化疗前指标——血红蛋白、血小板、白细胞总数均稳健，且RDW-CV持续5个月的上升趋势首次逆转（这是B12补充开始发挥作用的标志）。然而，AST再次升至52——肝功能连续第二次超标——而ALT、胆红素、合成功能均仍正常。5月18日提请廖医生考虑在第6周期停止或第7周期去除奥沙利铂的邮件尚未得到回复。手脚累积性神经损伤、C6D7首次出现的行走受限、AST上升趋势、以及持续的C6后胸部不适，是请求与廖医生进一步讨论的实质性依据；今日稳健的血常规已削弱&ldquo;以骨髓抑制为由停药&rdquo;的论据。",
+    en: "Today (May 28) is the Pre-Cycle 7 blood draw at the Guangzhou clinic, with Cycle 7 planned for around June 1. <strong>The blood and how Michael feels are telling two completely different stories.</strong> The blood is excellent: <strong>ANC 3.36</strong> is the strongest pre-cycle count of the entire treatment — hemoglobin, platelets, and white cell counts all robust — and the 5-month upward climb in RDW-CV finally reversed. AST rose again to 52 (second consecutive flag), but ALT, bilirubin, and synthetic function all remain normal. <strong>The nervous system is going the other way.</strong> The neuropathy steps up by another degree after each infusion — not a linear creep, but a discrete jump — and the marrow shows no cumulative damage to compensate. New this cycle: leg numbness and pain has climbed <em>past both knees</em> (was confined to the feet through C5); Michael stumbled on the golf course yesterday because his legs and feet &ldquo;forget how to work&rdquo;; and at dinner tonight he had strong lightheadedness and had to focus hard not to faint. The May 18 email to Dr. Liu — asking him to consider stopping at Cycle 6 or running Cycle 7 without oxaliplatin — has been re-sent tonight with this updated picture.",
+    zh: "今日（5月28日）是在广州门诊进行的第7周期前抽血，第7周期计划约6月1日开始。<strong>血液与身体感受正讲述两个完全不同的故事。</strong>血液结果极佳：<strong>ANC 3.36</strong> 是整个治疗期最强的化疗前指标——血红蛋白、血小板、白细胞总数均稳健——且RDW-CV持续5个月的上升趋势首次逆转。AST再次升至52（连续第二次超标），但ALT、胆红素、合成功能均仍正常。<strong>神经系统则朝相反方向发展。</strong>神经损伤在每次化疗后阶梯式跃升——非线性渐进，而是离散跳变——而骨髓并未显示累积损伤可作为停药依据。本周期新出现：下肢麻木与疼痛已<em>蔓延过双膝</em>（第5周期之前仅限于足部）；迈克昨日在高尔夫球场绊倒，因为他的双腿与双脚&ldquo;不知道该怎么动&rdquo;；今晚晚餐时出现强烈头晕，须努力集中精神方能不昏厥。5月18日提请廖医生考虑在第6周期停止或第7周期去除奥沙利铂的邮件，今晚已附上最新情况重新发送。",
   },
 
   systems: [
@@ -657,15 +662,15 @@ const FAMILY_CONTENT = {
       text:   { en:"AST has now risen twice in a row: 38 → 46 → 52 (reference upper limit 40). ALT is still normal at 36, bilirubin actually improved this draw, and synthetic function (albumin, total protein) is preserved. The upward trend itself is what raises the question for Cycle 7 dosing — both Capecitabine and oxaliplatin are processed by the liver. Added to the open questions for Dr. Liu.",
                 zh:"AST已连续两次升高：38→46→52（参考上限40）。ALT仍正常（36），本次胆红素改善，合成功能（白蛋白、总蛋白）保留。上升趋势本身是第7周期剂量需谨慎考虑的原因——卡培他滨与奥沙利铂均经肝代谢。已纳入致廖医生的待询问题。" } },
     { icon:"🦵",
-      name:   { en:"Cumulative Neuropathy + Walking Limitation", zh:"累积性神经损伤 + 行走受限" },
+      name:   { en:"Neuropathy Escalating — Now Past Both Knees · Stumble · Pre-Syncope (Today)", zh:"神经损伤加重 — 已过双膝 · 跌倒 · 晕厥前兆（今晚）" },
       status: "caution",
-      text:   { en:"Peripheral tingling in hands and legs remains materially heavier than at any prior cycle. The new functional walking limitation first reported at C6D7 (4–5 apartment viewings left him unable to continue) is the strongest single argument for ending treatment at Cycle 6. The C5 dose-reduction wins (cold sensitivity, jaw shock) still hold. Mecobalamin (B12) and Epalrestat 50mg continued.",
-                zh:"手脚的周围神经麻木刺痛仍较以往任何一周期都明显加重。C6D7首次报告的功能性行走受限（看4–5套房子后无法继续）是第6周期停止治疗最有力的单一理由。第5周期减量带来的改善（冷过敏、下颌痉挛）仍维持。继续甲钴胺（B12）与依帕司他50毫克。" } },
-    { icon:"💗",
-      name:   { en:"Post-C6 Chest Discomfort — Separate Active Thread", zh:"C6后胸部不适 — 另线程跟进" },
-      status: "caution",
-      text:   { en:"Daily brief chest burning episodes since the Cycle 6 infusion remain under separate follow-up with Dr. Liu (May 12 and May 14 emails). Today's electrolyte and kidney panel was completely normal — ruling out potassium, calcium, sodium, and renal causes. The cardiac-side conversation with Dr. Liu is still open.",
-                zh:"自第6周期化疗以来每日短暂胸部灼烧感仍在另线程与廖医生跟进（5月12日与5月14日邮件）。今日电解质与肾功能全套完全正常——排除钾、钙、钠及肾脏成因。心脏方面的进一步评估讨论仍在与廖医生交流中。" } },
+      text:   { en:"<strong>The neuropathy steps up by another degree after each infusion</strong> — not a linear creep, but a discrete jump. Leg numbness and pain has now climbed <em>past both knees</em> (was confined to the feet through Cycle 5). Michael stumbled on the golf course yesterday because his legs and feet &ldquo;forget how to work&rdquo;. At dinner tonight he had strong lightheadedness and had to focus hard not to faint. <strong>Fatigue is materially higher this cycle</strong> — he needs daily naps; without one, he is wiped out by 9–10 pm. Persistent severe hand, arm, foot, and leg numbness/pain throughout the day; constant &ldquo;chemicals in my system&rdquo; sensation; occasional nausea; frequent mild headaches. C6 infusion: good vein, but the arm was 7/10 pain by the end of the 4-hour session.",
+                zh:"<strong>神经损伤在每次化疗后阶梯式跃升</strong>——非线性渐进，而是离散跳变。下肢麻木与疼痛已<em>蔓延过双膝</em>（第5周期之前仅限于足部）。迈克昨日在高尔夫球场绊倒，因为他的双腿与双脚&ldquo;不知道该怎么动&rdquo;。今晚晚餐时出现强烈头晕，须努力集中精神方能不昏厥。<strong>本周期疲劳明显加重</strong>——需每日午睡；若不午睡，9–10 pm已精疲力竭。全天持续严重的手、臂、足、腿麻木/疼痛；持续&ldquo;体内有化学物&rdquo;的感觉；偶发恶心；频繁轻度头痛。C6化疗：一针见血，但4小时输液结束时手臂疼痛7/10。" } },
+    { icon:"✅",
+      name:   { en:"C6 Acute Symptoms Have Resolved — Jaw Shock, Cold Sensitivity, Chest Discomfort", zh:"C6急性症状已消退 — 下颌痉挛、冷过敏、胸部不适" },
+      status: "good",
+      text:   { en:"The classic one-week acute symptoms — jaw shock, cold hypersensitivity — followed their usual pattern and dissipated around days 8–10. The post-C6 chest discomfort that was an active thread on May 12 and 14 has resolved (confirmed in the May 18 note to Dr. Liu) and has not returned. The C5 200mg-oxaliplatin dose reduction continues to do its job on the acute side — the issue this cycle is the cumulative damage that does not dissipate.",
+                zh:"经典的一周内急性症状——下颌痉挛、冷过敏——按以往模式约在化疗后8–10天消退。5月12日及14日跟进的C6后胸部不适已化解（5月18日致廖医生的邮件已确认），未再出现。第5周期减至200mg奥沙利铂的方案对急性症状的缓解仍在发挥作用——本周期的问题是不会消退的累积性损伤。" } },
     { icon:"📋",
       name:   { en:"VA Claim Submitted", zh:"退伍军人申请已提交" },
       status: "good",
@@ -687,17 +692,17 @@ const FAMILY_CONTENT = {
       zh:"为廖医生对5月18日邮件的回复祷告——是否在第6周期停止治疗或第7周期去除奥沙利铂的讨论需在计划6月1日化疗前完成。求与医生达成共同判断，而非彼此施压。" },
     { en:"Pray that AST stops climbing — two consecutive readings now over the reference limit (46 → 52). The rest of liver function is fine, but the upward trend itself is what raises the question on Cycle 7 dosing.",
       zh:"求AST不再上升——已连续两次超过参考上限（46→52）。其他肝功能指标均正常，但上升趋势本身是需要在第7周期剂量上谨慎考虑的原因。" },
-    { en:"Pray for Michael's legs and walking — that the cumulative neuropathy and the new walking limitation reported at C6D7 do not progress further. Pray the nerve medications (Mecobalamin, Epalrestat) keep working and that healing continues.",
-      zh:"为迈克的双腿与行走能力祷告——求C6D7首次出现的累积性神经损伤与行走受限不再加重。求神经药物（甲钴胺、依帕司他）持续发挥作用，使复原临到。" },
-    { en:"Pray for the post-Cycle 6 chest discomfort to resolve. Today's electrolyte and kidney panel was normal — ruling out metabolic causes — but the cardiac-side conversation with Dr. Liu is still open.",
-      zh:"为第6周期后胸部不适的化解祷告。今日电解质与肾功能全套正常——已排除代谢成因——但与廖医生关于心脏方面的进一步评估仍在讨论中。" },
+    { en:"Pray for Michael's legs, balance, and safety — that the cumulative neuropathy stops climbing, that yesterday's golf-course stumble does not become a fall, and that tonight's lightheadedness/near-faint at dinner does not repeat. Pray the nerve medications (Mecobalamin, Epalrestat) keep working and that healing comes.",
+      zh:"为迈克的双腿、平衡感与安全祷告——求累积性神经损伤不再加重，求昨日高尔夫球场上的踉跄不致演变为真正的跌倒，求今晚晚餐时的头晕/晕厥前兆不再重复。求神经药物（甲钴胺、依帕司他）持续发挥作用，使复原临到。" },
+    { en:"Pray for clarity on whether tonight's near-faint warrants a workup before C7 is infused — Michael has asked Dr. Liu directly in tonight's follow-up email.",
+      zh:"为是否需在第7周期化疗前对今晚晕厥前兆作进一步检查的判断祷告——迈克今晚在跟进邮件中已直接向廖医生提出这一问题。" },
     { en:"Pray for the VA claim — documentation submitted, outcome unknown. Pray for a fair and timely response.",
       zh:"求神看顾退伍军人申请——文件已提交，结果未知。求神赐下公正及时的回复。" },
   ],
 
   shareText: {
-    en: "Today (May 28) was the Pre-Cycle 7 blood draw in Guangzhou, with Cycle 7 planned for around June 1. The big news: Michael's ANC at 3.36 is the strongest pre-cycle count of the entire treatment — every marrow lineage is stronger than going into Cycle 6, and the long RDW-CV climb finally reversed. Liver function showed AST rising again to 52 (second consecutive flag), while everything else on LFT remains normal. The May 18 email to Dr. Liu — asking him to consider stopping at Cycle 6 or running Cycle 7 without oxaliplatin — has not yet been answered, and that conversation needs to happen before June 1. Please pray for Dr. Liu's reply, for AST to stop climbing, for Michael's legs and walking, for the post-C6 chest discomfort to resolve, and for clarity on whether Cycle 7 proceeds.",
-    zh: "今日（5月28日）在广州进行了第7周期前抽血，第7周期计划约6月1日开始。重大好消息：迈克的ANC 3.36是整个治疗期最强的化疗前指标——三系均较第6周期前更强，长期上升的RDW-CV终于逆转。肝功能显示AST再次上升至52（连续第二次超标），其余指标均正常。5月18日提请廖医生考虑在第6周期停止或第7周期去除奥沙利铂的邮件尚未回复，这次讨论需在6月1日前完成。请为廖医生的回复祷告，为AST不再上升祷告，为迈克的双腿与行走能力祷告，为C6后胸部不适的化解祷告，为是否进行第7周期的清晰引导祷告。",
+    en: "Today (May 28) was the Pre-Cycle 7 blood draw in Guangzhou, with Cycle 7 planned for around June 1. The blood and how Michael feels are telling two completely different stories. The blood is excellent — ANC 3.36 is the strongest pre-cycle count of the entire treatment, every marrow lineage stronger than going into Cycle 6, and the long RDW-CV climb finally reversed. AST rose again to 52 (second consecutive flag), but the rest of liver function is normal. The nervous system is going the other way — the neuropathy steps up by another degree after each infusion, leg numbness has now climbed past both knees, Michael stumbled on the golf course yesterday because his legs and feet &ldquo;forget how to work&rdquo;, and at dinner tonight he had strong lightheadedness and had to focus hard not to faint. The May 18 email to Dr. Liu — asking about stopping at C6 or running C7 without oxaliplatin — has been re-sent tonight with this updated picture. Please pray for Dr. Liu's reply, for safety from falls, for the lightheadedness to settle, and for clarity on whether Cycle 7 proceeds.",
+    zh: "今日（5月28日）在广州进行了第7周期前抽血，第7周期计划约6月1日开始。血液与身体感受正讲述两个完全不同的故事。血液结果极佳——ANC 3.36 是整个治疗期最强的化疗前指标，骨髓三系均较第6周期前更强，长期上升的RDW-CV终于逆转。AST再次升至52（连续第二次超标），但肝功能其余指标均正常。神经系统则朝相反方向发展——神经损伤在每次化疗后阶梯式跃升，下肢麻木现已蔓延过双膝，迈克昨日在高尔夫球场绊倒，因为他的双腿与双脚&ldquo;不知道该怎么动&rdquo;，今晚晚餐时出现强烈头晕、须努力集中精神方能不昏厥。5月18日提请廖医生考虑在第6周期停止或第7周期去除奥沙利铂的邮件，今晚已附上最新情况重新发送。请为廖医生的回复祷告，为迈克的人身安全祷告，为头晕/晕厥前兆得平息祷告，为是否进行第7周期的清晰引导祷告。",
   },
 
   cyclesComplete: 6,
