@@ -428,11 +428,11 @@
 <!-- ══ DOCTOR VIEW ══ -->
 <div id="view-doctor">
   <div class="doc-toolbar">
-    <label style="display:flex;align-items:center;gap:7px;font-size:12px;font-family:'Inter',sans-serif;color:#374151;cursor:pointer;margin-right:auto">
-      <input type="checkbox" id="latest-only-toggle" onchange="toggleLatestOnly(this.checked)"
-        style="width:15px;height:15px;cursor:pointer;accent-color:#2563eb">
-      <span id="doc-latest-label">Latest draw only</span>
-    </label>
+    <div style="display:flex;gap:4px;margin-right:auto;font-family:'Inter',sans-serif">
+      <button id="doc-mode-all"    onclick="setDocMode('all')"    type="button"></button>
+      <button id="doc-mode-last3"  onclick="setDocMode('last3')"  type="button"></button>
+      <button id="doc-mode-latest" onclick="setDocMode('latest')" type="button"></button>
+    </div>
     <div style="display:flex;gap:4px;margin-right:8px">
       <button id="doc-btn-en" onclick="setDocLang('en')" style="padding:4px 10px;border-radius:6px;border:1px solid #d1d5db;background:#fff;font-size:11px;font-weight:600;color:#374151;cursor:pointer;font-family:'Inter',sans-serif">EN</button>
       <button id="doc-btn-zh" onclick="setDocLang('zh')" style="padding:4px 10px;border-radius:6px;border:1px solid #d1d5db;background:#fff;font-size:11px;font-weight:600;color:#374151;cursor:pointer;font-family:'Inter',sans-serif">中文</button>
@@ -999,8 +999,18 @@ function renderFamily() {
 // DOCTOR VIEW
 // ══════════════════════════════════════════════════════════
 function renderDoctor() {
-  const docData = docLatestOnly ? [DATA[DATA.length-1]] : DATA;
-  const drawLabel = docLatestOnly ? `Latest draw only — ${LATEST.fullDate}` : `${docData.length} draws`;
+  const zhDoc = docLang === 'zh';
+  let docData, drawLabel;
+  if (docMode === 'latest') {
+    docData = [DATA[DATA.length-1]];
+    drawLabel = zhDoc ? `仅最新 — ${LATEST.fullDate}` : `Latest draw only — ${LATEST.fullDate}`;
+  } else if (docMode === 'last3') {
+    docData = DATA.slice(-3);
+    drawLabel = zhDoc ? `最近3次对比（${docData[0].fullDate} → ${LATEST.fullDate}）` : `Last 3 draws compared (${docData[0].fullDate} → ${LATEST.fullDate})`;
+  } else {
+    docData = DATA;
+    drawLabel = zhDoc ? `${docData.length} 次抽血` : `${docData.length} draws`;
+  }
 
   // Doctor subscribe card (navy) — Google Form, see CLAUDE.md "Subscriber signup"
   const DOC_FORM_URL = "DOC_FORM_URL_REPLACE_ME";
@@ -1067,7 +1077,10 @@ function renderDoctor() {
   document.getElementById('d-cbc').innerHTML = cbcHTML;
 
   // LFT TABLE
-  const lftDraws = (docLatestOnly ? [DATA[DATA.length-1]] : DATA).filter(d => d.lft);
+  const lftSource = docMode === 'latest' ? [DATA[DATA.length-1]]
+                  : docMode === 'last3'  ? DATA.slice(-3)
+                  :                        DATA;
+  const lftDraws = lftSource.filter(d => d.lft);
   if (lftDraws.length) {
     const lftGroups = [
       { t: L("Liver Enzymes","肝酶"),                keys:['ALT','AST','ALP','GGT'] },
@@ -1416,18 +1429,32 @@ function setDocLang(lang) {
   const inactive = 'padding:4px 10px;border-radius:6px;border:1px solid #d1d5db;background:#fff;font-size:11px;font-weight:600;color:#374151;cursor:pointer;font-family:\'Inter\',sans-serif';
   document.getElementById('doc-btn-en').style.cssText = lang==='en' ? active : inactive;
   document.getElementById('doc-btn-zh').style.cssText = lang==='zh' ? active : inactive;
-  const latestLabel = document.getElementById('doc-latest-label');
-  if (latestLabel) latestLabel.textContent = lang==='zh' ? '仅显示最新一次' : 'Latest draw only';
+  renderDocModeButtons();
   renderDoctor();
 }
 
-function toggleLatestOnly(on) {
-  docLatestOnly = on;
+function renderDocModeButtons() {
+  const active = 'padding:4px 10px;border-radius:6px;border:1px solid #2563eb;background:#2563eb;font-size:11px;font-weight:600;color:#fff;cursor:pointer;font-family:\'Inter\',sans-serif';
+  const inactive = 'padding:4px 10px;border-radius:6px;border:1px solid #d1d5db;background:#fff;font-size:11px;font-weight:600;color:#374151;cursor:pointer;font-family:\'Inter\',sans-serif';
+  const labels = docLang === 'zh'
+    ? { all:'全部', last3:'最近3次', latest:'仅最新' }
+    : { all:'All draws', last3:'Last 3', latest:'Latest only' };
+  ['all','last3','latest'].forEach(m => {
+    const btn = document.getElementById('doc-mode-'+m);
+    if (!btn) return;
+    btn.textContent = labels[m];
+    btn.style.cssText = (docMode === m) ? active : inactive;
+  });
+}
+
+function setDocMode(mode) {
+  docMode = mode;
+  renderDocModeButtons();
   renderDoctor();
 }
 
 // ── INIT ──────────────────────────────────────────────────
-let docLatestOnly = false;
+let docMode = 'all';  // 'all' | 'last3' | 'latest'
 let docLang = 'en';
 const PAGE_URL    = "https://mph1969.github.io/cbc-oncology-report/";
 const FOLLOWIT_URL = `https://follow.it/${encodeURIComponent(PAGE_URL)}`;
@@ -1449,8 +1476,8 @@ if (startLang === 'zh') {
 }
 
 setAud(['family','doctor','michael'].includes(startView) ? startView : 'family');
-// Apply doctor lang toggle state after render
-if (startLang === 'zh') setDocLang('zh');
+// Apply doctor lang toggle + mode buttons after render
+setDocLang(docLang);
 
 </script>
 </body>
