@@ -1,1 +1,13 @@
+# Subscriber lists — never leave this machine
 subscribers/*.csv
+
+# Private / patient files — repo is PUBLIC, keep these out
+/CLAUDE.md
+drafts/
+*.pdf
+/*.jpeg
+/*.jpg
+.session-resume.md
+
+# Note: lab images under images/ are intentionally NOT ignored
+# (the /*.jpeg and /*.jpg patterns are root-anchored and won't match images/)
